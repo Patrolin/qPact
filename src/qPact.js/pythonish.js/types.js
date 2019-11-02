@@ -1,4 +1,4 @@
-// @todo: not use stupid isNaN()
+// @todo: dont use stupid isNaN()
 export function int(input = 0) {
 	const value = +input;
 	if (isNaN(value)) {
