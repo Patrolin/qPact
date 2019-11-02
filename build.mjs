@@ -57,7 +57,7 @@ const TARGETS = {
 				ecma: 6,
 				quote_style: 3,
 				width: 80,
-				indent_level: 4,
+				indent_level: 2,
 				beautify: !minified,
 				semicolons: !minified,
 			},
