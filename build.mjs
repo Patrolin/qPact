@@ -37,7 +37,7 @@ const TARGETS = {
 			let UNDEFINED = undefined, NULL = null;
 			${getFiles(path)
 				.join(';')
-				.replace(/import .+? from .+?;/g, '')
+				.replace(/import .+? from .+?;/g, '') // @todo: resolve imports
 				.replace(
 					/export default (const|var|let) (\w+) = /g,
 					`(typeof $2 === ''+UNDEFINED) ? $2 = _$2 : console.warn('${name.replace(
