@@ -1,4 +1,4 @@
-// @todo: -n
+// @todo: support -n
 export default function q(input, n = undefined) {
 	return input instanceof RegExp
 		? q_Node_RegExp(document, input, n)
@@ -25,7 +25,7 @@ function q_clone(input) {
 	return input instanceof Node ? input.cloneNode(true) : input.map(q_clone);
 }
 
-// @todo: Object.define() on prototypes
+// @todo: fix Object.define() on prototypes
 Node.prototype.Q = function Q_Node(input, n = undefined) {
 	let first;
 	while ((first = this.firstChild) !== null) {
@@ -85,5 +85,5 @@ function q_Array_filter(self, query) {
 }
 
 function q_Array_find(self, query) {
-	return self.flat(Infinity).find((e) => e.matches(query)); // @todo: use flatMap
+	return self.flat(Infinity).find((e) => e.matches(query)); // @todo: use faster flatMap
 }
