@@ -40,12 +40,18 @@ const TARGETS = {
 				.replace(/import .+? from .+?;/g, '')
 				.replace(
 					/export default (const|var|let) (\w+) = /g,
-					`(typeof $2 === ''+UNDEFINED) ? $2 = _$2 : console.warn('${name}: $1 $2 is already defined');
+					`(typeof $2 === ''+UNDEFINED) ? $2 = _$2 : console.warn('${name.replace(
+						"'",
+						"\\'"
+					)}: $1 $2 is already defined');
 				var _$2 = this.$2 = $2`
 				)
 				.replace(
 					/export default (.+?) ([\w$]+)/g,
-					`(typeof $2 === ''+UNDEFINED) ? $2 = _$2 : console.warn('${name}: $1 $2 is already defined');
+					`(typeof $2 === ''+UNDEFINED) ? $2 = _$2 : console.warn('${name.replace(
+						"'",
+						"\\'"
+					)}: $1 $2 is already defined');
 				var _$2 = this.$2 = $1 $2`
 				)
 				.replace(/export const (\w+) = /g, 'this.$1 = ')
