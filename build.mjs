@@ -69,9 +69,6 @@ const TARGETS = {
 		let files = getFiles(path)
 			.join('')
 			.replace(/\/\*(?:.|\s)*?\*\//g, '');
-		if (!minified) {
-			return files;
-		}
 		let css = {};
 		for (let [match, selectors, properties] of matchAll(
 			/([^{]*){([^}]*)}/g,
@@ -91,13 +88,24 @@ const TARGETS = {
 			);
 			css[selectors] = [...(css[selectors] || []), ...properties];
 		}
-		css = Object.entries(css)
-			.map(
-				([selectors, properties]) =>
-					`${selectors}{${properties.join(';')}}`
-			)
-			.join('');
-		return css.slice(0, css.length - 1);
+		if (minified) {
+			css = Object.entries(css)
+				.map(
+					([selectors, properties]) =>
+						`${selectors}{${properties.join(';')}}`
+				)
+				.join('');
+		} else {
+			css = Object.entries(css)
+				.map(
+					([selectors, properties]) =>
+						`${selectors}{${properties
+							.map((p) => `\n\t${p}`)
+							.join(';')}\n}`
+				)
+				.join('\n');
+		}
+		return minified ? css.slice(0, css.length - 1) : css;
 	},
 };
 
