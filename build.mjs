@@ -38,7 +38,8 @@ const TARGETS = {
 			.replace(/import .+? from .+?;/g, '')
 			.replace(
 				/export default (.+?) ([\w$]+)/g,
-				"$2 = (typeof $2 !== 'undefined') ? $2 : this.$2 = $1 $2"
+				`(typeof $2 !== 'undefined') ? console.warn('${name}: $2 is already defined') : $2 = future_$2;
+				var future_$2 = this.$2 = $1 $2`
 			)
 			.replace(/export (.+?) ([\w$]+)/g, 'this.$2 = $1 $2')}}`;
 		const js = uglify.minify(files, {

@@ -3,4 +3,4 @@ class Clock {
 		this.q(new Date());
 	}
 }
-define('q-clock', Clock);
+this.define('q-clock', Clock);
