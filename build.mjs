@@ -33,15 +33,23 @@ function getFiles(path) {
 
 const TARGETS = {
 	js(path, name, minified) {
-		const files = `this['${name}']=new function(){${getFiles(path)
-			.join(';')
-			.replace(/import .+? from .+?;/g, '')
-			.replace(
-				/export default (.+?) ([\w$]+)/g,
-				`(typeof $2 !== 'undefined') ? console.warn('${name}: $2 is already defined') : $2 = future_$2;
-				var future_$2 = this.$2 = $1 $2`
-			)
-			.replace(/export (.+?) ([\w$]+)/g, 'this.$2 = $1 $2')}}`;
+		const files = `this['${name}']=new function(){
+			let UNDEFINED = undefined, NULL = null;
+			${getFiles(path)
+				.join(';')
+				.replace(/import .+? from .+?;/g, '')
+				.replace(
+					/export default (const|var|let) (\w+) = /g,
+					`(typeof $2 === ''+UNDEFINED) ? $2 = _$2 : console.warn('${name}: $1 $2 is already defined');
+				var _$2 = this.$2 = $2`
+				)
+				.replace(
+					/export default (.+?) ([\w$]+)/g,
+					`(typeof $2 === ''+UNDEFINED) ? $2 = _$2 : console.warn('${name}: $1 $2 is already defined');
+				var _$2 = this.$2 = $1 $2`
+				)
+				.replace(/export const (\w+) = /g, 'this.$1 = ')
+				.replace(/export (.+?) ([\w$]+)/g, 'this.$2 = $1')}}`;
 		const js = uglify.minify(files, {
 			compress: {
 				ecma: 6,
@@ -51,7 +59,11 @@ const TARGETS = {
 				unsafe_comps: true,
 				unsafe_math: true,
 				unsafe_proto: true,
+				unsafe_undefined: true,
 				warnings: true,
+			},
+			mangle: {
+				eval: true,
 			},
 			output: {
 				ecma: 6,

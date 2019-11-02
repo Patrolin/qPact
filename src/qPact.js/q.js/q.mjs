@@ -1,5 +1,5 @@
 // @todo: support -n
-export default function q(input, n = undefined) {
+export default function q(input, n = UNDEFINED) {
 	return input instanceof RegExp
 		? q_Node_RegExp(document, input, n)
 		: q_create(input, n);
@@ -17,7 +17,7 @@ function q_create(input, n) {
 	}
 }
 function q_multiply(input, n) {
-	return n === undefined
+	return n === UNDEFINED
 		? input
 		: new Array(n).fill().map(() => q_clone(input));
 }
@@ -26,14 +26,14 @@ function q_clone(input) {
 }
 
 // @todo: fix Object.define() on prototypes
-Node.prototype.Q = function Q_Node(input, n = undefined) {
+Node.prototype.Q = function Q_Node(input, n = UNDEFINED) {
 	let first;
-	while ((first = this.firstChild) !== null) {
+	while ((first = this.firstChild) !== NULL) {
 		this.removeChild(first);
 	}
-	return input === null ? [] : this.q(input, n);
+	return input === NULL ? [] : this.q(input, n);
 };
-Node.prototype.q = function q_Node(input, n = undefined) {
+Node.prototype.q = function q_Node(input, n = UNDEFINED) {
 	return input instanceof RegExp
 		? q_Node_RegExp(this, input, n)
 		: q_Node_append(this, input, n);
@@ -43,7 +43,7 @@ function q_Node_RegExp(self, regexp, n) {
 		return q_multiply(self.querySelectorAll(regexp.source), n);
 	} else {
 		const search = self.querySelector(regexp.source);
-		return search ? q_multiply(search, n) : null;
+		return search ? q_multiply(search, n) : NULL;
 	}
 }
 function q_Node_append(self, input, n) {
@@ -58,10 +58,10 @@ function q_Node_append(self, input, n) {
 	}
 }
 
-Array.prototype.Q = function Q_Array(input, n = undefined) {
+Array.prototype.Q = function Q_Array(input, n = UNDEFINED) {
 	return this.flatMap((e) => e.Q(input, n));
 };
-Array.prototype.q = function q_Array(input, n = undefined) {
+Array.prototype.q = function q_Array(input, n = UNDEFINED) {
 	let result;
 	if (input instanceof RegExp) {
 		result = input.global
@@ -78,10 +78,10 @@ function q_Array_filter(self, query) {
 			return x instanceof Node
 				? x.matches(query)
 					? x
-					: null
+					: NULL
 				: q_Array_filter(x, query);
 		})
-		.filter((x) => x !== null);
+		.filter((x) => x !== NULL);
 }
 
 function q_Array_find(self, query) {

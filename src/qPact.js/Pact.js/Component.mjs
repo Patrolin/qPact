@@ -36,11 +36,13 @@ class Component extends HTMLElement {
 		);
 	}
 }
-export function define(name, Class) {
-	ElementName = `${Class.name}Element`;
-	eval(`this['${ElementName}'] = class ${ElementName} extends Component{}`);
-	Element = this[ElementName];
-	ClassEntries = descriptorEntries(Class, [
+export default function defineElement(name, Class) {
+	let ElementName = `${Class.name}Element`;
+	eval(
+		`this['${ElementName}'] = class ${ElementName} extends ${Component.name}{}`
+	);
+	let Element = this[ElementName];
+	let ClassEntries = descriptorEntries(Class, [
 		'constructor',
 		'name',
 		'prototype',
@@ -50,7 +52,9 @@ export function define(name, Class) {
 	}
 
 	Element.events = [];
-	ClassPrototypeEntries = descriptorEntries(Class.prototype, ['constructor']);
+	let ClassPrototypeEntries = descriptorEntries(Class.prototype, [
+		'constructor',
+	]);
 	for (const [key, descriptor] of ClassPrototypeEntries) {
 		if (descriptor.get || descriptor.set) {
 			Object.defineProperty(Element.prototype, key, {

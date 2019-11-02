@@ -12,4 +12,4 @@ class Clock {
 		this.Q(new Date());
 	}
 }
-this.define('q-clock', Clock);
+this.defineElement('q-clock', Clock);
