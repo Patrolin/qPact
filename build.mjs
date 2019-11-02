@@ -31,9 +31,8 @@ function getFiles(path) {
 	return files;
 }
 
-const PRETTY = true;
 const TARGETS = {
-	js(path, name) {
+	js(path, name, minified) {
 		const files = `this['${name}']=new function(){${getFiles(path)
 			.join(';')
 			.replace(/import .+? from .+?;/g, '')
@@ -58,21 +57,25 @@ const TARGETS = {
 				quote_style: 3,
 				width: 80,
 				indent_level: 4,
-				beautify: PRETTY,
-				semicolons: PRETTY,
+				beautify: !minified,
+				semicolons: !minified,
 			},
 		});
 		return !js.error
 			? js.code.trimRight()
 			: `${js.error}\n\n---------------------\n\n${files}`;
 	},
-	css(path) {
+	css(path, name, minified) {
+		let files = getFiles(path)
+			.join('')
+			.replace(/\/\*(?:.|\s)*?\*\//g, '');
+		if (!minified) {
+			return files;
+		}
 		let css = {};
 		for (let [match, selectors, properties] of matchAll(
 			/([^{]*){([^}]*)}/g,
-			getFiles(path)
-				.join('')
-				.replace(/\/\*(?:.|\s)*?\*\//g, '')
+			files
 		)) {
 			selectors = selectors
 				.split(',')
@@ -105,8 +108,14 @@ walk.walkSync('src', {
 			const [name, _, ext] = rpartition(dir, '.');
 			if (name) {
 				const src = `${root}\\${dir}`;
-				const dist = `dist\\${dir}`;
-				fs.writeFileSync(dist, TARGETS[ext](src, name));
+				fs.writeFileSync(
+					`dist\\${name}.${ext}`,
+					TARGETS[ext](src, name, false)
+				);
+				fs.writeFileSync(
+					`dist\\${name}.min.${ext}`,
+					TARGETS[ext](src, name, true)
+				);
 			}
 			next();
 		},
