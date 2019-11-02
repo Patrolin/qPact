@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<link href="./blackhole.css" rel="stylesheet" />
+		<script src="./qPact.js"></script>
+		<script src="./com.js"></script>
+		<script>
+			function alterEvent() {
+				this.dispatchEvent(
+					new CustomEvent('alter', {
+						bubbles: true,
+						cancelable: true,
+					})
+				);
+			}
+
+			const ReleProps = {
+				n: int,
+			};
+			class Rele extends Component(ReleProps) {
+				load() {
+					this.n = this.getAttribute('n');
+					this.sepnuti = q('<input type="range" min="55" max="95" step="1">');
+					this.sepnutiText = q('<output>');
+					this.vypnuti = q('<input type="range" min="50" max="95" step="1">');
+					this.vypnutiText = q('<output>');
+					this.nocniProud = q('<input type="checkbox">');
+					this.odeslat = q('<button>Odeslat');
+					this.sepnuti.oninput = alterEvent;
+					this.vypnuti.oninput = alterEvent;
+					this.nocniProud.oninput = alterEvent;
+					this.odeslat.onclick = alterEvent;
+					this.q(`<h3>Rele ${this.n}</h3>`);
+					this.q(`<row><b>Vypnuti:</b> `).q([this.vypnutiText, this.vypnuti]);
+					this.q(`<row><b>Sepnuti:</b> `).q([this.sepnutiText, this.sepnuti]);
+					this.q(`<row><b>Spinat v nocnim proudu:</b> `).q(this.nocniProud);
+					this.q(this.odeslat);
+					this.render();
+				}
+				get state() {
+					return {
+						S91: +this.vypnuti.value,
+						S92: +this.sepnuti.value,
+						S93: this.nocniProud.checked ? 1 : 0,
+					};
+				}
+				async send() {
+					await postJson(this.state);
+					await postJson({
+						S99: this.n,
+					});
+				}
+				onalter(e) {
+					if (e.srcElement === this.odeslat) {
+						this.send();
+					} else if (e.srcElement === this.sepnuti) {
+						this.vypnuti.value = Math.min(
+							int(this.vypnuti.value),
+							int(this.sepnuti.value) - 3
+						);
+					} else {
+						this.sepnuti.value = Math.max(
+							int(this.sepnuti.value),
+							int(this.vypnuti.value) + 3
+						);
+					}
+					this.render();
+				}
+				render() {
+					this.sepnutiText.value = this.sepnuti.value;
+					this.vypnutiText.value = this.vypnuti.value;
+				}
+			}
+			customElements.define('c-rele', Rele);
+
+			class Baterie extends Component {
+				load() {
+					this.denniProud = q('<input type="range" min="22" max="45" step="1">');
+					this.denniProudText = q('<output>');
+					this.nocniProud = q('<input type="range" min="25" max="49" step="1">');
+					this.nocniProudText = q('<output>');
+					this.odeslat = q('<button>Odeslat');
+					this.denniProud.oninput = alterEvent;
+					this.nocniProud.oninput = alterEvent;
+					this.odeslat.onclick = alterEvent;
+					this.q(`<row><b>Limit vybiti - Denni proud:</b> `).q([
+						this.denniProudText,
+						this.denniProud,
+					]);
+					this.q(`<row><b>Limit vybiti - Nocni proud:</b> `).q([
+						this.nocniProudText,
+						this.nocniProud,
+					]);
+					this.q(this.odeslat);
+					this.render();
+				}
+				get state() {
+					return {
+						S97: +this.denniProud.value,
+						S98: +this.nocniProud.value,
+					};
+				}
+				async send() {
+					await postJson(this.state);
+					await postJson({
+						S99: 99,
+					});
+				}
+				onalter(e) {
+					if (e.srcElement === this.odeslat) {
+						this.send();
+					} else if (e.srcElement === this.denniProud) {
+						this.nocniProud.value = Math.max(
+							int(this.denniProud.value),
+							int(this.nocniProud.value)
+						);
+					} else {
+						this.denniProud.value = Math.min(
+							int(this.denniProud.value),
+							int(this.nocniProud.value)
+						);
+					}
+					this.render();
+				}
+				render() {
+					this.denniProudText.value = this.denniProud.value;
+					this.nocniProudText.value = this.nocniProud.value;
+				}
+			}
+			customElements.define('c-baterie', Baterie);
+
+			class Plan extends Component {
+				load() {
+					this.q('<h3>Casovy plan</h3>');
+					this.inputs = this.q('<row>', 6).q('<input type="checkbox">', 24);
+					this.q(/input:nth-child(6n):not(:last-child)/g).forEach((e) => {
+						e.after(' ');
+					});
+					this.q(/row/g).forEach((e, i) => {
+						e.prepend(...q(`<b>Rele ${i + 1}:</b> `));
+					});
+					this.odeslat = this.q('<button>Odeslat</button>');
+					this.odeslat.onclick = alterEvent;
+				}
+				onalter(e) {
+					if (e.srcElement === this.odeslat) {
+						this.send();
+					}
+				}
+				async send() {
+					await postJson(this.state);
+					await postJson({
+						S99: 98,
+					});
+				}
+				get state() {
+					return {
+						S91: this.input(0),
+						S92: this.input(1),
+						S93: this.input(2),
+						S94: this.input(3),
+						S95: this.input(4),
+						S96: this.input(5),
+					};
+				}
+				input(n) {
+					return +`0b${this.inputs[n].reduce((a, b) => a + (b.checked ? '1' : '0'), '')}`;
+				}
+			}
+			customElements.define('c-plan', Plan);
+
+			async function main() {
+				const json = await fetchJson();
+				const casy = json['T93'];
+				const sepVyp = json['T91'].split(' ').map((s) => s.split('-'));
+				const nocniProud = json['T92'].split(' ');
+				console.log(casy);
+				casy.split(/ /).forEach((value, i) => {
+					value
+						.split('')
+						.filter((c) => c !== '-')
+						.forEach((checked, h) => {
+							plan.inputs[i][h].checked = checked !== '0';
+						});
+				});
+				q(/#reles > c-rele/g).forEach((rele, i) => {
+					rele.sepnuti.value = +sepVyp[i][1];
+					rele.vypnuti.value = +sepVyp[i][0];
+					rele.nocniProud.checked = +nocniProud[i];
+					rele.render();
+				});
+				baterie.denniProud.value = +json['U08'];
+				baterie.nocniProud.value = +json['U09'];
+				baterie.render();
+			}
+		</script>
+		<style>
+			body {
+				font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			}
+			input[type='range'] {
+				width: 180px;
+			}
+			input[type='checkbox'] {
+				margin: 0;
+			}
+		</style>
+	</head>
+	<body id="body" onload="main();">
+		<center wide>
+			<h1>Rele</h1>
+			<row id="reles">
+				<row><c-plan id="plan"></c-plan></row>
+				<c-rele n="1"></c-rele>
+				<c-rele n="2"></c-rele>
+				<c-rele n="3"></c-rele>
+				<c-rele n="4"></c-rele>
+				<c-rele n="5"></c-rele>
+				<c-rele n="6"></c-rele>
+			</row>
+			<h1>Baterie</h1>
+			<c-baterie id="baterie"></c-baterie>
+		</center>
+	</body>
+</html>

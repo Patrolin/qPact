@@ -1,0 +1,26 @@
+{
+	"name": "qpact",
+	"version": "1.0.0",
+	"description": "~~temporary repo for qPact~~ Just use [Vue](https://github.com/vuejs/vue).",
+	"directories": {
+		"test": "tests"
+	},
+	"dependencies": {
+		"uglify-es": "^3.3.9",
+		"walk": "^2.3.14"
+	},
+	"devDependencies": {},
+	"scripts": {
+		"build": "node --experimental-modules build.mjs"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Patrolin/qPact.git"
+	},
+	"author": "Patrolin",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Patrolin/qPact/issues"
+	},
+	"homepage": "https://github.com/Patrolin/qPact#readme"
+}

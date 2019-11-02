@@ -1,0 +1,40 @@
+/* layout */
+tooltip {
+	display: none;
+}
+*:hover > tooltip {
+	display: inline-block;
+}
+
+* {
+	position: relative;
+}
+tooltip {
+	position: absolute;
+}
+
+tooltip {
+	left: 50%;
+	top: 50%;
+}
+tooltip[right] {
+	left: 100%;
+}
+tooltip[up] {
+	top: 0;
+}
+tooltip[left] {
+	left: 0;
+}
+tooltip[down] {
+	top: 100%;
+}
+
+/* style */
+tooltip {
+	font-weight: bold;
+	font-size: 0.35em;
+	padding: 0.2em 0.3em;
+	border-radius: 0.5em;
+	transform: translate(-50%, -50%);
+}

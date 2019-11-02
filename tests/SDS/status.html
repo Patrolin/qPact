@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="./blackhole.css" rel="stylesheet" />
+		<script src="./qPact.js"></script>
+		<script src="./com.js"></script>
+		<script>
+			var displayed = new Set();
+			var json = {};
+			var NAMES = {
+				System: {
+					T00: 'Typ',
+					T01: 'S/N',
+					T90: 'Rele - stav',
+				},
+				Baterie: {
+					U00: 'SOC (nabiti baterie)',
+					T18: 'Stav',
+					T19: 'Baterie',
+					U02: 'max vybiti (online)',
+					U03: 'max vybiti (UPS)',
+					U01: 'SOH (zdravi baterie)',
+				},
+				Panely: {
+					T11: 'String 1',
+					T12: 'String 2',
+				},
+				Elektromer: {
+					T02: 'Nocni proud',
+					T28: 'Odber / dodavka ze site',
+					T27: 'Celkova spotreba',
+				},
+				Menic: {
+					T20: 'Stav',
+					T21: 'Sit - L1',
+					T22: 'Sit - L2',
+					T23: 'Sit - L3',
+					T24: 'UPS - L1',
+					T25: 'UPS - L2',
+					T26: 'UPS - L3',
+				},
+				Parametry: {
+					T91: 'Rele - sepnout pri SOC',
+					T92: 'Rele - sepnout v nocnim proudu',
+					T93: 'Rele - casovy plan',
+					U08: 'limit vybiti baterie (den)',
+					U09: 'limit vybiti baterie (NOC)',
+				},
+				Nastavovani: {
+					S91: 'S91',
+					S92: 'S92',
+					S93: 'S93',
+					S94: 'S94',
+					S95: 'S95',
+					S96: 'S96',
+					S97: 'S97',
+					S98: 'S98',
+					S99: 'S99',
+				},
+				'Datum, cas': {
+					et: 'Darum, cas',
+					ut: 'Uptime',
+				},
+			};
+
+			function main() {
+				refresh();
+				setInterval(refresh, 1000);
+			}
+			async function refresh() {
+				json = await fetchJson();
+				body.Q(null);
+				displayed = new Set();
+				body.q(displayNames(NAMES));
+				var other = displayOther();
+				if (other.children.length) {
+					body.q('<h1>Ostatní</h1>');
+					body.q(other);
+				}
+			}
+			function displayNames(names) {
+				var fragment = document.createDocumentFragment();
+				Object.entries(names).forEach(([key, value]) => {
+					if (value instanceof Object) {
+						fragment.q(`<h1>${key}</h1>`);
+						fragment.q('<ul>').q(displayNames(value).children[0].getRootNode());
+					} else {
+						if (!displayed.has(key)) {
+							displayed.add(key);
+							fragment.q(display(value, json[key]));
+						}
+					}
+				});
+				return fragment;
+			}
+			function displayOther() {
+				var fragment = q('<ul>');
+				Object.keys(json)
+					.sort()
+					.forEach((key) => {
+						if (!displayed.has(key)) {
+							displayed.add(key);
+							fragment.q(display(key, json[key]));
+						}
+					});
+				return fragment;
+			}
+			function display(name, value) {
+				return q(`<li><b>${name}:</b> ${value}</li>`);
+			}
+		</script>
+		<style>
+			* {
+				box-sizing: border-box;
+			}
+			*:first-child {
+				margin-top: 0;
+			}
+			body {
+				padding: 0.5em;
+			}
+			h1 {
+				margin-bottom: 0.2em;
+			}
+			ul {
+				margin: 0;
+			}
+			hr {
+				border-width: 1px;
+				border-style: inset;
+				width: 100%;
+			}
+		</style>
+	</head>
+	<body id="body" onload="main();"></body>
+</html>

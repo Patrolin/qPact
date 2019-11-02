@@ -1,0 +1,65 @@
+/* layout */
+html,
+body {
+	min-width: 100%;
+	min-height: 100%;
+}
+* {
+	display: inline-block;
+	box-sizing: border-box;
+	border: 0;
+}
+body {
+	display: block;
+	margin: 0;
+}
+
+/* spec */
+area,
+head,
+script,
+style,
+datalist,
+link,
+param,
+title {
+	display: none;
+}
+/*
+map,
+output,
+q {
+	display: inline;
+}
+*/
+li {
+	display: list-item;
+}
+table {
+	display: inline-table;
+}
+tbody {
+	display: table-row-group;
+}
+caption {
+	display: table-caption;
+}
+col {
+	display: table-column;
+}
+colgroup {
+	display: table-column-group;
+}
+tfoot {
+	display: table-footer-group;
+}
+thead {
+	display: table-header-group;
+}
+tr {
+	display: table-row;
+}
+th,
+td {
+	display: table-cell;
+}

@@ -1,0 +1,13 @@
+wide,
+[wide] {
+	width: 100%;
+}
+tall,
+[tall] {
+	height: 100%;
+}
+full,
+[full] {
+	width: 100%;
+	height: 100%;
+}
