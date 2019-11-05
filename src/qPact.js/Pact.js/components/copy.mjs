@@ -5,7 +5,11 @@ class Copy {
 		this.contentEditable = true;
 		document.execCommand('selectAll');
 		this.contentEditable = prev;
-		document.execCommand('copy');
+		try {
+			document.execCommand('copy');
+		} catch (e) {
+			navigator.clipboard.writeText(this.innerText);
+		}
 	}
 }
 this.defineElement('q-copy', Copy);
