@@ -2,7 +2,7 @@ class Component extends HTMLElement {
 	constructor() {
 		super();
 		this.state = this.constructor.state;
-		for (let [k, d] of future_items(this.constructor.stateDescriptors)[1]) {
+		for (let [k, d] of module.items(this.constructor.stateDescriptors)[1]) {
 			Object.defineProperty(this, k, d);
 		}
 		for (let k of this.constructor.events) {
@@ -33,24 +33,25 @@ class Component extends HTMLElement {
 	alter() {
 		this.dispatchEvent(
 			new CustomEvent('alter', {
-				bubbles: true,
-				cancelable: true,
+				bubbles: TRUE,
+				cancelable: TRUE,
 			})
 		);
 	}
 }
 export function defineElement(name, Class) {
+	if (!/-/.test(name)) {
+		throw SyntaxError("Custom element name must contain '-'");
+	}
 	let ElementName = `${Class.name}Element`;
-	eval(
-		`this['${ElementName}'] = class ${ElementName} extends ${Component.name}{}`
-	);
+	eval(`this['${ElementName}'] = class ${ElementName} extends Component{}`);
 	let Element = this[ElementName];
 	let ClassEntries = descriptorEntries(Class, [
 		'constructor',
 		'name',
 		'prototype',
 	]);
-	for (const [key, descriptor] of ClassEntries) {
+	for (let [key, descriptor] of ClassEntries) {
 		Object.defineProperty(Element, key, descriptor);
 	}
 
@@ -60,7 +61,7 @@ export function defineElement(name, Class) {
 	let ClassPrototypeEntries = descriptorEntries(Class.prototype, [
 		'constructor',
 	]);
-	for (const [key, descriptor] of ClassPrototypeEntries) {
+	for (let [key, descriptor] of ClassPrototypeEntries) {
 		if (descriptor.get || descriptor.set) {
 			Element.stateDescriptors[key] = {
 				get() {
@@ -81,11 +82,11 @@ export function defineElement(name, Class) {
 }
 function descriptorEntries(obj, ignore) {
 	let descriptors = Object.getOwnPropertyDescriptors(obj);
-	for (const key of ignore) {
+	for (let key of ignore) {
 		delete descriptors[key];
 	}
 	let entries = Object.entries(descriptors);
-	for (const key of Reflect.ownKeys(descriptors)) {
+	for (let key of Reflect.ownKeys(descriptors)) {
 		if (typeof key === 'symbol') {
 			entries.push([key, Object.getOwnPropertyDescriptor(obj, key)]);
 		}

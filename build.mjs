@@ -34,28 +34,23 @@ function getFiles(path) {
 const TARGETS = {
 	js(path, name, minified) {
 		// undef string
-		const files = `this['${name}']=new function(){
-			const UNDEFINED = undefined, NULL = null, UNDEFINED_STRING = ''+UNDEFINED;
+		const files = `${name} = new function(){
+			let module = this, global = window, UNDEFINED = undefined, NULL = null, TRUE = true;
 			${getFiles(path)
 				.join(';')
 				.replace(/import .+? from .+?;/g, '') // @todo: resolve imports
-				.replace(
-					/export (const|var|let) (\w+) = /g,
-					`;(typeof $2 === UNDEFINED_STRING) ? $2 = future_$2 : console.warn('${name.replace(
-						"'",
-						"\\'"
-					)}: $1 $2 is already defined');
-					var future_$2 = this.$2 = `
-				)
-				.replace(
-					/export (.+?) ([\w$]+)/g,
-					`var future_$2 = $2 = this.$2 = $1 $2`
-				)}}`;
+				.replace(/export (const|var|let) (\w+) = /g, `module.$2 = `)
+				.replace(/export (.+?) ([\w$]+)/g, `module.$2 = $1 $2`)}
+			for(let key in this){
+				global[key] === UNDEFINED ? global[key] = this[key] : console.warn(\`${name}: \${key} is already defined\`);
+			}
+		}`;
 		const js = uglify.minify(files, {
+			keep_classnames: true,
 			compress: {
 				ecma: 6,
 				passes: 5,
-				sequences: true,
+				sequences: false,
 				unsafe: true,
 				unsafe_comps: true,
 				unsafe_math: true,

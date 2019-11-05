@@ -14,7 +14,7 @@ export function keys(input) {
 		for (let k in input) {
 			_items.push(k);
 		}
-		return [true, _items];
+		return [TRUE, _items];
 	}
 }
 export function values(input) {
@@ -31,7 +31,7 @@ export function values(input) {
 		for (let k in input) {
 			_items.push(input[k]);
 		}
-		return [true, _items];
+		return [TRUE, _items];
 	}
 }
 export function items(input) {
@@ -48,6 +48,6 @@ export function items(input) {
 		for (let k in input) {
 			_items.push([k, input[k]]);
 		}
-		return [true, _items];
+		return [TRUE, _items];
 	}
 }

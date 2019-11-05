@@ -2,7 +2,7 @@ class Copy {
 	onclick() {
 		this.focus();
 		let prev = this.contentEditable;
-		this.contentEditable = true;
+		this.contentEditable = TRUE;
 		document.execCommand('selectAll');
 		this.contentEditable = prev;
 		try {
@@ -12,4 +12,4 @@ class Copy {
 		}
 	}
 }
-this.defineElement('q-copy', Copy);
+module.defineElement('q-copy', Copy);

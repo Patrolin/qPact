@@ -1,9 +1,9 @@
 // @todo: dont use stupid isNaN()
-export function bool(input = true) {
+export function bool(input = TRUE) {
 	return !!input; // @todo: implement bool
 }
 export function int(input = 0) {
-	const value = +input;
+	let value = +input;
 	if (isNaN(value)) {
 		throw TypeError(`Cannot convert ${describe(input)} to int`);
 	} else if (value < MIN_SAFE_INTEGER || value > MAX_SAFE_INTEGER) {
@@ -18,7 +18,7 @@ export function int(input = 0) {
 }
 
 export function float(input = 0) {
-	const value = +input;
+	let value = +input;
 	if (isNaN(value)) {
 		throw TypeError(`Cannot convert ${describe(input)} to float`);
 	} else {
@@ -27,7 +27,7 @@ export function float(input = 0) {
 }
 
 export function str(input = '') {
-	if (this.isPrimitive(input)) {
+	if (module.isPrimitive(input)) {
 		return String(input);
 	} else {
 		let [assoc_mebbe, _entries] = entries(input);
@@ -43,7 +43,7 @@ function strf(input) {
 }
 
 export function list(input = []) {
-	if (this.isPrimitive(input) && typeof input !== 'string') {
+	if (module.isPrimitive(input) && typeof input !== 'string') {
 		throw TypeError(`Cannot convert ${describe(input)} to list`);
 	}
 	return Array.from(input);
@@ -72,14 +72,14 @@ export function map(input = new Map()) {
 }
 
 export function dict(input = {}) {
-	if (input && input.constructor === Object) {
+	if (input && input.letructor === Object) {
 		return input;
 	} else {
-		const value =
+		let value =
 			typeof input === 'string' ? (value = JSON.parse(input)) : input;
 		if (value[Symbol.iterator]) {
-			const obj = {};
-			for (const [k, v] of value) {
+			let obj = {};
+			for (let [k, v] of value) {
 				obj[k] = v;
 			}
 			return obj;
