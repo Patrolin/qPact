@@ -6,7 +6,7 @@ class Component extends HTMLElement {
 			Object.defineProperty(this, k, d);
 		}
 		for (let k of this.constructor.events) {
-			this.addEventListener(k.slice(2), this[k]);
+			this.addEventListener(k.slice(2), () => this[k].call(this));
 		}
 		if (this.initialize) {
 			try {
