@@ -33,34 +33,29 @@ function getFiles(path) {
 
 const TARGETS = {
 	js(path, name, minified) {
+		// undef string
 		const files = `this['${name}']=new function(){
-			let UNDEFINED = undefined, NULL = null;
+			const UNDEFINED = undefined, NULL = null, UNDEFINED_STRING = ''+UNDEFINED;
 			${getFiles(path)
 				.join(';')
 				.replace(/import .+? from .+?;/g, '') // @todo: resolve imports
 				.replace(
-					/export default (const|var|let) (\w+) = /g,
-					`(typeof $2 === ''+UNDEFINED) ? $2 = _$2 : console.warn('${name.replace(
+					/export (const|var|let) (\w+) = /g,
+					`;(typeof $2 === UNDEFINED_STRING) ? $2 = future_$2 : console.warn('${name.replace(
 						"'",
 						"\\'"
 					)}: $1 $2 is already defined');
-				var _$2 = this.$2 = $2`
+					var future_$2 = this.$2 = `
 				)
 				.replace(
-					/export default (.+?) ([\w$]+)/g,
-					`(typeof $2 === ''+UNDEFINED) ? $2 = _$2 : console.warn('${name.replace(
-						"'",
-						"\\'"
-					)}: $1 $2 is already defined');
-				var _$2 = this.$2 = $1 $2`
-				)
-				.replace(/export const (\w+) = /g, 'this.$1 = ')
-				.replace(/export (.+?) ([\w$]+)/g, 'this.$2 = $1')}}`;
+					/export (.+?) ([\w$]+)/g,
+					`var future_$2 = $2 = this.$2 = $1 $2`
+				)}}`;
 		const js = uglify.minify(files, {
 			compress: {
 				ecma: 6,
 				passes: 5,
-				sequences: false,
+				sequences: true,
 				unsafe: true,
 				unsafe_comps: true,
 				unsafe_math: true,

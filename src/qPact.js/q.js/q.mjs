@@ -1,5 +1,5 @@
 // @todo: support -n
-export default function q(input, n = UNDEFINED) {
+export function q(input, n = UNDEFINED) {
 	return input instanceof RegExp
 		? q_Node_RegExp(document, input, n)
 		: q_create(input, n);

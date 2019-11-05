@@ -1,9 +1,12 @@
 class Component extends HTMLElement {
 	constructor() {
 		super();
-		this.state = {};
-		for (const key of this.constructor.events) {
-			this.addEventListener(key.slice(2), this[key]);
+		this.state = this.constructor.state;
+		for (let [k, d] of future_items(this.constructor.stateDescriptors)[1]) {
+			Object.defineProperty(this, k, d);
+		}
+		for (let k of this.constructor.events) {
+			this.addEventListener(k.slice(2), this[k]);
 		}
 		if (this.initialize) {
 			try {
@@ -36,7 +39,7 @@ class Component extends HTMLElement {
 		);
 	}
 }
-export default function defineElement(name, Class) {
+export function defineElement(name, Class) {
 	let ElementName = `${Class.name}Element`;
 	eval(
 		`this['${ElementName}'] = class ${ElementName} extends ${Component.name}{}`
@@ -52,20 +55,21 @@ export default function defineElement(name, Class) {
 	}
 
 	Element.events = [];
+	Element.state = Element.state || {};
+	Element.stateDescriptors = {};
 	let ClassPrototypeEntries = descriptorEntries(Class.prototype, [
 		'constructor',
 	]);
 	for (const [key, descriptor] of ClassPrototypeEntries) {
 		if (descriptor.get || descriptor.set) {
-			Object.defineProperty(Element.prototype, key, {
+			Element.stateDescriptors[key] = {
 				get() {
-					console.log(this);
 					return descriptor.get.call(this.state);
 				},
-				set(value) {
-					return descriptor.set.call(this.state, value);
+				set(v) {
+					return descriptor.set.call(this.state, v);
 				},
-			});
+			};
 		} else {
 			if (typeof key !== 'symbol' && key.startsWith('on')) {
 				Element.events.push(key);

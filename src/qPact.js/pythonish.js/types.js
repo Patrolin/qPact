@@ -1,4 +1,7 @@
 // @todo: dont use stupid isNaN()
+export function bool(input = true) {
+	return !!input; // @todo: implement bool
+}
 export function int(input = 0) {
 	const value = +input;
 	if (isNaN(value)) {
@@ -24,7 +27,7 @@ export function float(input = 0) {
 }
 
 export function str(input = '') {
-	if (isPrimitive(input)) {
+	if (this.isPrimitive(input)) {
 		return String(input);
 	} else {
 		let [assoc_mebbe, _entries] = entries(input);
@@ -40,7 +43,7 @@ function strf(input) {
 }
 
 export function list(input = []) {
-	if (isPrimitive(input) && typeof input !== 'string') {
+	if (this.isPrimitive(input) && typeof input !== 'string') {
 		throw TypeError(`Cannot convert ${describe(input)} to list`);
 	}
 	return Array.from(input);
