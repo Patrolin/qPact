@@ -1,8 +1,8 @@
 // @todo: dont use stupid isNaN()
-export function bool(input = TRUE) {
+module.bool = function(input = TRUE) {
 	return !!input; // @todo: implement bool
-}
-export function int(input = 0) {
+};
+module.int = function(input = 0) {
 	let value = +input;
 	if (isNaN(value)) {
 		throw TypeError(`Cannot convert ${describe(input)} to int`);
@@ -15,18 +15,18 @@ export function int(input = 0) {
 	} else {
 		return value;
 	}
-}
+};
 
-export function float(input = 0) {
+module.float = function(input = 0) {
 	let value = +input;
 	if (isNaN(value)) {
 		throw TypeError(`Cannot convert ${describe(input)} to float`);
 	} else {
 		return +input;
 	}
-}
+};
 
-export function str(input = '') {
+module.str = function(input = '') {
 	if (module.isPrimitive(input)) {
 		return String(input);
 	} else {
@@ -37,27 +37,27 @@ export function str(input = '') {
 					.join(', ')}}`
 			: `[${_entries.map(([k, v]) => strf(v)).join(', ')}]`;
 	}
-}
+};
 function strf(input) {
 	return typeof input === 'string' ? `"${input}"` : `${input}`;
 }
 
-export function list(input = []) {
+module.list = function(input = []) {
 	if (module.isPrimitive(input) && typeof input !== 'string') {
 		throw TypeError(`Cannot convert ${describe(input)} to list`);
 	}
 	return Array.from(input);
-}
+};
 
-export function set(input = new Set()) {
+module.set = function(input = new Set()) {
 	if (input[Symbol.iterator]) {
 		return new Set(input);
 	} else {
 		throw TypeError(`Cannot convert ${describe(input)} to set`);
 	}
-}
+};
 
-export function map(input = new Map()) {
+module.map = function(input = new Map()) {
 	try {
 		return new Map(
 			input instanceof Object
@@ -69,9 +69,9 @@ export function map(input = new Map()) {
 	} catch (e) {
 		throw TypeError(`Cannot convert ${describe(input)} to map`);
 	}
-}
+};
 
-export function dict(input = {}) {
+module.dict = function(input = {}) {
 	if (input && input.letructor === Object) {
 		return input;
 	} else {
@@ -91,4 +91,4 @@ export function dict(input = {}) {
 			}
 		}
 	}
-}
+};

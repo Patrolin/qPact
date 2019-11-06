@@ -1,9 +1,9 @@
 // @todo: support -n
-export function q(input, n = UNDEFINED) {
+module.q = function(input, n = UNDEFINED) {
 	return input instanceof RegExp
 		? q_Node_RegExp(document, input, n)
 		: q_create(input, n);
-}
+};
 function q_create(input, n) {
 	if (input instanceof Node) {
 		return q_multiply(input, n);

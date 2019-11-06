@@ -33,16 +33,15 @@ function getFiles(path) {
 
 const TARGETS = {
 	js(path, name, minified) {
-		// undef string
-		const files = `${name} = new function(){
+		let files = `${name} = new function(){
 			let module = this, global = window, UNDEFINED = undefined, NULL = null, TRUE = true;
-			${getFiles(path)
-				.join(';')
-				.replace(/import .+? from .+?;/g, '') // @todo: resolve imports
-				.replace(/export (const|var|let) (\w+) = /g, `module.$2 = `)
-				.replace(/export (.+?) ([\w$]+)/g, `module.$2 = $1 $2`)}
-			for(let key in this){
-				global[key] === UNDEFINED ? global[key] = this[key] : console.warn(\`${name}: \${key} is already defined\`);
+			${
+				getFiles(path)
+					.join(';')
+					.replace(/import .+? from .+?;/g, '') // @todo: resolve imports
+			}
+			for(let key in module){
+				global[key] === UNDEFINED ? global[key] = module[key] : console.warn(\`${name}: \${key} is already defined\`);
 			}
 		}`;
 		const js = uglify.minify(files, {
@@ -70,9 +69,12 @@ const TARGETS = {
 				semicolons: !minified,
 			},
 		});
-		return !js.error
-			? js.code.trimRight()
-			: `${js.error}\n\n---------------------\n\n${files}`;
+		if (!js.error) {
+			return js.code.trimRight();
+		} else {
+			let { message, line, col } = js.error;
+			return `${line}:${col} ${message}\n\n${files}`;
+		}
 	},
 	css(path, name, minified) {
 		let files = getFiles(path)

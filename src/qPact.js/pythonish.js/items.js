@@ -1,4 +1,6 @@
-export function keys(input) {
+delete keys;
+delete values;
+module.keys = function(input) {
 	let iterator = input[Symbol.iterator];
 	if (iterator) {
 		let assoc_mebbe = iterator.name === 'entries';
@@ -16,8 +18,8 @@ export function keys(input) {
 		}
 		return [TRUE, _items];
 	}
-}
-export function values(input) {
+};
+module.values = function(input) {
 	let iterator = input[Symbol.iterator];
 	if (iterator) {
 		let assoc_mebbe = iterator.name === 'entries';
@@ -33,8 +35,8 @@ export function values(input) {
 		}
 		return [TRUE, _items];
 	}
-}
-export function items(input) {
+};
+module.items = function(input) {
 	let iterator = input[Symbol.iterator];
 	if (iterator) {
 		let assoc_mebbe = iterator.name === 'entries';
@@ -50,4 +52,4 @@ export function items(input) {
 		}
 		return [TRUE, _items];
 	}
-}
+};

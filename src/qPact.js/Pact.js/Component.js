@@ -39,13 +39,13 @@ class Component extends HTMLElement {
 		);
 	}
 }
-export function defineElement(name, Class) {
+module.defineElement = function(name, Class) {
 	if (!/-/.test(name)) {
 		throw SyntaxError("Custom element name must contain '-'");
 	}
 	let ElementName = `${Class.name}Element`;
-	eval(`this['${ElementName}'] = class ${ElementName} extends Component{}`);
-	let Element = this[ElementName];
+	eval(`this['${ElementName}'] = class ${ElementName} extends Component{}`); // js doesn't allow dynamic class names and uglify-es doesn't mangle evals properly...
+	let Element = module[ElementName];
 	let ClassEntries = descriptorEntries(Class, [
 		'constructor',
 		'name',
@@ -79,7 +79,7 @@ export function defineElement(name, Class) {
 		}
 	}
 	return customElements.define(name, Element);
-}
+};
 function descriptorEntries(obj, ignore) {
 	let descriptors = Object.getOwnPropertyDescriptors(obj);
 	for (let key of ignore) {

@@ -12,4 +12,7 @@ class Copy {
 		}
 	}
 }
-module.defineElement('q-copy', Copy);
+try {
+	module.defineElement('q-copy', Copy);
+} finally {
+}
