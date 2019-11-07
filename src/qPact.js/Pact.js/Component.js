@@ -1,22 +1,24 @@
 class Component extends HTMLElement {
 	constructor() {
 		super();
-		this.state = this.constructor.state;
-		for (let [k, d] of module.items(this.constructor.stateDescriptors)[1]) {
-			Object.defineProperty(this, k, d);
-		}
+		this.state = { ...this.constructor.state };
+		// @todo: use html observer
+		// @todo: css magic
 		for (let k of this.constructor.events) {
 			this.addEventListener(k.slice(2), () => this[k].call(this));
 		}
-		if (this.initialize) {
+		if (this.init) {
 			try {
-				this.initialize();
+				this.init();
 			} catch (e) {
 				console.error(this, e);
 			}
 		}
 	}
 	async connectedCallback() {
+		for (let k of module.keys(this.constructor.state)[1]) {
+			this[k] = this.getAttribute(k);
+		}
 		if (this.load) {
 			try {
 				await this.load();
@@ -56,27 +58,19 @@ module.defineElement = function(name, Class) {
 	}
 
 	Element.events = [];
-	Element.state = Element.state || {};
-	Element.stateDescriptors = {};
+	Element.state = (Class.state && Class.state()) || {};
 	let ClassPrototypeEntries = descriptorEntries(Class.prototype, [
 		'constructor',
 	]);
 	for (let [key, descriptor] of ClassPrototypeEntries) {
 		if (descriptor.get || descriptor.set) {
-			Element.stateDescriptors[key] = {
-				get() {
-					return descriptor.get.call(this.state);
-				},
-				set(v) {
-					return descriptor.set.call(this.state, v);
-				},
-			};
-		} else {
-			if (typeof key !== 'symbol' && key.startsWith('on')) {
-				Element.events.push(key);
-			}
-			Object.defineProperty(Element.prototype, key, descriptor);
+			// @todo: use setAttribute()
+			Element.state[key] = Element.state[key];
 		}
+		if (typeof key !== 'symbol' && key.startsWith('on')) {
+			Element.events.push(key);
+		}
+		Object.defineProperty(Element.prototype, key, descriptor);
 	}
 	return customElements.define(name, Element);
 };
