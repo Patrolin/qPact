@@ -7,7 +7,6 @@ class Katex extends module.Component {
 					`<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">`
 				);
 				let katex = document.createElement('script');
-				//katex.src ='https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js';
 				Object.assign(katex, {
 					src:
 						'https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js',
@@ -19,17 +18,6 @@ class Katex extends module.Component {
 				katex.onerror = reject;
 				head.q(katex);
 			});
-			/*module
-				.q(/head/)
-				.q(
-					`<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">`
-				);
-			await fetch(
-				`https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js`
-			).then(async (r) => {
-				eval(await r.text());
-				console.log('loaded!');
-			});*/
 		}
 	}
 	set value(v) {
