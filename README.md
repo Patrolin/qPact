@@ -1,6 +1,6 @@
 # qPact
 
-~~temporary repo for qPact~~ Just use [Vue](https://github.com/vuejs/vue).
+technically works!
 
 # q
 
