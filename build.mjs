@@ -35,15 +35,13 @@ const TARGETS = {
 	js(path, name, minified) {
 		let files = `${name} = new function(){
 			let module = this, global = window, UNDEFINED = undefined, NULL = null, TRUE = true;
-			${
-				getFiles(path)
-					.join(';')
-					.replace(/@import '(.+?)';/g, function(match, name) {
-						return fs.readFileSync(name, 'utf-8');
-					}) // @todo: resolve imports
-			}
+			${getFiles(path)
+				.join(';')
+				.replace(/@import '(.+?)';/g, function(match, name) {
+					return fs.readFileSync(name, 'utf-8');
+				})}
 			for(let key in module){
-				global[key] === UNDEFINED ? global[key] = module[key] : console.warn(\`${name}: \${key} is already defined\`);
+				key in global ? console.warn(\`${name}: \${key} is already defined\`) : global[key] = module[key];
 			}
 		}`;
 		const js = uglify.minify(files, {
