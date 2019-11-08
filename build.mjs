@@ -38,7 +38,9 @@ const TARGETS = {
 			${
 				getFiles(path)
 					.join(';')
-					.replace(/import .+? from .+?;/g, '') // @todo: resolve imports
+					.replace(/@import '(.+?)';/g, function(match, name) {
+						return fs.readFileSync(name, 'utf-8');
+					}) // @todo: resolve imports
 			}
 			for(let key in module){
 				global[key] === UNDEFINED ? global[key] = module[key] : console.warn(\`${name}: \${key} is already defined\`);

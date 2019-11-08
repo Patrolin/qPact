@@ -1,4 +1,4 @@
-class Copy {
+class Copy extends module.Component {
 	onclick() {
 		this.focus();
 		let prev = this.contentEditable;
@@ -12,7 +12,4 @@ class Copy {
 		}
 	}
 }
-try {
-	module.defineElement('q-copy', Copy);
-} finally {
-}
+module.defineElement('q-copy', Copy);

@@ -1,4 +1,4 @@
-class Clock {
+class Clock extends module.Component {
 	load() {
 		this.interval = setInterval(() => {
 			this.render();
@@ -12,7 +12,4 @@ class Clock {
 		this.Q(new Date());
 	}
 }
-try {
-	module.defineElement('q-clock', Clock);
-} finally {
-}
+module.defineElement('q-clock', Clock);

@@ -13,7 +13,10 @@ function q_create(input, n) {
 		let template = document.createElement('template');
 		template.innerHTML = input;
 		let children = template.content.childNodes;
-		return q_multiply(children.length === 1 ? children[0] : children, n);
+		return q_multiply(
+			children.length === 1 ? children[0] : [...children],
+			n
+		);
 	}
 }
 function q_multiply(input, n) {
@@ -34,9 +37,19 @@ Node.prototype.Q = function Q_Node(input, n = UNDEFINED) {
 	return input === NULL ? [] : this.q(input, n);
 };
 Node.prototype.q = function q_Node(input, n = UNDEFINED) {
-	return input instanceof RegExp
-		? q_Node_RegExp(this, input, n)
-		: q_Node_append(this, input, n);
+	if (input instanceof RegExp) {
+		return q_Node_RegExp(this, input, n);
+	} else {
+		let x = q_create(input, n);
+		if (x instanceof Node) {
+			return this.appendChild(x);
+		} else {
+			x.flatMap((e) => {
+				this.appendChild(e);
+			});
+			return x;
+		}
+	}
 };
 function q_Node_RegExp(self, regexp, n) {
 	if (regexp.global) {
@@ -44,17 +57,6 @@ function q_Node_RegExp(self, regexp, n) {
 	} else {
 		let search = self.querySelector(regexp.source);
 		return search ? q_multiply(search, n) : NULL;
-	}
-}
-function q_Node_append(self, input, n) {
-	let x = q_create(input, n);
-	if (x instanceof Node) {
-		return self.appendChild(x);
-	} else {
-		x.flatMap((e) => {
-			self.appendChild(e);
-		});
-		return x;
 	}
 }
 
