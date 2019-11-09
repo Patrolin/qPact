@@ -22,7 +22,8 @@
 					};
 				}
 				load(){
-					this.tiles = this.q('<table>').q('<tr>', this.cols).q('<c-tile>', this.rows).flat(1/0);
+					this.setAttribute('table', '');
+					this.tiles = this.q('<tr>', this.rows).q('<c-tile>', this.cols).flat(1/0);
 					for(let tile of this.tiles){
 						tile.mine = Math.random() < 0.2;
 					}
@@ -83,7 +84,8 @@
 	</head>
 	<body>
 		<center full>
-			<c-minesweeper>
+			<h1>Minesweeper</h1>
+			<c-minesweeper cols="20">
 		</center>
 	</body>
 </html>

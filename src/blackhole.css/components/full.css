@@ -1,13 +1,13 @@
+[full],
+[wide],
 wide,
-[wide] {
+full {
 	width: 100%;
 }
+
+[full],
+[tall],
 tall,
-[tall] {
-	height: 100%;
-}
-full,
-[full] {
-	width: 100%;
+full {
 	height: 100%;
 }
