@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Minesweeper</title>
+		<script src="../../dist/qPact.js"></script>
+		<script>
+			class Minesweeper extends Component{
+				set cols(v){
+					this.state.cols = int(v);
+				}
+				set rows(v){
+					this.state.rows = int(v);
+				}
+				set victory(v){
+					if(this.state.victory = bool(v)){
+						this.style.background = '#007700';
+					}else{
+						this.style.background = '#770000';
+					};
+				}
+				load(){
+					this.tiles = this.q('<table>').q('<tr>', this.cols).q('<c-tile>', this.rows).flat(1/0);
+					for(let tile of this.tiles){
+						tile.mine = Math.random() < 0.2;
+					}
+				}
+				onalter(e){
+					if(this.victory == undefined){
+						let tile = e.srcElement;
+						if(tile.mine){
+							this.victory = false;
+						}
+						else{
+							let i = this.tiles.indexOf(tile);
+							let [r, c] = [int(i/this.cols), i%this.cols];
+							let mines = 0;
+							for(let [dr, dc] of [
+								[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]
+							]){
+								let neighbor = this.tiles[this.cols*(r+dr) + c+dc];
+								if(neighbor && neighbor.mine) mines++;
+							}
+							tile.value = mines;
+						}
+						if(this.tiles.every((tile) => tile.clicked || tile.mine)){
+							this.victory = true;
+						}
+					}
+				}
+			}
+			Minesweeper.state = {
+				cols: 9, rows: 9
+			}
+			defineElement('c-minesweeper', Minesweeper);
+			class Tile extends Component{
+				init(){
+					Tile.style = {
+						width: '1.2em',
+						height: '1.2em',
+						border: '1px solid black',
+					};
+				}
+				set clicked(v){
+					this.state.clicked = bool(v);
+				}
+				set mine(v){
+					this.state.mine = bool(v);
+				}
+				set value(v){
+					this.Q(`<center full>${this.state.value = int(v)}`);
+				}
+				onclick(){
+					this.clicked = true;
+					this.alter();
+				}
+			}
+			Tile.state = {clicked: false};
+			defineElement('c-tile', Tile);
+		</script>
+	</head>
+	<body>
+		<center full>
+			<c-minesweeper>
+		</center>
+	</body>
+</html>

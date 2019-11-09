@@ -1,27 +1,42 @@
-(module.q(/#qPact/) || module.q(/head/).q('<div id="qPact">')).q(
-	`<style>@import 'dist/blackhole.min.css';`
-);
+module.styles = (
+	module.q(/#qPact/) || module.q(/head/).q('<div id="qPact">')
+).q(`<style>@import 'dist/blackhole.min.css';`);
 module.Component = class Component extends HTMLElement {
+	static set style(styles) {
+		let elementName = this.elementName;
+		(
+			module.styles.q(new RegExp(`#${elementName}`)) ||
+			module.styles.q(`<style id="${elementName}">`)
+		).innerHTML = `${elementName}{${module
+			.items(styles)[1]
+			.map(([k, v]) => `${k}:${v}`)
+			.join(';')}`;
+	}
 	constructor() {
 		super();
 		let Class = this.constructor;
+		if (Class.first) {
+			this.init();
+			Class.first = false;
+		}
 		this.state = { ...Class.state };
 		// @todo: use html observer
-		// @todo: css magic
 		for (let k of Class.events) {
-			this.addEventListener(k.slice(2), () => this[k].call(this));
+			this.addEventListener(k.slice(2), (e) => this[k].call(this, e));
 		}
 	}
 	async connectedCallback() {
 		try {
 			let Class = this.constructor;
-			if (Class.first) {
-				await this.first();
-				Class.first = false;
-			}
 			for (let [k, v] of module.items(Class.state)[1]) {
-				this[k] = this.getAttribute(k) || v;
+				if (this.hasAttribute(k)) {
+					try {
+						this[k] = this.getAttribute(k);
+					} finally {
+					}
+				}
 			}
+			// @todo: call setAttribute()
 			await this.load();
 		} catch (e) {
 			console.error(this, e);
@@ -34,7 +49,7 @@ module.Component = class Component extends HTMLElement {
 			console.error(this, e);
 		}
 	}
-	first() {}
+	init() {}
 	load() {}
 	unload() {}
 	alter() {
@@ -45,19 +60,13 @@ module.Component = class Component extends HTMLElement {
 			})
 		);
 	}
-	static events() {
-		return [];
-	}
-	static state() {
-		return {};
-	}
 };
 module.defineElement = function(name, Class) {
 	if (!/-/.test(name)) {
 		throw SyntaxError("Custom element name must contain '-'");
 	}
-	let ClassEvents = new Set(Class.events());
-	let ClassState = Class.state();
+	let ClassState = { ...Class.state };
+	let ClassEvents = new Set();
 	let Prototype = Class.prototype;
 	for (let key of Reflect.ownKeys(Prototype)) {
 		let descriptor = Object.getOwnPropertyDescriptor(Prototype, key);
@@ -74,8 +83,9 @@ module.defineElement = function(name, Class) {
 			ClassEvents.add(key);
 		}
 	}
-	Class.events = ClassEvents;
+	Class.first = TRUE;
 	Class.state = ClassState;
-	Class.first = true;
+	Class.events = ClassEvents;
+	Class.elementName = name;
 	return customElements.define(name, Class);
 };

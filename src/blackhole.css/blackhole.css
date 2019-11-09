@@ -1,4 +1,4 @@
-/* layout */
+/* magic */
 html,
 body {
 	min-width: 100%;
@@ -8,6 +8,7 @@ body {
 	display: inline-block;
 	box-sizing: border-box;
 	border: 0;
+	padding: 0;
 }
 body {
 	display: block;
@@ -25,18 +26,14 @@ param,
 title {
 	display: none;
 }
-/*
-map,
-output,
-q {
-	display: inline;
-}
-*/
 li {
 	display: list-item;
 }
+/* @todo: table magic */
 table {
 	display: inline-table;
+	border-collapse: collapse;
+	border-spacing: 0;
 }
 tbody {
 	display: table-row-group;
@@ -56,10 +53,9 @@ tfoot {
 thead {
 	display: table-header-group;
 }
-tr {
+table > * {
 	display: table-row;
 }
-th,
-td {
+table > * > * {
 	display: table-cell;
 }

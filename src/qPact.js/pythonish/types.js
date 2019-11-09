@@ -3,8 +3,8 @@ module.bool = function(input = TRUE) {
 	return !!input; // @todo: implement bool
 };
 module.int = function(input = 0) {
-	let value = +input;
-	if (isNaN(value)) {
+	let value = Math.floor(+input);
+	if (Object.is(value, NaN)) {
 		throw TypeError(`Cannot convert ${describe(input)} to int`);
 	} else if (value < MIN_SAFE_INTEGER || value > MAX_SAFE_INTEGER) {
 		throw RangeError(

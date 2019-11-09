@@ -1,6 +1,7 @@
 class Katex extends module.Component {
-	async first() {
-		if (global.katex === undefined) {
+	// @todo: no race conditions
+	init() {
+		if (global.katex === UNDEFINED) {
 			return new Promise(function(resolve, reject) {
 				let head = module.q(/head/);
 				head.q(

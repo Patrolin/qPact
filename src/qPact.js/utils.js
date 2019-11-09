@@ -11,3 +11,12 @@ module.describe = function(input) {
 module.isPrimitive = function(input) {
 	return input !== Object(input);
 };
+module.isBoolean = function(input) {
+	return typeof input == 'boolean';
+};
+module.isString = function(input) {
+	return typeof input == 'string';
+};
+module.isNumber = function(input) {
+	return typeof input == 'number';
+};

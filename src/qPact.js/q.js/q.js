@@ -1,4 +1,3 @@
-// @todo: support -n
 module.q = function(input, n = UNDEFINED) {
 	return input instanceof RegExp
 		? q_Node_RegExp(document, input, n)
