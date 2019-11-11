@@ -8,7 +8,7 @@ module.Component = class Component extends HTMLElement {
 			module.styles.q(new RegExp(`#${elementName}`)) ||
 			module.styles.q(`<style id="${elementName}">`)
 		).innerHTML = `${elementName}{${module
-			.items(styles)[1]
+			.items(styles)
 			.map(([k, v]) => `${k}:${v}`)
 			.join(';')}`;
 	}
@@ -28,7 +28,7 @@ module.Component = class Component extends HTMLElement {
 	async connectedCallback() {
 		try {
 			let Class = this.constructor;
-			for (let [k, v] of module.items(Class.state)[1]) {
+			for (let [k, v] of module.items(Class.state)) {
 				if (this.hasAttribute(k)) {
 					try {
 						this[k] = this.getAttribute(k);

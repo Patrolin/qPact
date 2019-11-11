@@ -6,11 +6,11 @@ module.int = function(input = 0) {
 	let value = Math.floor(+input);
 	if (Object.is(value, NaN)) {
 		throw TypeError(`Cannot convert ${describe(input)} to int`);
-	} else if (value < MIN_SAFE_INTEGER || value > MAX_SAFE_INTEGER) {
+	} else if (value < module.MIN_INT || value > module.MAX_INT) {
 		throw RangeError(
-			`${describe(
-				input
-			)} must be in range <${MIN_SAFE_INTEGER}, ${MAX_SAFE_INTEGER}>`
+			`${describe(input)} must be in range <${module.MIN_INT}, ${
+				module.MAX_INT
+			}>`
 		);
 	} else {
 		return value;
@@ -30,7 +30,7 @@ module.str = function(input = '') {
 	if (module.isPrimitive(input)) {
 		return String(input);
 	} else {
-		let [assoc_mebbe, _entries] = entries(input);
+		let [assoc_mebbe, _entries] = assoc_items(input);
 		return assoc_mebbe
 			? `{${_entries
 					.map(([k, v]) => `${strf(k)}: ${strf(v)}`)

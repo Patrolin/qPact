@@ -1,13 +1,12 @@
 {
 	"name": "qpact",
 	"version": "1.0.0",
-	"description": "~~temporary repo for qPact~~ Just use [Vue](https://github.com/vuejs/vue).",
+	"description": "a collection of things",
 	"directories": {
 		"test": "tests"
 	},
 	"dependencies": {
-		"uglify-es": "^3.3.9",
-		"walk": "^2.3.14"
+		"uglify-es": "^3.3.9"
 	},
 	"devDependencies": {},
 	"scripts": {
@@ -18,7 +17,7 @@
 		"url": "git+https://github.com/Patrolin/qPact.git"
 	},
 	"author": "Patrolin",
-	"license": "ISC",
+	"license": "unlicense",
 	"bugs": {
 		"url": "https://github.com/Patrolin/qPact/issues"
 	},

@@ -1,6 +1,4 @@
-delete keys;
-delete values;
-module.keys = function(input) {
+module.assoc_keys = function(input) {
 	let iterator = input[Symbol.iterator];
 	if (iterator) {
 		let assoc_mebbe = iterator.name === 'entries';
@@ -19,7 +17,7 @@ module.keys = function(input) {
 		return [TRUE, _items];
 	}
 };
-module.values = function(input) {
+module.assoc_values = function(input) {
 	let iterator = input[Symbol.iterator];
 	if (iterator) {
 		let assoc_mebbe = iterator.name === 'entries';
@@ -36,7 +34,7 @@ module.values = function(input) {
 		return [TRUE, _items];
 	}
 };
-module.items = function(input) {
+module.assoc_items = function(input) {
 	let iterator = input[Symbol.iterator];
 	if (iterator) {
 		let assoc_mebbe = iterator.name === 'entries';
@@ -52,4 +50,13 @@ module.items = function(input) {
 		}
 		return [TRUE, _items];
 	}
+};
+module.keys = function(input) {
+	return module.assoc_keys(input)[1];
+};
+module.values = function(input) {
+	return module.assoc_values(input)[1];
+};
+module.items = function(input) {
+	return module.assoc_items(input)[1];
 };

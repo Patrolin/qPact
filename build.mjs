@@ -1,34 +1,51 @@
-import walk from 'walk';
 import fs from 'fs';
 import uglify from 'uglify-es';
 
-function rpartition(str, sep) {
-	const i = str.lastIndexOf(sep);
-	return i >= 0 ? [str.slice(0, i), str[i], str.slice(i + 1)] : ['', '', str];
-}
-function matchAll(pattern, string) {
-	const matches = [];
-	let match;
-	while ((match = pattern.exec(string)) !== null) {
-		matches.push(match);
+function dirs(path) {
+	let result = [];
+	for (let dirent of fs.readdirSync(path, { withFileTypes: true })) {
+		if (dirent.isDirectory()) {
+			let name = `${path}/${dirent.name}`;
+			result.push(name);
+			result = result.concat(...dirs(name));
+		}
 	}
-	return matches;
+	return result;
+}
+function files(path) {
+	let result = [];
+	let dirs = [path];
+	let dir;
+	while ((dir = dirs.shift())) {
+		for (let dirent of fs.readdirSync(dir, { withFileTypes: true })) {
+			let name = `${dir}/${dirent.name}`;
+			if (dirent.isDirectory()) {
+				dirs.push(name);
+			} else {
+				result.push(name);
+			}
+		}
+	}
+	return result;
 }
 function getFiles(path) {
-	const files = [];
-	walk.walkSync(path, {
-		listeners: {
-			file: function(root, state, next) {
-				files.push(
-					fs.readFileSync(`${root}\\${state.name}`, {
-						encoding: 'UTF-8',
-					})
-				);
-				next();
-			},
-		},
-	});
-	return files;
+	return files(path).map((p) =>
+		fs.readFileSync(p, {
+			encoding: 'UTF-8',
+		})
+	);
+}
+function rpartition(str, sep) {
+	let i = str.lastIndexOf(sep);
+	return i >= 0 ? [str.slice(0, i), str.slice(i + sep.length)] : [str, ''];
+}
+function matchAll(pattern, string) {
+	let result = [];
+	let match;
+	while ((match = pattern.exec(string)) !== null) {
+		result.push(match);
+	}
+	return result;
 }
 
 const TARGETS = {
@@ -43,7 +60,7 @@ const TARGETS = {
 			for(let key in module){
 				key in global ? console.warn(\`${name}: \${key} is already defined\`) : global[key] = module[key];
 			}
-		}`;
+		}`; // if not isNative()
 		const js = uglify.minify(files, {
 			keep_classnames: true,
 			compress: {
@@ -70,7 +87,11 @@ const TARGETS = {
 			},
 		});
 		if (!js.error) {
-			return js.code.trimRight();
+			return js.code
+				.replace(/let .+?;/g, function(match) {
+					return match.replace(/(.+? ?= ?)\1/g, '$1'); // uglify-es is complete and utter garbage
+				})
+				.trimRight();
 		} else {
 			let { message, line, col } = js.error;
 			return `${line}:${col} ${message}\n\n${files}`;
@@ -120,23 +141,16 @@ const TARGETS = {
 	},
 };
 
-walk.walkSync('src', {
-	listeners: {
-		directory: function(root, state, next) {
-			const dir = state.name;
-			const [name, _, ext] = rpartition(dir, '.');
-			if (name) {
-				const src = `${root}\\${dir}`;
-				fs.writeFileSync(
-					`dist\\${name}.${ext}`,
-					TARGETS[ext](src, name, false)
-				);
-				fs.writeFileSync(
-					`dist\\${name}.min.${ext}`,
-					TARGETS[ext](src, name, true)
-				);
-			}
-			next();
-		},
-	},
-});
+let start = new Date();
+for (let path of dirs('src')) {
+	let [_, dir] = rpartition(path, '/');
+	let [name, ext] = rpartition(dir, '.');
+	if (ext) {
+		fs.writeFileSync(`dist/${dir}`, TARGETS[ext](path, dir, false));
+		let dst = `${name}.min.${ext}`;
+		fs.writeFileSync(`dist/${dst}`, TARGETS[ext](path, dst, true));
+	}
+}
+for (let path of files('dist')) {
+	if (fs.statSync(path).atime < start) fs.unlinkSync(path);
+}
