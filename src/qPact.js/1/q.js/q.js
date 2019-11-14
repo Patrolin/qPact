@@ -7,7 +7,10 @@ function q_create(input, n) {
 	if (input instanceof Node) {
 		return q_multiply(input, n);
 	} else if (input instanceof Array) {
-		return q_multiply(input.map((x) => q(x)), n);
+		return q_multiply(
+			input.map((x) => q(x)),
+			n
+		);
 	} else {
 		let template = document.createElement('template');
 		template.innerHTML = input;
@@ -29,22 +32,24 @@ function q_clone(input) {
 
 // @todo: fix Object.define() on prototypes
 Node.prototype.Q = function Q_Node(input, n = UNDEFINED) {
+	let self = this;
 	let first;
-	while ((first = this.firstChild) !== NULL) {
-		this.removeChild(first);
+	while ((first = self.firstChild) !== NULL) {
+		self.removeChild(first);
 	}
-	return input === NULL ? [] : this.q(input, n);
+	return input === NULL ? [] : self.q(input, n);
 };
 Node.prototype.q = function q_Node(input, n = UNDEFINED) {
+	let self = this;
 	if (input instanceof RegExp) {
-		return q_Node_RegExp(this, input, n);
+		return q_Node_RegExp(self, input, n);
 	} else {
 		let x = q_create(input, n);
 		if (x instanceof Node) {
-			return this.appendChild(x);
+			return self.appendChild(x);
 		} else {
 			x.flatMap((e) => {
-				this.appendChild(e);
+				self.appendChild(e);
 			});
 			return x;
 		}
@@ -63,14 +68,15 @@ Array.prototype.Q = function Q_Array(input, n = UNDEFINED) {
 	return this.map((e) => e.Q(input, n));
 };
 Array.prototype.q = function q_Array(input, n = UNDEFINED) {
+	let self = this;
 	return input instanceof RegExp
 		? q_multiply(
 				input.global
-					? q_Array_filter(this, input.source)
-					: q_Array_find(this, input.source),
+					? q_Array_filter(self, input.source)
+					: q_Array_find(self, input.source),
 				n
 		  )
-		: this.map((e) => e.q(input, n));
+		: self.map((e) => e.q(input, n));
 };
 function q_Array_filter(self, query) {
 	return self

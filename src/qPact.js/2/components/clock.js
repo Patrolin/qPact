@@ -1,9 +1,10 @@
 class Clock extends module.Component {
 	load() {
-		this.interval = setInterval(() => {
-			this.render();
+		let self = this;
+		self.interval = setInterval(() => {
+			self.render();
 		}, 1000);
-		this.render();
+		self.render();
 	}
 	unload() {
 		clearInterval(this.interval);

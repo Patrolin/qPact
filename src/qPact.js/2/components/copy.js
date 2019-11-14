@@ -1,14 +1,15 @@
 class Copy extends module.Component {
 	onclick() {
-		this.focus();
-		let prev = this.contentEditable;
-		this.contentEditable = TRUE;
+		let self = this;
+		self.focus();
+		let prev = self.contentEditable;
+		self.contentEditable = TRUE;
 		document.execCommand('selectAll');
-		this.contentEditable = prev;
+		self.contentEditable = prev;
 		try {
 			document.execCommand('copy');
 		} catch (e) {
-			navigator.clipboard.writeText(this.innerText);
+			navigator.clipboard.writeText(self.innerText);
 		}
 	}
 }

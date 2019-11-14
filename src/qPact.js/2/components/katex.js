@@ -21,10 +21,11 @@ class Katex extends module.Component {
 			});
 		}
 	}
-	set value(v) {
-		v = module.str(v);
-		this.setAttribute('value', v);
-		katex.render((this.state.value = v), this, {
+	set value(a) {
+		let self = this;
+		a = module.str(a);
+		self.setAttribute('value', a);
+		katex.render((self.state.value = a), self, {
 			displayMode: TRUE,
 		});
 	}

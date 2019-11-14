@@ -1,67 +1,64 @@
-import fs from 'fs';
 import uglify from 'uglify-es';
+import fs from 'fs';
 
 function dirs(path) {
-	let result = [];
-	for (let dirent of fs.readdirSync(path, { withFileTypes: true })) {
-		if (dirent.isDirectory()) {
-			let name = `${path}/${dirent.name}`;
-			result.push(name);
-			result = result.concat(...dirs(name));
-		}
-	}
+	let result = [path];
+	for (let dirent of fs.readdirSync(path, { withFileTypes: true }))
+		if (dirent.isDirectory())
+			result = result.concat(...dirs(`${path}/${dirent.name}`));
 	return result;
 }
 function files(path) {
 	let result = [];
-	let dirs = [path];
-	let dir;
-	while ((dir = dirs.shift())) {
-		for (let dirent of fs.readdirSync(dir, { withFileTypes: true })) {
-			let name = `${dir}/${dirent.name}`;
-			if (dirent.isDirectory()) {
-				dirs.push(name);
-			} else {
-				result.push(name);
-			}
-		}
-	}
+	for (let dir of dirs(path))
+		for (let dirent of fs.readdirSync(dir, { withFileTypes: true }))
+			if (dirent.isFile()) result.push(`${dir}/${dirent.name}`);
 	return result;
 }
-function getFiles(path) {
-	return files(path).map((p) =>
-		fs.readFileSync(p, {
-			encoding: 'UTF-8',
-		})
-	);
+function textFile(path) {
+	return fs.readFileSync(path, {
+		encoding: 'UTF-8',
+	});
 }
-function rpartition(str, sep) {
-	let i = str.lastIndexOf(sep);
-	return i >= 0 ? [str.slice(0, i), str.slice(i + sep.length)] : [str, ''];
+function rpartition(string, sep) {
+	let i = string.lastIndexOf(sep);
+	return i >= 0
+		? [string.slice(0, i), string.slice(i + sep.length)]
+		: [string, ''];
 }
-function matchAll(pattern, string) {
+function matchAll(string, pattern) {
 	let result = [];
 	let match;
-	while ((match = pattern.exec(string)) !== null) {
-		result.push(match);
-	}
+	while ((match = pattern.exec(string)) !== null) result.push(match);
 	return result;
 }
+function items(input) {
+	let iterator = input[Symbol.iterator];
+	if (iterator) {
+		let assoc_mebbe = iterator.name === 'entries';
+		let _items = Array.from(iterator.call(input));
+		if (!assoc_mebbe) _items = _items.map((v, i) => [i, v]);
+		return _items;
+	} else {
+		let _items = [];
+		for (let k in input) _items.push([k, input[k]]);
+		return _items;
+	}
+}
 
-const TARGETS = {
+let TARGETS = {
 	js(path, name, minified) {
-		let files = `${name} = new function(){
+		let concat = `${name} = new function(){
 			let module = this, global = window, UNDEFINED = undefined, NULL = null, TRUE = true;
-			${getFiles(path)
+			${files(path)
+				.map(textFile)
 				.join(';')
-				.replace(/@import '(.+?)';/g, function(match, name) {
-					return fs.readFileSync(name, 'utf-8');
-				})}
+				.replace(/@import '(.+?)';/g, (match, name) => textFile(name))}
 			for(let key in module){
-				key in global ? console.warn(\`${name}: \${key} is already defined\`) : global[key] = module[key];
+				key in global ? module.isNative(global[key]) || console.warn(\`${name}: \${key} is already defined\`) : global[key] = module[key];
 			}
-		}`; // if not isNative()
-		const js = uglify.minify(files, {
+		}`;
+		let js = uglify.minify(concat, {
 			keep_classnames: true,
 			compress: {
 				ecma: 6,
@@ -73,6 +70,7 @@ const TARGETS = {
 				unsafe_proto: true,
 				unsafe_undefined: true,
 				warnings: true,
+				reduce_vars: false,
 			},
 			mangle: {
 				eval: true,
@@ -94,49 +92,50 @@ const TARGETS = {
 				.trimRight();
 		} else {
 			let { message, line, col } = js.error;
-			return `${line}:${col} ${message}\n\n${files}`;
+			return `${line}:${col} ${message}\n\n${concat}`;
 		}
 	},
 	css(path, name, minified) {
-		let files = getFiles(path)
-			.join('')
-			.replace(/\/\*(?:.|\s)*?\*\//g, '');
 		let css = {};
 		for (let [match, selectors, properties] of matchAll(
-			/([^{]*){([^}]*)}/g,
-			files
+			files(path)
+				.map(textFile)
+				.join('')
+				.replace(/\/\*(?:.|\s)*?\*\//g, ''),
+			/([^{]*){([^}]*)}/g
 		)) {
 			selectors = selectors
 				.split(',')
 				.map((selector) => selector.trim().replace(/ +/g, ' '))
 				.sort()
 				.join(',');
-			properties = matchAll(/([^:]+):([^;]+);/g, properties).map(
-				([match, property, values]) =>
-					`${property.trim()}:${values
+			properties = matchAll(properties, /([^:]+):([^;]+);/g).map(
+				([match, property, values]) => [
+					property.trim(),
+					values
 						.trim()
 						.replace(/ +/g, ' ')
-						.replace(/, /g, ',')}`
+						.replace(/, /g, ','),
+				]
 			);
-			css[selectors] = [...(css[selectors] || []), ...properties];
+			for (let [p, v] of properties) {
+				css[selectors] = css[selectors] || {};
+				if (css[selectors][p])
+					console.warn(`${selectors} ${p} is already defined`);
+				css[selectors][p] = v;
+			}
 		}
-		if (minified) {
-			css = Object.entries(css)
-				.map(
-					([selectors, properties]) =>
-						`${selectors}{${properties.join(';')}}`
-				)
-				.join('');
-		} else {
-			css = Object.entries(css)
-				.map(
-					([selectors, properties]) =>
-						`${selectors}{${properties
-							.map((p) => `\n\t${p}`)
-							.join(';')}\n}`
-				)
-				.join('\n');
-		}
+		let SPACE = minified ? '' : ' ';
+		let TAB = minified ? '' : '\n\t';
+		let NEW_LINE = minified ? '' : '\n';
+		css = Object.entries(css)
+			.map(
+				([selectors, properties]) =>
+					`${selectors}{${items(properties)
+						.map(([p, v]) => `${TAB}${p}:${SPACE}${v}`)
+						.join(';')}${NEW_LINE}}`
+			)
+			.join(NEW_LINE);
 		return minified ? css.slice(0, css.length - 1) : css;
 	},
 };
@@ -146,11 +145,14 @@ for (let path of dirs('src')) {
 	let [_, dir] = rpartition(path, '/');
 	let [name, ext] = rpartition(dir, '.');
 	if (ext) {
-		fs.writeFileSync(`dist/${dir}`, TARGETS[ext](path, dir, false));
+		fs.writeFileSync(`dist/${dir}`, TARGETS[ext](path, name, false));
 		let dst = `${name}.min.${ext}`;
-		fs.writeFileSync(`dist/${dst}`, TARGETS[ext](path, dst, true));
+		fs.writeFileSync(`dist/${dst}`, TARGETS[ext](path, name, true));
 	}
 }
+
 for (let path of files('dist')) {
-	if (fs.statSync(path).atime < start) fs.unlinkSync(path);
+	if (fs.statSync(path).atime < start) {
+		fs.unlinkSync(path);
+	}
 }

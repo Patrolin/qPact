@@ -14,39 +14,42 @@ module.Component = class Component extends HTMLElement {
 	}
 	constructor() {
 		super();
-		let Class = this.constructor;
+		let self = this;
+		let Class = self.constructor;
 		if (Class.first) {
-			this.init();
+			self.init();
 			Class.first = false;
 		}
-		this.state = { ...Class.state };
+		self.state = { ...Class.state };
 		// @todo: use html observer
 		for (let k of Class.events) {
-			this.addEventListener(k.slice(2), (e) => this[k].call(this, e));
+			self.addEventListener(k.slice(2), (e) => self[k].call(self, e));
 		}
 	}
 	async connectedCallback() {
+		let self = this;
 		try {
-			let Class = this.constructor;
+			let Class = self.constructor;
 			for (let [k, v] of module.items(Class.state)) {
-				if (this.hasAttribute(k)) {
+				if (self.hasAttribute(k)) {
 					try {
-						this[k] = this.getAttribute(k);
+						self[k] = self.getAttribute(k);
 					} finally {
 					}
 				}
 			}
 			// @todo: call setAttribute()
-			await this.load();
+			await self.load();
 		} catch (e) {
-			console.error(this, e);
+			console.error(self, e);
 		}
 	}
 	async disconnectedCallback() {
+		let self = this;
 		try {
-			await this.unload();
+			await self.unload();
 		} catch (e) {
-			console.error(this, e);
+			console.error(self, e);
 		}
 	}
 	init() {}
