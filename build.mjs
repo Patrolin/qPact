@@ -82,7 +82,7 @@ let TARGETS = {
 				ecma: 6,
 				quote_style: 3,
 				width: 80,
-				indent_level: 2,
+				indent_level: 1,
 				beautify: !minified,
 				semicolons: !minified,
 			},
@@ -91,6 +91,9 @@ let TARGETS = {
 			return js.code
 				.replace(/let .+?;/g, function(match) {
 					return match.replace(/(.+? ?= ?)\1/g, '$1'); // uglify-es is complete and utter garbage
+				})
+				.replace(/^ +/gm, function(match) {
+					return '\t'.repeat(match.length);
 				})
 				.trimRight();
 		} else {

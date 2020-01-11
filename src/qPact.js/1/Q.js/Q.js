@@ -4,22 +4,16 @@ module.q = function(input, n = UNDEFINED) {
 		: q_create(input, n);
 };
 function q_create(input, n) {
-	if (input instanceof Node) {
-		return q_multiply(input, n);
-	} else if (input instanceof Array) {
+	if (input instanceof Node) return q_multiply(input, n);
+	if (input instanceof Array)
 		return q_multiply(
 			input.map((x) => module.q(x)),
 			n
 		);
-	} else {
-		let template = document.createElement('template');
-		template.innerHTML = input;
-		let children = template.content.childNodes;
-		return q_multiply(
-			children.length === 1 ? children[0] : [...children],
-			n
-		);
-	}
+	let template = document.createElement('template');
+	template.innerHTML = input;
+	let children = template.content.childNodes;
+	return q_multiply(children.length === 1 ? children[0] : [...children], n);
 }
 function q_multiply(input, n) {
 	return n === UNDEFINED
@@ -49,40 +43,33 @@ Node.prototype.Q = function Q_Node(input, n = UNDEFINED) {
 		: result.map((e) => (e.id ? descendants[e.id] : e));
 };
 Node.prototype.q = function q_Node(input, n = UNDEFINED) {
-	let self = this;
-	if (input instanceof RegExp) {
-		return q_Node_RegExp(self, input, n);
+	if (input instanceof RegExp) return q_Node_RegExp(this, input, n);
+	let x = q_create(input, n);
+	if (x instanceof Node) {
+		return this.appendChild(x);
 	} else {
-		let x = q_create(input, n);
-		if (x instanceof Node) {
-			return self.appendChild(x);
-		} else {
-			return x.map((e) => self.appendChild(e));
-		}
+		return x.map((e) => this.appendChild(e));
 	}
 };
 function q_Node_RegExp(self, regexp, n) {
-	if (regexp.global) {
+	if (regexp.global)
 		return q_multiply(self.querySelectorAll(regexp.source), n);
-	} else {
-		let search = self.querySelector(regexp.source);
-		return search ? q_multiply(search, n) : NULL;
-	}
+	let search = self.querySelector(regexp.source);
+	return search ? q_multiply(search, n) : NULL;
 }
 
 Array.prototype.Q = function Q_Array(input, n = UNDEFINED) {
 	return this.map((e) => e.Q(input, n));
 };
 Array.prototype.q = function q_Array(input, n = UNDEFINED) {
-	let self = this;
 	return input instanceof RegExp
 		? q_multiply(
 				input.global
-					? q_Array_filter(self, input.source)
-					: q_Array_find(self, input.source),
+					? q_Array_filter(this, input.source)
+					: q_Array_find(this, input.source),
 				n
 		  )
-		: self.map((e) => e.q(input, n));
+		: this.map((e) => e.q(input, n));
 };
 function q_Array_filter(self, query) {
 	return self
