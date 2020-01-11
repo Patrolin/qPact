@@ -8,7 +8,7 @@ function q_create(input, n) {
 		return q_multiply(input, n);
 	} else if (input instanceof Array) {
 		return q_multiply(
-			input.map((x) => q(x)),
+			input.map((x) => module.q(x)),
 			n
 		);
 	} else {
@@ -39,15 +39,14 @@ Node.prototype.Q = function Q_Node(input, n = UNDEFINED) {
 		self.removeChild(e);
 		if (e.id) descendants[e.id] = e;
 	}
-	if (input === NULL) {
-		return [];
-	} else {
-		let result = self.q(input, n);
-		for (let e of self.querySelectorAll('[id]'))
-			if (e.id in descendants)
-				e.parentNode.replaceChild(descendants[e.id], e);
-		return result;
-	}
+	if (input === NULL) return [];
+	let result = self.q(input, n);
+	for (let e of self.querySelectorAll('[id]'))
+		if (e.id in descendants && !e.childNodes.length)
+			e.parentNode.replaceChild(descendants[e.id], e);
+	return result instanceof Node
+		? result
+		: result.map((e) => (e.id ? descendants[e.id] : e));
 };
 Node.prototype.q = function q_Node(input, n = UNDEFINED) {
 	let self = this;
@@ -58,10 +57,7 @@ Node.prototype.q = function q_Node(input, n = UNDEFINED) {
 		if (x instanceof Node) {
 			return self.appendChild(x);
 		} else {
-			x.flatMap((e) => {
-				self.appendChild(e);
-			});
-			return x;
+			return x.map((e) => self.appendChild(e));
 		}
 	}
 };
