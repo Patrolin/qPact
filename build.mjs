@@ -49,6 +49,7 @@ function items(input) {
 let TARGETS = {
 	js(path, name, minified) {
 		let concat = `${name} = new function(){
+			'use strict';
 			let module = this, global = window, UNDEFINED = undefined, NULL = null, TRUE = true;
 			${files(path)
 				.map(textFile)
@@ -152,7 +153,7 @@ for (let path of dirs('src')) {
 }
 
 for (let path of files('dist')) {
-	if (fs.statSync(path).atime < start) {
+	if (fs.statSync(path).mtime < start) {
 		fs.unlinkSync(path);
 	}
 }
