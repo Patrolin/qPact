@@ -1,6 +1,6 @@
 // @todo: dont use stupid isNaN()
 module.bool = function(a = TRUE) {
-	return !!a; // @todo: implement bool
+	return a && (module.isPrimitive(a) || a.length);
 };
 module.int = function(a = 0) {
 	let value = Math.floor(+a);
@@ -33,14 +33,16 @@ module.str = function(a = '') {
 		let [assoc_mebbe, _entries] = assoc_items(a);
 		return assoc_mebbe
 			? `{${_entries
-					.map(([k, v]) => `${strf(k)}: ${strf(v)}`)
+					.map(
+						([k, v]) =>
+							`${module.isString(k) ? `"${k}"` : `${k}`}: ${str(
+								v
+							)}`
+					)
 					.join(', ')}}`
-			: `[${_entries.map(([k, v]) => strf(v)).join(', ')}]`;
+			: `[${_entries.map(([k, v]) => str(v)).join(', ')}]`;
 	}
 };
-function strf(a) {
-	return module.isString(a) ? `"${a}"` : `${a}`;
-}
 
 module.list = function(a = []) {
 	if (module.isPrimitive(a) && !module.isString(a)) {

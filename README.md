@@ -15,9 +15,9 @@ technically does not work!
 ## Demo
 
 ```js
-var table = q(/body/).Q("<table>"); // replace contents of body
-var rows = table.q("<tr>", 3); // add content to table
-var items = rows.q("<td>", 4); // add content to each row
+var table = q(/body/).Q('<table>'); // replace contents of body
+var rows = table.q('<tr>', 3); // add content to table
+var items = rows.q('<td>', 4); // add content to each row
 items.forEach((row, r) => {
 	row.forEach((td, c) => {
 		td.q(String(4 * r + c));
@@ -30,17 +30,17 @@ Go to https://patrolin.github.io/qPact/ and press F12 to try it out.
 ## Creating elements
 
 ```js
-var a = q("Hello, world."); // same as new Text('Hello, world.');
+var a = q('Hello, world.'); // same as new Text('Hello, world.');
 q(a); // returns original a
 q(a, 1); // creates one copy of a
 q(a, 3); // creates three copies of a
-q("some <div> html"); // see below
+q('some <div> html'); // see below
 ```
 
 same as
 
 ```js
-var a = new Text("Hello, world.");
+var a = new Text('Hello, world.');
 a;
 a.cloneNode(true);
 Array(3)
@@ -48,18 +48,18 @@ Array(3)
 	.map(() => {
 		a.cloneNode(true);
 	});
-var div = document.createElement("div");
-div.appendChild(new Text(" html"));
-[new Text("some "), div];
+var div = document.createElement('div');
+div.appendChild(new Text(' html'));
+[new Text('some '), div];
 ```
 
 ## Appending elements
 
 ```js
 var body = document.body;
-body.q("foo"); // same as body.appendChild(new Text('foo'));
-var p = q("<p>"); // create a Node
-p.q(["Lorem", "ipsum"]); // append some text
+body.q('foo'); // same as body.appendChild(new Text('foo'));
+var p = q('<p>'); // create a Node
+p.q(['Lorem', 'ipsum']); // append some text
 body.q(p); // append a node
 ```
 
@@ -67,10 +67,10 @@ would be the same as
 
 ```js
 var body = document.body;
-body.appendChild(new Text("foo"));
-var p = document.createElement("p");
-p.appendChild(new Text("Lorem"));
-p.appendChild(new Text("ipsum"));
+body.appendChild(new Text('foo'));
+var p = document.createElement('p');
+p.appendChild(new Text('Lorem'));
+p.appendChild(new Text('ipsum'));
 body.appendChild(p);
 ```
 
@@ -78,8 +78,8 @@ which would be the same as
 
 ```js
 var body = document.body;
-body.q("foo");
-body.q("<p>").q("Loremipsum");
+body.q('foo');
+body.q('<p>').q('Loremipsum');
 ```
 
 ## Searching for elements
@@ -108,9 +108,9 @@ var disabledButtons = buttonsSearch.q(/[disabled]/g);
 ```js
 var body = document.body;
 var buttons = body.Q([
-	"<button>A</button>",
-	"<button disabled>B</button>",
-	"<button disabled>C</button>",
+	'<button>A</button>',
+	'<button disabled>B</button>',
+	'<button disabled>C</button>',
 ]);
 // replaces contents of body with three buttons (without the whitespace this time);
 ```

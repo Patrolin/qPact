@@ -23,11 +23,11 @@ tfoot {
 thead {
 	display: table-header-group;
 }
-table > *,
+tbody > *,
 [table] > * {
 	display: table-row;
 }
-table > * > *,
+tbody > * > *,
 [table] > * > * {
 	display: table-cell;
 }

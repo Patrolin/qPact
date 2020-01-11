@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="dist/qPact.js"></script>
+		<style>
+			body {
+				font-family: 'tinier', monospace;
+				font-size: 36px;
+				background: rgb(161, 152, 168);
+			}
+			* {
+				font-size: 0.85em;
+			}
+			b {
+				font-size: 1em;
+			}
+			present * {
+				font-size: inherit;
+			}
+			flex > * {
+				margin: 0.5em;
+				border: 0.2em solid black;
+			}
+			present {
+				padding: 0.5em;
+			}
+			past,
+			present,
+			future {
+				background: #646464;
+			}
+			past {
+				color: red;
+			}
+			present {
+				color: greenyellow;
+			}
+			future {
+				color: yellow;
+			}
+		</style>
+	</head>
+	<body>
+		<flex down wide id="table">
+			<flex equal>
+				<align><b>Css</b></align>
+				<align><b>Html(){}[]<>;!@@##$%^&*`</b></align>
+				<align><b>Js</b></align>
+			</flex>
+			<flex equal>
+				<align><present>/* &hellip; */</present></align>
+				<align>
+					<present>
+						<nobr>&lt;--</nobr>
+						&hellip;
+						<nobr>--&gt;</nobr>
+					</present>
+				</align>
+				<flex down equal>
+					<align><present>/* &hellip; */</present></align>
+					<align><present>//&nbsp;&hellip;</present></align>
+				</flex>
+			</flex>
+			<flex equal>
+				<align></align>
+				<align><present>&lt;!DOCTYPE&gt;</present></align>
+				<align></align>
+			</flex>
+			<flex equal>
+				<flex equal>
+					<align>font</align>
+					<flex down equal>
+						<align>
+							<present>
+								font-family: &hellip;;
+							</present>
+						</align>
+						<align>
+							<present>
+								font-size: &hellip;;
+							</present>
+						</align>
+						<align>
+							<present>
+								font-weight: &hellip;;
+							</present>
+						</align>
+					</flex>
+				</flex>
+				<flex down equal>
+					<align></align>
+					<align></align>
+					<align><present>&lt;b&gt;</present></align>
+				</flex>
+				<align></align>
+			</flex>
+		</flex>
+	</body>
+</html>

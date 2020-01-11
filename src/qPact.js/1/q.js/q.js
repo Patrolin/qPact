@@ -33,11 +33,21 @@ function q_clone(input) {
 // @todo: fix Object.define() on prototypes
 Node.prototype.Q = function Q_Node(input, n = UNDEFINED) {
 	let self = this;
-	let first;
-	while ((first = self.firstChild) !== NULL) {
-		self.removeChild(first);
+	let descendants = {};
+	let e;
+	while ((e = self.firstChild) !== NULL) {
+		self.removeChild(e);
+		if (e.id) descendants[e.id] = e;
 	}
-	return input === NULL ? [] : self.q(input, n);
+	if (input === NULL) {
+		return [];
+	} else {
+		let result = self.q(input, n);
+		for (let e of self.querySelectorAll('[id]'))
+			if (e.id in descendants)
+				e.parentNode.replaceChild(descendants[e.id], e);
+		return result;
+	}
 };
 Node.prototype.q = function q_Node(input, n = UNDEFINED) {
 	let self = this;

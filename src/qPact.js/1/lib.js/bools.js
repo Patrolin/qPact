@@ -13,6 +13,3 @@ module.isString = function(a) {
 module.isNumber = function(a) {
 	return typeof a == 'number';
 };
-module.isNaN = function(a) {
-	return Object.is(a, NaN);
-};

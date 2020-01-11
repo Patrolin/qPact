@@ -1,0 +1,21 @@
+align {
+	display: inline-flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+align[up] {
+	justify-content: start;
+}
+align[left] {
+	align-items: start;
+	text-align: left;
+}
+align[down] {
+	justify-content: end;
+}
+align[right] {
+	align-items: end;
+	text-align: right;
+}

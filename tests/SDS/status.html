@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link href="./blackhole.css" rel="stylesheet" />
-		<script src="./qPact.js"></script>
+		<script src="./../../dist/qPact.min.js"></script>
 		<script src="./com.js"></script>
 		<script>
 			var displayed = new Set();
 			var json = {};
 			var NAMES = {
-				System: {
+				'System': {
 					T00: 'Typ',
 					T01: 'S/N',
 					T90: 'Rele - stav',
 				},
-				Baterie: {
+				'Baterie': {
 					U00: 'SOC (nabiti baterie)',
 					T18: 'Stav',
 					T19: 'Baterie',
@@ -21,16 +20,16 @@
 					U03: 'max vybiti (UPS)',
 					U01: 'SOH (zdravi baterie)',
 				},
-				Panely: {
+				'Panely': {
 					T11: 'String 1',
 					T12: 'String 2',
 				},
-				Elektromer: {
+				'Elektromer': {
 					T02: 'Nocni proud',
 					T28: 'Odber / dodavka ze site',
 					T27: 'Celkova spotreba',
 				},
-				Menic: {
+				'Menic': {
 					T20: 'Stav',
 					T21: 'Sit - L1',
 					T22: 'Sit - L2',
@@ -39,14 +38,14 @@
 					T25: 'UPS - L2',
 					T26: 'UPS - L3',
 				},
-				Parametry: {
+				'Parametry': {
 					T91: 'Rele - sepnout pri SOC',
 					T92: 'Rele - sepnout v nocnim proudu',
 					T93: 'Rele - casovy plan',
 					U08: 'limit vybiti baterie (den)',
 					U09: 'limit vybiti baterie (NOC)',
 				},
-				Nastavovani: {
+				'Nastavovani': {
 					S91: 'S91',
 					S92: 'S92',
 					S93: 'S93',
@@ -82,8 +81,10 @@
 				var fragment = document.createDocumentFragment();
 				Object.entries(names).forEach(([key, value]) => {
 					if (value instanceof Object) {
-						fragment.q(`<h1>${key}</h1>`);
-						fragment.q('<ul>').q(displayNames(value).children[0].getRootNode());
+						fragment.q(`<h1 wide>${key}</h1>`);
+						fragment
+							.q('<ul>')
+							.q(displayNames(value).children[0].getRootNode());
 					} else {
 						if (!displayed.has(key)) {
 							displayed.add(key);

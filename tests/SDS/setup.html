@@ -2,43 +2,44 @@
 
 <html>
 	<head>
-		<link href="./blackhole.css" rel="stylesheet" />
-		<script src="./qPact.js"></script>
+		<script src="./../../dist/qPact.min.js"></script>
 		<script src="./com.js"></script>
 		<script>
-			function alterEvent() {
-				this.dispatchEvent(
-					new CustomEvent('alter', {
-						bubbles: true,
-						cancelable: true,
-					})
-				);
-			}
-
-			const ReleProps = {
-				n: int,
-			};
-			class Rele extends Component(ReleProps) {
+			class Rele extends Component {
+				set n(x) {
+					this.state.n = int(x);
+				}
 				load() {
-					this.n = this.getAttribute('n');
-					this.sepnuti = q('<input type="range" min="55" max="95" step="1">');
+					this.sepnuti = q(
+						'<input type="range" min="55" max="95" step="1">'
+					);
 					this.sepnutiText = q('<output>');
-					this.vypnuti = q('<input type="range" min="50" max="95" step="1">');
+					this.vypnuti = q(
+						'<input type="range" min="50" max="95" step="1">'
+					);
 					this.vypnutiText = q('<output>');
 					this.nocniProud = q('<input type="checkbox">');
 					this.odeslat = q('<button>Odeslat');
-					this.sepnuti.oninput = alterEvent;
-					this.vypnuti.oninput = alterEvent;
-					this.nocniProud.oninput = alterEvent;
-					this.odeslat.onclick = alterEvent;
+					this.sepnuti.oninput = () => this.alter();
+					this.vypnuti.oninput = () => this.alter();
+					this.nocniProud.oninput = () => this.alter();
+					this.odeslat.onclick = () => this.alter();
 					this.q(`<h3>Rele ${this.n}</h3>`);
-					this.q(`<row><b>Vypnuti:</b> `).q([this.vypnutiText, this.vypnuti]);
-					this.q(`<row><b>Sepnuti:</b> `).q([this.sepnutiText, this.sepnuti]);
-					this.q(`<row><b>Spinat v nocnim proudu:</b> `).q(this.nocniProud);
+					this.q(`<wide><b>Vypnuti:</b> `).q([
+						this.vypnutiText,
+						this.vypnuti,
+					]);
+					this.q(`<wide><b>Sepnuti:</b> `).q([
+						this.sepnutiText,
+						this.sepnuti,
+					]);
+					this.q(`<wide><b>Spinat v nocnim proudu:</b> `).q(
+						this.nocniProud
+					);
 					this.q(this.odeslat);
 					this.render();
 				}
-				get state() {
+				get com_state() {
 					return {
 						S91: +this.vypnuti.value,
 						S92: +this.sepnuti.value,
@@ -46,7 +47,7 @@
 					};
 				}
 				async send() {
-					await postJson(this.state);
+					await postJson(this.com_state);
 					await postJson({
 						S99: this.n,
 					});
@@ -72,37 +73,41 @@
 					this.vypnutiText.value = this.vypnuti.value;
 				}
 			}
-			customElements.define('c-rele', Rele);
+			defineElement('c-rele', Rele);
 
 			class Baterie extends Component {
 				load() {
-					this.denniProud = q('<input type="range" min="22" max="45" step="1">');
+					this.denniProud = q(
+						'<input type="range" min="22" max="45" step="1">'
+					);
 					this.denniProudText = q('<output>');
-					this.nocniProud = q('<input type="range" min="25" max="49" step="1">');
+					this.nocniProud = q(
+						'<input type="range" min="25" max="49" step="1">'
+					);
 					this.nocniProudText = q('<output>');
 					this.odeslat = q('<button>Odeslat');
-					this.denniProud.oninput = alterEvent;
-					this.nocniProud.oninput = alterEvent;
-					this.odeslat.onclick = alterEvent;
-					this.q(`<row><b>Limit vybiti - Denni proud:</b> `).q([
+					this.denniProud.oninput = () => this.alter();
+					this.nocniProud.oninput = () => this.alter();
+					this.odeslat.onclick = () => this.alter();
+					this.q(`<wide><b>Limit vybiti - Denni proud:</b> `).q([
 						this.denniProudText,
 						this.denniProud,
 					]);
-					this.q(`<row><b>Limit vybiti - Nocni proud:</b> `).q([
+					this.q(`<wide><b>Limit vybiti - Nocni proud:</b> `).q([
 						this.nocniProudText,
 						this.nocniProud,
 					]);
 					this.q(this.odeslat);
 					this.render();
 				}
-				get state() {
+				get com_state() {
 					return {
 						S97: +this.denniProud.value,
 						S98: +this.nocniProud.value,
 					};
 				}
 				async send() {
-					await postJson(this.state);
+					await postJson(this.com_state);
 					await postJson({
 						S99: 99,
 					});
@@ -128,20 +133,25 @@
 					this.nocniProudText.value = this.nocniProud.value;
 				}
 			}
-			customElements.define('c-baterie', Baterie);
+			defineElement('c-baterie', Baterie);
 
 			class Plan extends Component {
 				load() {
 					this.q('<h3>Casovy plan</h3>');
-					this.inputs = this.q('<row>', 6).q('<input type="checkbox">', 24);
-					this.q(/input:nth-child(6n):not(:last-child)/g).forEach((e) => {
-						e.after(' ');
-					});
-					this.q(/row/g).forEach((e, i) => {
+					this.inputs = this.q('<wide>', 6).q(
+						'<input type="checkbox">',
+						24
+					);
+					this.q(/input:nth-child(6n):not(:last-child)/g).forEach(
+						(e) => {
+							e.after(' ');
+						}
+					);
+					this.q(/wide/g).forEach((e, i) => {
 						e.prepend(...q(`<b>Rele ${i + 1}:</b> `));
 					});
 					this.odeslat = this.q('<button>Odeslat</button>');
-					this.odeslat.onclick = alterEvent;
+					this.odeslat.onclick = () => this.alter();
 				}
 				onalter(e) {
 					if (e.srcElement === this.odeslat) {
@@ -149,12 +159,12 @@
 					}
 				}
 				async send() {
-					await postJson(this.state);
+					await postJson(this.com_state);
 					await postJson({
 						S99: 98,
 					});
 				}
-				get state() {
+				get com_state() {
 					return {
 						S91: this.input(0),
 						S92: this.input(1),
@@ -165,10 +175,13 @@
 					};
 				}
 				input(n) {
-					return +`0b${this.inputs[n].reduce((a, b) => a + (b.checked ? '1' : '0'), '')}`;
+					return +`0b${this.inputs[n].reduce(
+						(a, b) => a + (b.checked ? '1' : '0'),
+						''
+					)}`;
 				}
 			}
-			customElements.define('c-plan', Plan);
+			defineElement('c-plan', Plan);
 
 			async function main() {
 				const json = await fetchJson();
@@ -208,19 +221,19 @@
 		</style>
 	</head>
 	<body id="body" onload="main();">
-		<center wide>
+		<align wide>
 			<h1>Rele</h1>
-			<row id="reles">
-				<row><c-plan id="plan"></c-plan></row>
+			<wide id="reles">
+				<wide><c-plan id="plan"></c-plan></wide>
 				<c-rele n="1"></c-rele>
 				<c-rele n="2"></c-rele>
 				<c-rele n="3"></c-rele>
 				<c-rele n="4"></c-rele>
 				<c-rele n="5"></c-rele>
 				<c-rele n="6"></c-rele>
-			</row>
+			</wide>
 			<h1>Baterie</h1>
 			<c-baterie id="baterie"></c-baterie>
-		</center>
+		</align>
 	</body>
 </html>
