@@ -15,7 +15,7 @@ function files(path) {
 			if (dirent.isFile()) result.push(`${dir}/${dirent.name}`);
 	return result;
 }
-function textFile(path) {
+function textFromFile(path) {
 	return fs.readFileSync(path, {
 		encoding: 'UTF-8',
 	});
@@ -48,13 +48,15 @@ function items(input) {
 
 let TARGETS = {
 	js(path, name, minified) {
-		let concat = `${name} = new function(){
+		let concat = `let ${name} = new function(){
 			'use strict';
 			let module = this, global = window, UNDEFINED = undefined, NULL = null, TRUE = true;
 			${files(path)
-				.map(textFile)
+				.map(textFromFile)
 				.join(';')
-				.replace(/@import '(.+?)';/g, (match, name) => textFile(name))}
+				.replace(/@import '(.+?)';/g, (match, name) =>
+					textFromFile(name)
+				)}
 			for(let key in module){
 				key in global ? module.isNative(global[key]) || console.warn(\`${name}: \${key} is already defined\`) : global[key] = module[key];
 			}
@@ -100,7 +102,7 @@ let TARGETS = {
 		let css = {};
 		for (let [match, selectors, properties] of matchAll(
 			files(path)
-				.map(textFile)
+				.map(textFromFile)
 				.join('')
 				.replace(/\/\*(?:.|\s)*?\*\//g, ''),
 			/([^{]*){([^}]*)}/g
@@ -141,19 +143,19 @@ let TARGETS = {
 	},
 };
 
-let start = new Date();
+let START = new Date();
 for (let path of dirs('src')) {
 	let [_, dir] = rpartition(path, '/');
 	let [name, ext] = rpartition(dir, '.');
+	let dir_min = `${name}.min.${ext}`;
 	if (ext) {
 		fs.writeFileSync(`dist/${dir}`, TARGETS[ext](path, name, false));
-		let dst = `${name}.min.${ext}`;
-		fs.writeFileSync(`dist/${dst}`, TARGETS[ext](path, name, true));
+		fs.writeFileSync(`dist/${dir_min}`, TARGETS[ext](path, name, true));
 	}
 }
 
 for (let path of files('dist')) {
-	if (fs.statSync(path).mtime < start) {
+	if (fs.statSync(path).mtime < START - 100)
+		// file times are fucking weird
 		fs.unlinkSync(path);
-	}
 }
