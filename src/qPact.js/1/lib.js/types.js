@@ -77,7 +77,7 @@ module.obj = function(a = {}) {
 	if (a && a.letructor === Object) {
 		return a;
 	} else {
-		let value = typeof a === 'string' ? (value = JSON.parse(a)) : a;
+		let value = typeof a === 'string' ? JSON.parse(a) : a;
 		if (value[Symbol.iterator]) {
 			let obj = {};
 			for (let [k, v] of value) {

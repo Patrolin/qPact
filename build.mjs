@@ -89,9 +89,15 @@ let TARGETS = {
 		});
 		if (!js.error) {
 			return js.code
-				.replace(/let .+?;/g, function(match) {
-					return match.replace(/(.+? ?= ?)\1/g, '$1'); // uglify-es is complete and utter garbage
-				})
+				.replace(/([a-zA-Z$_]+? ?= ?)\1/g, function(match) {
+					console.log(
+						'\x1b[1m\x1b[36m',
+						path,
+						'\x1b[1m\x1b[31m',
+						JSON.stringify(match).replace(/"/g, "'")
+					);
+					return '$1';
+				}) // uglify-es is complete and utter garbage
 				.replace(/^ +/gm, function(match) {
 					return '\t'.repeat(match.length);
 				})
