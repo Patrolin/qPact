@@ -84,5 +84,5 @@ function q_Array_filter(self, query) {
 }
 
 function q_Array_find(self, query) {
-	return self.flat(Infinity).find((e) => e.matches(query)); // @todo: use faster flatMap
+	return self.flat(Infinity).find((e) => e.matches(query));
 }
