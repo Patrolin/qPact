@@ -7,11 +7,10 @@ body {
 	box-sizing: border-box;
 	display: inline-block;
 	position: relative;
-	border: 0;
 	padding: 0;
 	flex-basis: auto;
 	flex-grow: 0;
-	flex-shrink: 60;
+	flex-shrink: 0;
 	pointer-events: auto;
 }
 body {

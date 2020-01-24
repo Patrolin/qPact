@@ -4,6 +4,7 @@ flex {
 }
 flex > * {
 	flex-grow: 60;
+	flex-shrink: 60;
 }
 flex[equal] > * {
 	flex-basis: 0;
@@ -17,6 +18,14 @@ flex[down] {
 }
 flex[left] {
 	flex-direction: row-reverse;
+}
+
+[no-flex], [no-grow]{
+	flex-grow: 0;
+}
+
+[no-flex], [no-shrink]{
+	flex-shrink: 0;
 }
 
 [f-5] {
