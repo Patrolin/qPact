@@ -1,6 +1,4 @@
-blank {
+blank,
+[blank] {
 	visibility: hidden;
-}
-[hidden] {
-	display: none;
 }

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="cs">
+	<head>
+		<link
+			href="https://fonts.googleapis.com/css?family=Oswald"
+			rel="stylesheet"
+		/>
+		<link href="./zdroje/paper.css" rel="stylesheet" />
+		<link href="./zdroje/index.css" rel="stylesheet" />
+		<script src="../../dist/qPact.js"></script>
+	</head>
+	<body class="A4 landscape" onload="q(/c-textarea/).oninput();">
+		<align wide>
+			<stack full>
+				<align class="sheet">
+					<align rightward id="boop">
+						<align right id="first">
+							<output class="same"></output>
+						</align>
+						<flex down class="square-2">
+							<align full>
+								<output class="same" id="second"></output>
+								<textarea wide rows="10">
+Quia&#10;dolor&#10;sit&#10;amet</textarea
+								>
+							</align>
+						</flex>
+						<align right id="third">
+							<output class="same"></output>
+						</align>
+					</align>
+				</align>
+				<align full up>
+					<input
+						id="fontsize"
+						type="number"
+						placeholder="19"
+						value="19"
+						oninput="document.body.style.fontSize = `${this.value}px`;"
+					/>
+					<input
+						id="fontsize"
+						type="number"
+						placeholder="32"
+						value="32"
+						oninput="window.q(/textarea/).style.fontSize = `${this.value}px`;"
+					/>
+				</align>
+			</stack>
+			<align rightward class="sheet">
+				<div class="square-1"></div>
+				<flex down class="square-1">
+					<img wide no-grow src="./zdroje/logo.png" />
+					<align>
+						<c-textarea wide></c-textarea>
+					</align>
+				</flex>
+			</align>
+		</align>
+		<script>
+			class Textarea extends Component {
+				load() {
+					var d = new Date();
+					var date = `${d.getDate()}. ${d.getMonth() +
+						1}. ${d.getFullYear()}`;
+					this.textarea = this.q(
+						`<textarea wide rows="4">Lorem\nipsum\namet\n${date}`
+					);
+				}
+				oninput(ev) {
+					var arr = this.textarea.value.split('\n');
+					var [f, s] = [arr.slice(0, -1).join('\n'), arr.slice(-1)];
+					var value = `${f}${f ? ' - ' : ''}${s}`;
+					q(/.same/g).forEach((e) => (e.value = value));
+				}
+			}
+			defineElement('c-textarea', Textarea);
+			document.body.onkeydown = function reset(e) {
+				if (e.key === 'Escape')
+					q(/textarea/g).forEach((e) => {
+						e.style.height = '5em';
+					});
+			};
+		</script>
+	</body>
+</html>

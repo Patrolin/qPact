@@ -1,43 +1,43 @@
 let qPact = new function() {
 	'use strict';
-	let e = this, t = window, n = void 0, i = null, o = !0;
+	let e = this, t = window, n = void 0, i = null, r = !0;
 	e.q = function(e, t = n) {
-		return e instanceof RegExp ? a(document, e, t) : r(e, t);
+		return e instanceof RegExp ? a(document, e, t) : o(e, t);
 	};
-	function r(t, n) {
+	function o(t, n) {
 		if (t instanceof Node) return l(t, n);
 		if (t instanceof Array) return l(t.map(t => e.q(t)), n);
 		let i = document.createElement('template');
 		i.innerHTML = t;
-		let o = i.content.childNodes;
-		return l(1 === o.length ? o[0] : [ ...o ], n);
+		let r = i.content.childNodes;
+		return l(1 === r.length ? r[0] : [ ...r ], n);
 	}
 	function l(e, t) {
 		return t === n ? e : Array(t).fill().map(() => s(e));
 	}
 	function s(e) {
-		return e instanceof Node ? e.cloneNode(o) : e.map(s);
+		return e instanceof Node ? e.cloneNode(r) : e.map(s);
 	}
 	Node.prototype.Q = function(e, t = n) {
-		let o, r = this, l = {};
-		for (;(o = r.firstChild) !== i; ) {
-			r.removeChild(o);
-			o.id && (l[o.id] = o);
+		let r, o = this, l = {};
+		for (;(r = o.firstChild) !== i; ) {
+			o.removeChild(r);
+			r.id && (l[r.id] = r);
 		}
 		if (e === i) return [];
-		let s = r.q(e, t);
-		for (let e of r.querySelectorAll('[id]')) e.id in l && !e.childNodes.length && e.parentNode.replaceChild(l[e.id], e);
+		let s = o.q(e, t);
+		for (let e of o.querySelectorAll('[id]')) e.id in l && !e.childNodes.length && e.parentNode.replaceChild(l[e.id], e);
 		return s instanceof Node ? s : s.map(e => e.id ? l[e.id] : e);
 	};
 	Node.prototype.q = function(e, t = n) {
 		if (e instanceof RegExp) return a(this, e, t);
-		let i = r(e, t);
+		let i = o(e, t);
 		return i instanceof Node ? this.appendChild(i) : i.map(e => this.appendChild(e));
 	};
 	function a(e, t, n) {
 		if (t.global) return l([ ...e.querySelectorAll(t.source) ], n);
-		let o = e.querySelector(t.source);
-		return o ? l(o, n) : i;
+		let r = e.querySelector(t.source);
+		return r ? l(r, n) : i;
 	}
 	Array.prototype.Q = function(e, t = n) {
 		return this.map(n => n.Q(e, t));
@@ -144,8 +144,8 @@ let qPact = new function() {
 			e && t.modify(e);
 		}
 		valueOf() {
-			let {y: t, o: n, d: i, h: o, m: r, s: l, ms: s} = this;
-			return t * e.YEAR + n * e.MONTH + i * e.DAY + o * e.HOUR + r * e.MINUTE + l * e.SECOND + s;
+			let {y: t, o: n, d: i, h: r, m: o, s: l, ms: s} = this;
+			return t * e.YEAR + n * e.MONTH + i * e.DAY + r * e.HOUR + o * e.MINUTE + l * e.SECOND + s;
 		}
 		modify(t = "") {
 			let n = this;
@@ -167,12 +167,12 @@ let qPact = new function() {
 			n.y /= e.YEAR;
 		}
 		toString() {
-			let {y: t, o: n, d: i, h: o, m: r, s: l, ms: s, sign: a} = this, c = {};
+			let {y: t, o: n, d: i, h: r, m: o, s: l, ms: s, sign: a} = this, c = {};
 			t && (c.years = t);
 			n && (c.months = n);
 			i && (c.days = i);
-			o && (c.hours = o);
-			r && (c.minutes = r);
+			r && (c.hours = r);
+			o && (c.minutes = o);
 			l && (c.seconds = l);
 			s && (c.milliseconds = s);
 			return `${[ '', '-', '+' ][a + 1]}${e.items(c).map(([e, t]) => `${t}${t > 1 ? e : e.slice(0, -1)}`).join(' ')}`;
@@ -181,15 +181,15 @@ let qPact = new function() {
 	let d = [ 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday' ];
 	function u(e, t) {
 		let n = 1;
-		for (let [i, o, r, l, s, a] of t.matchAll(/(\d+)([a-z]+)|([a-z]+)(\d+)|([+-])/g)) if (o) {
-			let t = d.indexOf(r);
-			if (0 > t && r in e) e[r] += n * o; else {
-				let i = e.getDate(), r = e.getDay();
-				if (t != r) {
-					i += n > 0 ? t - r + 7 : t + r - 15;
-					o--;
+		for (let [i, r, o, l, s, a] of t.matchAll(/(\d+)([a-z]+)|([a-z]+)(\d+)|([+-])/g)) if (r) {
+			let t = d.indexOf(o);
+			if (0 > t && o in e) e[o] += n * r; else {
+				let i = e.getDate(), o = e.getDay();
+				if (t != o) {
+					i += n > 0 ? t - o + 7 : t + o - 15;
+					r--;
 				}
-				e.setDate(i + 7 * n * o);
+				e.setDate(i + 7 * n * r);
 			}
 		} else s && l in e ? e[l] = +s : a && (n = '+' == a ? 1 : -1);
 	}
@@ -202,7 +202,7 @@ let qPact = new function() {
 		{
 			let t = [];
 			for (let n in e) t.push(n);
-			return [ o, t ];
+			return [ r, t ];
 		}
 	};
 	e.assoc_values = function(e) {
@@ -215,7 +215,7 @@ let qPact = new function() {
 		{
 			let t = [];
 			for (let n in e) t.push(e[n]);
-			return [ o, t ];
+			return [ r, t ];
 		}
 	};
 	e.assoc_items = function(e) {
@@ -228,7 +228,7 @@ let qPact = new function() {
 		{
 			let t = [];
 			for (let n in e) t.push([ n, e[n] ]);
-			return [ o, t ];
+			return [ r, t ];
 		}
 	};
 	e.keys = function(t) {
@@ -240,7 +240,7 @@ let qPact = new function() {
 	e.items = function(t) {
 		return e.assoc_items(t)[1];
 	};
-	e.bool = function(t = o) {
+	e.bool = function(t = r) {
 		return t && (e.isPrimitive(t) || t.length);
 	};
 	e.int = function(t = 0) {
@@ -292,15 +292,15 @@ let qPact = new function() {
 		return `${e != i ? `${e.constructor.name}: ` : ''}${e}`;
 	};
 	e.matchAll = function(e, t) {
-		let n, o = [];
-		for (;(n = t.exec(e)) !== i; ) o.push(n);
-		return o;
+		let n, r = [];
+		for (;(n = t.exec(e)) !== i; ) r.push(n);
+		return r;
 	};
 	e.divmod = function(e, t) {
 		let n = e / t;
 		return [ 0 > n ? Math.ceil(n) : Math.floor(n), e % t ];
 	};
-	e.styles = (e.q(/#qPact/) || e.q(/head/).q('<div id="qPact">')).q("<style>body,html{width:100%;height:100%}*{box-sizing:border-box;display:inline-block;position:relative;padding:0;flex-basis:auto;flex-grow:0;flex-shrink:0;pointer-events:auto}body{display:block;margin:0}area,datalist,head,link,param,script,style,title{display:none}li{display:list-item}[table],table{display:inline-table;border-collapse:collapse;border-spacing:0}tbody{display:table-row-group}[caption],caption{display:table-caption}col{display:table-column}colgroup{display:table-column-group}tfoot{display:table-footer-group}thead{display:table-header-group}[table] > *,tbody > *{display:table-row}[table] > * > *,tbody > * > *{display:table-cell}align{display:inline-flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}align[up]{justify-content:start}align[left]{align-items:start;text-align:left}align[down]{justify-content:end}align[right]{align-items:end;text-align:right}blank{visibility:hidden}[hidden]{display:none}flex{display:inline-flex;flex-direction:row}flex > *{flex-grow:60;flex-shrink:60}flex[equal] > *{flex-basis:0}flex[up]{flex-direction:column-reverse}flex[down]{flex-direction:column}flex[left]{flex-direction:row-reverse}[no-flex],[no-grow]{flex-grow:0}[no-flex],[no-shrink]{flex-shrink:0}[f-5]{flex:5}[f-6]{flex:6}[f-10]{flex:10}[f-12]{flex:12}[f-15]{flex:15}[f-20]{flex:20}[f-30]{flex:30}[f-120]{flex:120}[f-180]{flex:180}[f-240]{flex:240}[f-300]{flex:300}[f-360]{flex:360}[f-600]{flex:600}[f-720]{flex:720}[full],[wide],full,wide{width:100%}[full],[tall],full,tall{height:100%}stack{position:relative}stack > *{position:absolute;left:0;top:0;pointer-events:none}tooltip{display:none;position:absolute;left:50%;top:50%;font-weight:bold;font-size:0.35em;padding:0.2em 0.3em;border-radius:0.5em;transform:translate(-50%,-50%)}*:hover > tooltip{display:inline-block}tooltip[right]{left:100%}tooltip[up]{top:0}tooltip[left]{left:0}tooltip[down]{top:100%");
+	e.styles = (e.q(/#qPact/) || e.q(/head/).q('<div id="qPact">')).q("<style>body,html{width:100%;height:100%}*{box-sizing:border-box;display:inline-block;position:relative;padding:0;flex-basis:auto;flex-grow:0;flex-shrink:0;pointer-events:auto}body{display:block;margin:0}area,datalist,head,link,param,script,style,title{display:none}li{display:list-item}[table],table{display:inline-table;border-collapse:collapse;border-spacing:0}tbody{display:table-row-group}[caption],caption{display:table-caption}col{display:table-column}colgroup{display:table-column-group}tfoot{display:table-footer-group}thead{display:table-header-group}[table] > *,tbody > *{display:table-row}[table] > * > *,tbody > * > *{display:table-cell}align{display:inline-flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}[upward][up]{justify-content:flex-end}[upward][down]{justify-content:flex-start}[upward][left]{align-items:flex-end}[upward][right]{align-items:flex-start}[downward][up],align[up]{justify-content:flex-start}[downward][down],align[down]{justify-content:flex-end}[downward][left],align[left]{align-items:flex-start}[downward][right],align[right]{align-items:flex-end}[leftward][up]{align-items:flex-end}[leftward][down]{align-items:flex-start}[leftward][left]{justify-content:flex-end}[leftward][right]{justify-content:flex-start}[rightward][up]{align-items:flex-end}[rightward][down]{align-items:flex-start}[rightward][left]{justify-content:flex-end}[rightward][right]{justify-content:flex-start}[text-align-left]{text-align:left}[text-align-center]{text-align:center}[text-align-right]{text-align:right}[blank],blank{visibility:hidden}flex{display:inline-flex;flex-direction:row}flex > *{flex-grow:60;flex-shrink:60}[equal] > *{flex-basis:0}[upward]{flex-direction:column-reverse}[downward]{flex-direction:column}[leftward]{flex-direction:row-reverse}[rightward]{flex-direction:row}[no-grow]{flex-grow:0}[no-shrink]{flex-shrink:0}[no-flex]{flex-grow:0;flex-shrink:0}[f-5]{flex:5}[f-6]{flex:6}[f-10]{flex:10}[f-12]{flex:12}[f-15]{flex:15}[f-20]{flex:20}[f-30]{flex:30}[f-120]{flex:120}[f-180]{flex:180}[f-240]{flex:240}[f-300]{flex:300}[f-360]{flex:360}[f-600]{flex:600}[f-720]{flex:720}[full],[wide],full,wide{width:100%}[full],[tall],full,tall{height:100%}[hidden],hidden{display:none}stack{position:relative}stack > *{position:absolute;left:0;top:0;pointer-events:none}tooltip{display:none;position:absolute;left:50%;top:50%;font-weight:bold;font-size:0.35em;padding:0.2em 0.3em;border-radius:0.5em;transform:translate(-50%,-50%)}*:hover > tooltip{display:inline-block}tooltip[right]{left:100%}tooltip[up]{top:0}tooltip[left]{left:0}tooltip[down]{top:100%");
 	e.Component = class Component extends HTMLElement {
 		static set style(t) {
 			let n = this.elementName;
@@ -318,8 +318,8 @@ let qPact = new function() {
 			let t = this;
 			try {
 				let n = t.constructor;
-				for (let [i, o] of e.items(n.state)) if (t.hasAttribute(i)) try {
-					t[i] = t.getAttribute(i) || o;
+				for (let [i, r] of e.items(n.state)) if (t.hasAttribute(i)) try {
+					t[i] = t.getAttribute(i) || r;
 				} finally {}
 				await t.load();
 			} catch (e) {
@@ -338,16 +338,16 @@ let qPact = new function() {
 		unload() {}
 		alter() {
 			this.dispatchEvent(new CustomEvent('alter', {
-				bubbles: o,
-				cancelable: o
+				bubbles: r,
+				cancelable: r
 			}));
 		}
 	};
 	e.defineElement = function(t, i) {
 		if (!/-/.test(t)) throw SyntaxError("Custom element name must contain '-'");
-		let o = {
+		let r = {
 			...i.state
-		}, r = new Set(), l = i.prototype;
+		}, o = new Set(), l = i.prototype;
 		for (let t of Reflect.ownKeys(l)) {
 			let i = Object.getOwnPropertyDescriptor(l, t);
 			if (i.set) {
@@ -357,11 +357,11 @@ let qPact = new function() {
 						return this.state[t];
 					}
 				});
-				o[t] === n && (o[t] = n);
-			} else e.isString(t) && t.startsWith('on') && r.add(t);
+				r[t] === n && (r[t] = n);
+			} else e.isString(t) && t.startsWith('on') && o.add(t);
 		}
-		i.state = o;
-		i.events = r;
+		i.state = r;
+		i.events = o;
 		i.elementName = t;
 		return customElements.define(t, i);
 	};
@@ -389,7 +389,7 @@ let qPact = new function() {
 			let e = this;
 			e.focus();
 			let t = e.contentEditable;
-			e.contentEditable = o;
+			e.contentEditable = r;
 			document.execCommand('selectAll');
 			e.contentEditable = t;
 			try {
@@ -405,15 +405,15 @@ let qPact = new function() {
 			if (t.katex === n) return new Promise(function(t, n) {
 				let i = e.q(/head/);
 				i.q("<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css\" integrity=\"sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq\" crossorigin=\"anonymous\">");
-				let o = document.createElement('script');
-				Object.assign(o, {
+				let r = document.createElement('script');
+				Object.assign(r, {
 					src: 'https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js',
 					integrity: 'sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz',
 					crossOrigin: 'anonymous'
 				});
-				o.onload = t;
-				o.onerror = n;
-				i.q(o);
+				r.onload = t;
+				r.onerror = n;
+				i.q(r);
 			});
 		}
 		set value(t) {
@@ -421,7 +421,7 @@ let qPact = new function() {
 			t = e.str(t);
 			n.setAttribute('value', t);
 			katex.render(n.state.value = t, n, {
-				displayMode: o
+				displayMode: r
 			});
 		}
 	}

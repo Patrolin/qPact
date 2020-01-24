@@ -1,0 +1,90 @@
+body {
+	font-size: 19px;
+	font-weight: bold;
+	font-family: 'Oswald', sans-serif;
+	line-height: 1.15;
+}
+.sheet {
+	padding: 10mm;
+}
+.square-1,
+.square-2 {
+	height: 120mm;
+}
+.square-1,
+.square-2,
+#boop {
+	border: 3px dashed black;
+}
+.square-1,
+.square-2,
+#first,
+#third {
+	width: 12cm;
+	height: 120mm;
+}
+.square-1 {
+	padding: 8mm 8mm 0;
+}
+.square-2 {
+	border-width: 0 3px;
+	border-style: solid;
+}
+input,
+textarea {
+	border: inset;
+}
+output {
+	border: outset;
+}
+#first,
+#third {
+	text-align: left;
+	writing-mode: vertical-rl;
+	width: calc(1.15em + 2mm);
+	padding-top: 1mm;
+}
+#first {
+	transform: rotate(180deg);
+}
+#second {
+	font-size: 1.5em;
+}
+#third {
+	text-align: right;
+	writing-mode: vertical-lr;
+}
+.square-2 align {
+	justify-content: space-around;
+}
+c-textarea textarea {
+	font-size: 44px;
+}
+textarea {
+	resize: vertical;
+	overflow: hidden;
+	height: 5em;
+	white-space: pre-wrap;
+	font: inherit;
+	text-align: center;
+	font-size: 32px;
+}
+input {
+	font-size: 24px;
+	width: 4em;
+	padding: 3px 5px;
+	white-space: pre-wrap;
+	margin-top: 30mm;
+}
+input:nth-of-type(2) {
+	margin-top: 140mm;
+}
+@media print {
+	input {
+		display: none;
+	}
+	textarea,
+	output {
+		border: none;
+	}
+}

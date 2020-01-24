@@ -58,25 +58,65 @@ align{
 	align-items: center;
 	text-align: center
 }
-align[up]{
-	justify-content: start
+[upward][up]{
+	justify-content: flex-end
 }
-align[left]{
-	align-items: start;
+[upward][down]{
+	justify-content: flex-start
+}
+[upward][left]{
+	align-items: flex-end
+}
+[upward][right]{
+	align-items: flex-start
+}
+[downward][up],align[up]{
+	justify-content: flex-start
+}
+[downward][down],align[down]{
+	justify-content: flex-end
+}
+[downward][left],align[left]{
+	align-items: flex-start
+}
+[downward][right],align[right]{
+	align-items: flex-end
+}
+[leftward][up]{
+	align-items: flex-end
+}
+[leftward][down]{
+	align-items: flex-start
+}
+[leftward][left]{
+	justify-content: flex-end
+}
+[leftward][right]{
+	justify-content: flex-start
+}
+[rightward][up]{
+	align-items: flex-end
+}
+[rightward][down]{
+	align-items: flex-start
+}
+[rightward][left]{
+	justify-content: flex-end
+}
+[rightward][right]{
+	justify-content: flex-start
+}
+[text-align-left]{
 	text-align: left
 }
-align[down]{
-	justify-content: end
+[text-align-center]{
+	text-align: center
 }
-align[right]{
-	align-items: end;
+[text-align-right]{
 	text-align: right
 }
-blank{
+[blank],blank{
 	visibility: hidden
-}
-[hidden]{
-	display: none
 }
 flex{
 	display: inline-flex;
@@ -86,22 +126,29 @@ flex > *{
 	flex-grow: 60;
 	flex-shrink: 60
 }
-flex[equal] > *{
+[equal] > *{
 	flex-basis: 0
 }
-flex[up]{
+[upward]{
 	flex-direction: column-reverse
 }
-flex[down]{
+[downward]{
 	flex-direction: column
 }
-flex[left]{
+[leftward]{
 	flex-direction: row-reverse
 }
-[no-flex],[no-grow]{
+[rightward]{
+	flex-direction: row
+}
+[no-grow]{
 	flex-grow: 0
 }
-[no-flex],[no-shrink]{
+[no-shrink]{
+	flex-shrink: 0
+}
+[no-flex]{
+	flex-grow: 0;
 	flex-shrink: 0
 }
 [f-5]{
@@ -151,6 +198,9 @@ flex[left]{
 }
 [full],[tall],full,tall{
 	height: 100%
+}
+[hidden],hidden{
+	display: none
 }
 stack{
 	position: relative

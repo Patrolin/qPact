@@ -6,25 +6,31 @@ flex > * {
 	flex-grow: 60;
 	flex-shrink: 60;
 }
-flex[equal] > * {
+[equal] > * {
 	flex-basis: 0;
 }
 
-flex[up] {
+[upward] {
 	flex-direction: column-reverse;
 }
-flex[down] {
+[downward] {
 	flex-direction: column;
 }
-flex[left] {
+[leftward] {
 	flex-direction: row-reverse;
 }
-
-[no-flex], [no-grow]{
-	flex-grow: 0;
+[rightward] {
+	flex-direction: row;
 }
 
-[no-flex], [no-shrink]{
+[no-grow] {
+	flex-grow: 0;
+}
+[no-shrink] {
+	flex-shrink: 0;
+}
+[no-flex] {
+	flex-grow: 0;
 	flex-shrink: 0;
 }
 
