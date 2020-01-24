@@ -53,7 +53,7 @@ Node.prototype.q = function q_Node(input, n = UNDEFINED) {
 };
 function q_Node_RegExp(self, regexp, n) {
 	if (regexp.global)
-		return q_multiply(self.querySelectorAll(regexp.source), n);
+		return q_multiply([...self.querySelectorAll(regexp.source)], n);
 	let search = self.querySelector(regexp.source);
 	return search ? q_multiply(search, n) : NULL;
 }

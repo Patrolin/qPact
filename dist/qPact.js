@@ -35,7 +35,7 @@ let qPact = new function() {
 		return i instanceof Node ? this.appendChild(i) : i.map(e => this.appendChild(e));
 	};
 	function a(e, t, n) {
-		if (t.global) return l(e.querySelectorAll(t.source), n);
+		if (t.global) return l([ ...e.querySelectorAll(t.source) ], n);
 		let o = e.querySelector(t.source);
 		return o ? l(o, n) : i;
 	}

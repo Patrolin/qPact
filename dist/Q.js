@@ -35,7 +35,7 @@ let Q = new function() {
 		return r instanceof Node ? this.appendChild(r) : r.map(e => this.appendChild(e));
 	};
 	function u(e, t, n) {
-		if (t.global) return l(e.querySelectorAll(t.source), n);
+		if (t.global) return l([ ...e.querySelectorAll(t.source) ], n);
 		let i = e.querySelector(t.source);
 		return i ? l(i, n) : r;
 	}
