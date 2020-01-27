@@ -8,9 +8,8 @@ body {
 	display: inline-block;
 	position: relative;
 	padding: 0;
-	flex-basis: auto;
-	flex-grow: 0;
-	flex-shrink: 0;
+	/* TODO: padding
+	*/
 	pointer-events: auto;
 }
 body {

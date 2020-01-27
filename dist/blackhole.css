@@ -7,9 +7,6 @@ body,html{
 	display: inline-block;
 	position: relative;
 	padding: 0;
-	flex-basis: auto;
-	flex-grow: 0;
-	flex-shrink: 0;
 	pointer-events: auto
 }
 body{
@@ -57,6 +54,10 @@ align{
 	justify-content: center;
 	align-items: center;
 	text-align: center
+}
+align > *{
+	flex-grow: 0;
+	flex-shrink: 0
 }
 [upward][up]{
 	justify-content: flex-end
@@ -115,19 +116,13 @@ align{
 [text-align-right]{
 	text-align: right
 }
-[blank],blank{
-	visibility: hidden
-}
 flex{
 	display: inline-flex;
 	flex-direction: row
 }
 flex > *{
-	flex-grow: 60;
-	flex-shrink: 60
-}
-[equal] > *{
-	flex-basis: 0
+	flex-grow: 1;
+	flex-shrink: 1
 }
 [upward]{
 	flex-direction: column-reverse
@@ -199,9 +194,6 @@ flex > *{
 [full],[tall],full,tall{
 	height: 100%
 }
-[hidden],hidden{
-	display: none
-}
 stack{
 	position: relative
 }
@@ -236,4 +228,16 @@ tooltip[left]{
 }
 tooltip[down]{
 	top: 100%
+}
+[fixed],fixed{
+	position: fixed
+}
+[sticky],sticky{
+	position: sticky
+}
+[blank],blank{
+	visibility: hidden
+}
+[hidden],hidden{
+	display: none
 }

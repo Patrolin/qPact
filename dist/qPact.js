@@ -1,129 +1,129 @@
 let qPact = new function() {
 	'use strict';
-	let e = this, t = window, n = void 0, i = null, r = !0;
-	e.q = function(e, t = n) {
-		return e instanceof RegExp ? a(document, e, t) : o(e, t);
+	let t = this, e = window, n = void 0, i = null, r = !0;
+	t.q = function(t, e = n) {
+		return t instanceof RegExp ? a(document, t, e) : o(t, e);
 	};
-	function o(t, n) {
-		if (t instanceof Node) return l(t, n);
-		if (t instanceof Array) return l(t.map(t => e.q(t)), n);
+	function o(e, n) {
+		if (e instanceof Node) return l(e, n);
+		if (e instanceof Array) return l(e.map(e => t.q(e)), n);
 		let i = document.createElement('template');
-		i.innerHTML = t;
+		i.innerHTML = e;
 		let r = i.content.childNodes;
 		return l(1 === r.length ? r[0] : [ ...r ], n);
 	}
-	function l(e, t) {
-		return t === n ? e : Array(t).fill().map(() => s(e));
+	function l(t, e) {
+		return e === n ? t : Array(e).fill().map(() => s(t));
 	}
-	function s(e) {
-		return e instanceof Node ? e.cloneNode(r) : e.map(s);
+	function s(t) {
+		return t instanceof Node ? t.cloneNode(r) : t.map(s);
 	}
-	Node.prototype.Q = function(e, t = n) {
+	Node.prototype.Q = function(t, e = n) {
 		let r, o = this, l = {};
 		for (;(r = o.firstChild) !== i; ) {
 			o.removeChild(r);
 			r.id && (l[r.id] = r);
 		}
-		if (e === i) return [];
-		let s = o.q(e, t);
-		for (let e of o.querySelectorAll('[id]')) e.id in l && !e.childNodes.length && e.parentNode.replaceChild(l[e.id], e);
-		return s instanceof Node ? s : s.map(e => e.id ? l[e.id] : e);
+		if (t === i) return [];
+		let s = o.q(t, e);
+		for (let t of o.querySelectorAll('[id]')) t.id in l && !t.childNodes.length && t.parentNode.replaceChild(l[t.id], t);
+		return s instanceof Node ? s : s.map(t => t.id ? l[t.id] : t);
 	};
-	Node.prototype.q = function(e, t = n) {
-		if (e instanceof RegExp) return a(this, e, t);
-		let i = o(e, t);
-		return i instanceof Node ? this.appendChild(i) : i.map(e => this.appendChild(e));
+	Node.prototype.q = function(t, e = n) {
+		if (t instanceof RegExp) return a(this, t, e);
+		let i = o(t, e);
+		return i instanceof Node ? this.appendChild(i) : i.map(t => this.appendChild(t));
 	};
-	function a(e, t, n) {
-		if (t.global) return l([ ...e.querySelectorAll(t.source) ], n);
-		let r = e.querySelector(t.source);
+	function a(t, e, n) {
+		if (e.global) return l([ ...t.querySelectorAll(e.source) ], n);
+		let r = t.querySelector(e.source);
 		return r ? l(r, n) : i;
 	}
-	Array.prototype.Q = function(e, t = n) {
-		return this.map(n => n.Q(e, t));
+	Array.prototype.Q = function(t, e = n) {
+		return this.map(n => n.Q(t, e));
 	};
-	Array.prototype.q = function(e, t = n) {
-		return e instanceof RegExp ? l(e.global ? c(this, e.source) : f(this, e.source), t) : this.map(n => n.q(e, t));
+	Array.prototype.q = function(t, e = n) {
+		return t instanceof RegExp ? l(t.global ? c(this, t.source) : f(this, t.source), e) : this.map(n => n.q(t, e));
 	};
-	function c(e, t) {
-		return e.map(e => e instanceof Node ? e.matches(t) ? e : i : c(e, t)).filter(e => e !== i);
+	function c(t, e) {
+		return t.map(t => t instanceof Node ? t.matches(e) ? t : i : c(t, e)).filter(t => t !== i);
 	}
-	function f(e, t) {
-		return e.flat(1 / 0).find(e => e.matches(t));
+	function f(t, e) {
+		return t.flat(1 / 0).find(t => t.matches(e));
 	}
-	e.isPrimitive = function(e) {
-		return e !== Object(e);
+	t.isPrimitive = function(t) {
+		return t !== Object(t);
 	};
-	e.isNative = function(e) {
-		return /\[native code\]/.test(e.name);
+	t.isNative = function(t) {
+		return /\[native code\]/.test(t.name);
 	};
-	e.isBoolean = function(e) {
-		return 'boolean' == typeof e;
+	t.isBoolean = function(t) {
+		return 'boolean' == typeof t;
 	};
-	e.isString = function(e) {
-		return 'string' == typeof e;
+	t.isString = function(t) {
+		return 'string' == typeof t;
 	};
-	e.isNumber = function(e) {
-		return 'number' == typeof e;
+	t.isNumber = function(t) {
+		return 'number' == typeof t;
 	};
-	e.MAX_INT32 = -(e.MIN_INT32 = -2147483648) - 1;
-	e.MAX_UINT32 = 4294967295;
-	e.MAX_INT64 = -(e.MIN_INT64 = -Math.pow(2, 63)) - 1;
-	e.MAX_UINT64 = Math.pow(2, 64) - 1;
-	e.MAX_INT = -(e.MIN_INT = Number.MIN_SAFE_INTEGER - 1);
-	e.WEEK = 7 * (e.DAY = 24 * (e.HOUR = 60 * (e.MINUTE = 60 * (e.SECOND = 1e3))));
-	e.MONTH = (e.YEAR = 365.2425 * e.DAY) / 12;
-	e.DateTime = class DateTime extends Date {
+	t.MAX_INT32 = -(t.MIN_INT32 = -2147483648) - 1;
+	t.MAX_UINT32 = 4294967295;
+	t.MAX_INT64 = -(t.MIN_INT64 = -Math.pow(2, 63)) - 1;
+	t.MAX_UINT64 = Math.pow(2, 64) - 1;
+	t.MAX_INT = -(t.MIN_INT = Number.MIN_SAFE_INTEGER - 1);
+	t.WEEK = 7 * (t.DAY = 24 * (t.HOUR = 60 * (t.MINUTE = 60 * (t.SECOND = 1e3))));
+	t.MONTH = (t.YEAR = 365.2425 * t.DAY) / 12;
+	t.DateTime = class DateTime extends Date {
 		get y() {
 			this.getFullYear();
 		}
-		set y(e) {
-			this.setFullYear(e);
+		set y(t) {
+			this.setFullYear(t);
 		}
 		get o() {
 			this.getMonth();
 		}
-		set o(e) {
-			this.setMonth(e);
+		set o(t) {
+			this.setMonth(t);
 		}
 		get d() {
 			this.getDate();
 		}
-		set d(e) {
-			this.setDate(e);
+		set d(t) {
+			this.setDate(t);
 		}
 		get h() {
 			this.getHours();
 		}
-		set h(e) {
-			this.setHours(e);
+		set h(t) {
+			this.setHours(t);
 		}
 		get m() {
 			this.getMinutes();
 		}
-		set m(e) {
-			this.setMinutes(e);
+		set m(t) {
+			this.setMinutes(t);
 		}
 		get s() {
 			this.getSeconds();
 		}
-		set s(e) {
-			this.setSeconds(e);
+		set s(t) {
+			this.setSeconds(t);
 		}
 		get ms() {
 			this.getMilliseconds();
 		}
-		set ms(e) {
-			this.setMilliseconds(e);
+		set ms(t) {
+			this.setMilliseconds(t);
 		}
-		constructor(e = "") {
+		constructor(t = "") {
 			super();
-			this.modify(e);
+			this.modify(t);
 		}
-		modify(e = "") {
-			u(this, e);
+		modify(t = "") {
+			u(this, t);
 		}
-		format(e) {
+		format(t) {
 			return new Intl.DateTimeFormat(n, {
 				weekday: 'long',
 				day: 'numeric',
@@ -133,205 +133,205 @@ let qPact = new function() {
 				minute: 'numeric',
 				second: 'numeric',
 				timeZoneName: 'long',
-				...e
+				...t
 			}).format(this);
 		}
 	};
-	e.TimeInterval = class {
-		constructor(e) {
-			let t = this;
-			t.y = t.o = t.d = t.h = t.m = t.s = t.ms = 0;
-			e && t.modify(e);
+	t.TimeInterval = class {
+		constructor(t) {
+			let e = this;
+			e.y = e.o = e.d = e.h = e.m = e.s = e.ms = 0;
+			t && e.modify(t);
 		}
 		valueOf() {
-			let {y: t, o: n, d: i, h: r, m: o, s: l, ms: s} = this;
-			return t * e.YEAR + n * e.MONTH + i * e.DAY + r * e.HOUR + o * e.MINUTE + l * e.SECOND + s;
+			let {y: e, o: n, d: i, h: r, m: o, s: l, ms: s} = this;
+			return e * t.YEAR + n * t.MONTH + i * t.DAY + r * t.HOUR + o * t.MINUTE + l * t.SECOND + s;
 		}
-		modify(t = "") {
+		modify(e = "") {
 			let n = this;
-			u(n, t);
+			u(n, e);
 			let i = +n;
 			i *= n.sign = Math.sign(i);
-			i -= n.ms = i % e.SECOND;
-			i -= n.s = i % e.MINUTE;
-			i -= n.m = i % e.HOUR;
-			i -= n.h = i % e.DAY;
-			i -= n.d = i % e.MONTH;
-			i -= n.o = i % e.YEAR;
+			i -= n.ms = i % t.SECOND;
+			i -= n.s = i % t.MINUTE;
+			i -= n.m = i % t.HOUR;
+			i -= n.h = i % t.DAY;
+			i -= n.d = i % t.MONTH;
+			i -= n.o = i % t.YEAR;
 			n.y = i;
-			n.s /= e.SECOND;
-			n.m /= e.MINUTE;
-			n.h /= e.HOUR;
-			n.d /= e.DAY;
-			n.o /= e.MONTH;
-			n.y /= e.YEAR;
+			n.s /= t.SECOND;
+			n.m /= t.MINUTE;
+			n.h /= t.HOUR;
+			n.d /= t.DAY;
+			n.o /= t.MONTH;
+			n.y /= t.YEAR;
 		}
 		toString() {
-			let {y: t, o: n, d: i, h: r, m: o, s: l, ms: s, sign: a} = this, c = {};
-			t && (c.years = t);
+			let {y: e, o: n, d: i, h: r, m: o, s: l, ms: s, sign: a} = this, c = {};
+			e && (c.years = e);
 			n && (c.months = n);
 			i && (c.days = i);
 			r && (c.hours = r);
 			o && (c.minutes = o);
 			l && (c.seconds = l);
 			s && (c.milliseconds = s);
-			return `${[ '', '-', '+' ][a + 1]}${e.items(c).map(([e, t]) => `${t}${t > 1 ? e : e.slice(0, -1)}`).join(' ')}`;
+			return `${[ '', '-', '+' ][a + 1]}${t.items(c).map(([t, e]) => `${e}${e > 1 ? t : t.slice(0, -1)}`).join(' ')}`;
 		}
 	};
 	let d = [ 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday' ];
-	function u(e, t) {
+	function u(t, e) {
 		let n = 1;
-		for (let [i, r, o, l, s, a] of t.matchAll(/(\d+)([a-z]+)|([a-z]+)(\d+)|([+-])/g)) if (r) {
-			let t = d.indexOf(o);
-			if (0 > t && o in e) e[o] += n * r; else {
-				let i = e.getDate(), o = e.getDay();
-				if (t != o) {
-					i += n > 0 ? t - o + 7 : t + o - 15;
+		for (let [i, r, o, l, s, a] of e.matchAll(/(\d+)([a-z]+)|([a-z]+)(\d+)|([+-])/g)) if (r) {
+			let e = d.indexOf(o);
+			if (0 > e && o in t) t[o] += n * r; else {
+				let i = t.getDate(), o = t.getDay();
+				if (e != o) {
+					i += n > 0 ? e - o + 7 : e + o - 15;
 					r--;
 				}
-				e.setDate(i + 7 * n * r);
+				t.setDate(i + 7 * n * r);
 			}
-		} else s && l in e ? e[l] = +s : a && (n = '+' == a ? 1 : -1);
+		} else s && l in t ? t[l] = +s : a && (n = '+' == a ? 1 : -1);
 	}
-	e.assoc_keys = function(e) {
-		let t = e[Symbol.iterator];
-		if (t) {
-			let n = 'entries' === t.name, i = Array.from(t.call(e));
-			return [ n, $1n ? i.map(([e]) => e) : i.map((e, t) => t) ];
+	t.assoc_keys = function(t) {
+		let e = t[Symbol.iterator];
+		if (e) {
+			let n = 'entries' === e.name, i = Array.from(e.call(t));
+			return [ n, $1n ? i.map(([t]) => t) : i.map((t, e) => e) ];
 		}
 		{
-			let t = [];
-			for (let n in e) t.push(n);
-			return [ r, t ];
+			let e = [];
+			for (let n in t) e.push(n);
+			return [ r, e ];
 		}
 	};
-	e.assoc_values = function(e) {
-		let t = e[Symbol.iterator];
-		if (t) {
-			let n = 'entries' === t.name, i = Array.from(t.call(e));
-			n && (i = i.map(([e, t]) => t));
+	t.assoc_values = function(t) {
+		let e = t[Symbol.iterator];
+		if (e) {
+			let n = 'entries' === e.name, i = Array.from(e.call(t));
+			n && (i = i.map(([t, e]) => e));
 			return [ n, i ];
 		}
 		{
-			let t = [];
-			for (let n in e) t.push(e[n]);
-			return [ r, t ];
+			let e = [];
+			for (let n in t) e.push(t[n]);
+			return [ r, e ];
 		}
 	};
-	e.assoc_items = function(e) {
-		let t = e[Symbol.iterator];
-		if (t) {
-			let n = 'entries' === t.name, i = Array.from(t.call(e));
-			n || (i = i.map((e, t) => [ t, e ]));
+	t.assoc_items = function(t) {
+		let e = t[Symbol.iterator];
+		if (e) {
+			let n = 'entries' === e.name, i = Array.from(e.call(t));
+			n || (i = i.map((t, e) => [ e, t ]));
 			return [ n, i ];
 		}
 		{
-			let t = [];
-			for (let n in e) t.push([ n, e[n] ]);
-			return [ r, t ];
+			let e = [];
+			for (let n in t) e.push([ n, t[n] ]);
+			return [ r, e ];
 		}
 	};
-	e.keys = function(t) {
-		return e.assoc_keys(t)[1];
+	t.keys = function(e) {
+		return t.assoc_keys(e)[1];
 	};
-	e.values = function(t) {
-		return e.assoc_values(t)[1];
+	t.values = function(e) {
+		return t.assoc_values(e)[1];
 	};
-	e.items = function(t) {
-		return e.assoc_items(t)[1];
+	t.items = function(e) {
+		return t.assoc_items(e)[1];
 	};
-	e.bool = function(t = r) {
-		return t && (e.isPrimitive(t) || t.length);
+	t.bool = function(e = r) {
+		return e && (t.isPrimitive(e) || e.length);
 	};
-	e.int = function(t = 0) {
-		let n = Math.floor(+t);
-		if (Object.is(n, NaN)) throw TypeError(`Cannot convert ${describe(t)} to int`);
-		if (n < e.MIN_INT || n > e.MAX_INT) throw RangeError(`${describe(t)} must be in range <${e.MIN_INT}, ${e.MAX_INT}>`);
+	t.int = function(e = 0) {
+		let n = Math.floor(+e);
+		if (Object.is(n, NaN)) throw TypeError(`Cannot convert ${describe(e)} to int`);
+		if (n < t.MIN_INT || n > t.MAX_INT) throw RangeError(`${describe(e)} must be in range <${t.MIN_INT}, ${t.MAX_INT}>`);
 		return n;
 	};
-	e.float = function(e = 0) {
-		if (isNaN(+e)) throw TypeError(`Cannot convert ${describe(e)} to float`);
-		return +e;
+	t.float = function(t = 0) {
+		if (isNaN(+t)) throw TypeError(`Cannot convert ${describe(t)} to float`);
+		return +t;
 	};
-	e.str = function(t = "") {
-		if (e.isPrimitive(t)) return t + "";
+	t.str = function(e = "") {
+		if (t.isPrimitive(e)) return e + "";
 		{
-			let [n, i] = assoc_items(t);
-			return n ? `{${i.map(([t, n]) => `${e.isString(t) ? `"${t}"` : `${t}`}: ${str(n)}`).join(', ')}}` : `[${i.map(([e, t]) => str(t)).join(', ')}]`;
+			let [n, i] = assoc_items(e);
+			return n ? `{${i.map(([e, n]) => `${t.isString(e) ? `"${e}"` : `${e}`}: ${str(n)}`).join(', ')}}` : `[${i.map(([t, e]) => str(e)).join(', ')}]`;
 		}
 	};
-	e.list = function(t = []) {
-		if (e.isPrimitive(t) && !e.isString(t)) throw TypeError(`Cannot convert ${describe(t)} to list`);
-		return Array.from(t);
+	t.list = function(e = []) {
+		if (t.isPrimitive(e) && !t.isString(e)) throw TypeError(`Cannot convert ${describe(e)} to list`);
+		return Array.from(e);
 	};
-	e.set = function(e = new Set()) {
-		if (e[Symbol.iterator]) return new Set(e);
-		throw TypeError(`Cannot convert ${describe(e)} to set`);
+	t.set = function(t = new Set()) {
+		if (t[Symbol.iterator]) return new Set(t);
+		throw TypeError(`Cannot convert ${describe(t)} to set`);
 	};
-	e.dict = function(e = new Map()) {
+	t.dict = function(t = new Map()) {
 		try {
-			return new Map(e instanceof Object ? Object.entries(e) : 'string' == typeof e ? value = JSON.parse(e) : e);
-		} catch (t) {
-			throw TypeError(`Cannot convert ${describe(e)} to map`);
+			return new Map(t instanceof Object ? Object.entries(t) : 'string' == typeof t ? value = JSON.parse(t) : t);
+		} catch (e) {
+			throw TypeError(`Cannot convert ${describe(t)} to map`);
 		}
 	};
-	e.obj = function(e = {}) {
-		if (e && e.letructor === Object) return e;
+	t.obj = function(t = {}) {
+		if (t && t.letructor === Object) return t;
 		{
-			let t = 'string' == typeof e ? JSON.parse(e) : e;
-			if (t[Symbol.iterator]) {
-				let e = {};
-				for (let [n, i] of t) e[n] = i;
-				return e;
+			let e = 'string' == typeof t ? JSON.parse(t) : t;
+			if (e[Symbol.iterator]) {
+				let t = {};
+				for (let [n, i] of e) t[n] = i;
+				return t;
 			}
-			if (t instanceof Object) return t;
-			throw TypeError(`Cannot convert ${describe(e)} to dict`);
+			if (e instanceof Object) return e;
+			throw TypeError(`Cannot convert ${describe(t)} to dict`);
 		}
 	};
-	e.describe = function(e) {
-		return `${e != i ? `${e.constructor.name}: ` : ''}${e}`;
+	t.describe = function(t) {
+		return `${t != i ? `${t.constructor.name}: ` : ''}${t}`;
 	};
-	e.matchAll = function(e, t) {
+	t.matchAll = function(t, e) {
 		let n, r = [];
-		for (;(n = t.exec(e)) !== i; ) r.push(n);
+		for (;(n = e.exec(t)) !== i; ) r.push(n);
 		return r;
 	};
-	e.divmod = function(e, t) {
-		let n = e / t;
-		return [ 0 > n ? Math.ceil(n) : Math.floor(n), e % t ];
+	t.divmod = function(t, e) {
+		let n = t / e;
+		return [ 0 > n ? Math.ceil(n) : Math.floor(n), t % e ];
 	};
-	e.styles = (e.q(/#qPact/) || e.q(/head/).q('<div id="qPact">')).q("<style>body,html{width:100%;height:100%}*{box-sizing:border-box;display:inline-block;position:relative;padding:0;flex-basis:auto;flex-grow:0;flex-shrink:0;pointer-events:auto}body{display:block;margin:0}area,datalist,head,link,param,script,style,title{display:none}li{display:list-item}[table],table{display:inline-table;border-collapse:collapse;border-spacing:0}tbody{display:table-row-group}[caption],caption{display:table-caption}col{display:table-column}colgroup{display:table-column-group}tfoot{display:table-footer-group}thead{display:table-header-group}[table] > *,tbody > *{display:table-row}[table] > * > *,tbody > * > *{display:table-cell}align{display:inline-flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}[upward][up]{justify-content:flex-end}[upward][down]{justify-content:flex-start}[upward][left]{align-items:flex-end}[upward][right]{align-items:flex-start}[downward][up],align[up]{justify-content:flex-start}[downward][down],align[down]{justify-content:flex-end}[downward][left],align[left]{align-items:flex-start}[downward][right],align[right]{align-items:flex-end}[leftward][up]{align-items:flex-end}[leftward][down]{align-items:flex-start}[leftward][left]{justify-content:flex-end}[leftward][right]{justify-content:flex-start}[rightward][up]{align-items:flex-end}[rightward][down]{align-items:flex-start}[rightward][left]{justify-content:flex-end}[rightward][right]{justify-content:flex-start}[text-align-left]{text-align:left}[text-align-center]{text-align:center}[text-align-right]{text-align:right}[blank],blank{visibility:hidden}flex{display:inline-flex;flex-direction:row}flex > *{flex-grow:60;flex-shrink:60}[equal] > *{flex-basis:0}[upward]{flex-direction:column-reverse}[downward]{flex-direction:column}[leftward]{flex-direction:row-reverse}[rightward]{flex-direction:row}[no-grow]{flex-grow:0}[no-shrink]{flex-shrink:0}[no-flex]{flex-grow:0;flex-shrink:0}[f-5]{flex:5}[f-6]{flex:6}[f-10]{flex:10}[f-12]{flex:12}[f-15]{flex:15}[f-20]{flex:20}[f-30]{flex:30}[f-120]{flex:120}[f-180]{flex:180}[f-240]{flex:240}[f-300]{flex:300}[f-360]{flex:360}[f-600]{flex:600}[f-720]{flex:720}[full],[wide],full,wide{width:100%}[full],[tall],full,tall{height:100%}[hidden],hidden{display:none}stack{position:relative}stack > *{position:absolute;left:0;top:0;pointer-events:none}tooltip{display:none;position:absolute;left:50%;top:50%;font-weight:bold;font-size:0.35em;padding:0.2em 0.3em;border-radius:0.5em;transform:translate(-50%,-50%)}*:hover > tooltip{display:inline-block}tooltip[right]{left:100%}tooltip[up]{top:0}tooltip[left]{left:0}tooltip[down]{top:100%");
-	e.Component = class Component extends HTMLElement {
-		static set style(t) {
+	t.styles = (t.q(/#qPact/) || t.q(/head/).q('<div id="qPact">')).q("<style>body,html{width:100%;height:100%}*{box-sizing:border-box;display:inline-block;position:relative;padding:0;pointer-events:auto}body{display:block;margin:0}area,datalist,head,link,param,script,style,title{display:none}li{display:list-item}[table],table{display:inline-table;border-collapse:collapse;border-spacing:0}tbody{display:table-row-group}[caption],caption{display:table-caption}col{display:table-column}colgroup{display:table-column-group}tfoot{display:table-footer-group}thead{display:table-header-group}[table] > *,tbody > *{display:table-row}[table] > * > *,tbody > * > *{display:table-cell}align{display:inline-flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}align > *{flex-grow:0;flex-shrink:0}[upward][up]{justify-content:flex-end}[upward][down]{justify-content:flex-start}[upward][left]{align-items:flex-end}[upward][right]{align-items:flex-start}[downward][up],align[up]{justify-content:flex-start}[downward][down],align[down]{justify-content:flex-end}[downward][left],align[left]{align-items:flex-start}[downward][right],align[right]{align-items:flex-end}[leftward][up]{align-items:flex-end}[leftward][down]{align-items:flex-start}[leftward][left]{justify-content:flex-end}[leftward][right]{justify-content:flex-start}[rightward][up]{align-items:flex-end}[rightward][down]{align-items:flex-start}[rightward][left]{justify-content:flex-end}[rightward][right]{justify-content:flex-start}[text-align-left]{text-align:left}[text-align-center]{text-align:center}[text-align-right]{text-align:right}flex{display:inline-flex;flex-direction:row}flex > *{flex-grow:1;flex-shrink:1}[upward]{flex-direction:column-reverse}[downward]{flex-direction:column}[leftward]{flex-direction:row-reverse}[rightward]{flex-direction:row}[no-grow]{flex-grow:0}[no-shrink]{flex-shrink:0}[no-flex]{flex-grow:0;flex-shrink:0}[f-5]{flex:5}[f-6]{flex:6}[f-10]{flex:10}[f-12]{flex:12}[f-15]{flex:15}[f-20]{flex:20}[f-30]{flex:30}[f-120]{flex:120}[f-180]{flex:180}[f-240]{flex:240}[f-300]{flex:300}[f-360]{flex:360}[f-600]{flex:600}[f-720]{flex:720}[full],[wide],full,wide{width:100%}[full],[tall],full,tall{height:100%}stack{position:relative}stack > *{position:absolute;left:0;top:0;pointer-events:none}tooltip{display:none;position:absolute;left:50%;top:50%;font-weight:bold;font-size:0.35em;padding:0.2em 0.3em;border-radius:0.5em;transform:translate(-50%,-50%)}*:hover > tooltip{display:inline-block}tooltip[right]{left:100%}tooltip[up]{top:0}tooltip[left]{left:0}tooltip[down]{top:100%}[fixed],fixed{position:fixed}[sticky],sticky{position:sticky}[blank],blank{visibility:hidden}[hidden],hidden{display:none");
+	t.Component = class Component extends HTMLElement {
+		static set style(e) {
 			let n = this.elementName;
-			(e.styles.q(RegExp(`#${n}`)) || e.styles.q(`<style id="${n}">`)).innerHTML = `${n}{${e.items(t).map(([e, t]) => `${e}:${t}`).join(';')}`;
+			(t.styles.q(RegExp(`#${n}`)) || t.styles.q(`<style id="${n}">`)).innerHTML = `${n}{${t.items(e).map(([t, e]) => `${t}:${e}`).join(';')}`;
 		}
 		constructor() {
 			super();
-			let e = this, t = e.constructor;
-			e.state = {
-				...t.state
+			let t = this, e = t.constructor;
+			t.state = {
+				...e.state
 			};
-			for (let n of t.events) e.addEventListener(n.slice(2), t => e[n].call(e, t));
+			for (let n of e.events) t.addEventListener(n.slice(2), e => t[n].call(t, e));
 		}
 		async connectedCallback() {
-			let t = this;
+			let e = this;
 			try {
-				let n = t.constructor;
-				for (let [i, r] of e.items(n.state)) if (t.hasAttribute(i)) try {
-					t[i] = t.getAttribute(i) || r;
+				let n = e.constructor;
+				for (let [i, r] of t.items(n.state)) if (e.hasAttribute(i)) try {
+					e[i] = e.getAttribute(i) || r;
 				} finally {}
-				await t.load();
-			} catch (e) {
-				console.error(t, e);
+				await e.load();
+			} catch (t) {
+				console.error(e, t);
 			}
 		}
 		async disconnectedCallback() {
-			let e = this;
+			let t = this;
 			try {
-				await e.unload();
-			} catch (t) {
-				console.error(e, t);
+				await t.unload();
+			} catch (e) {
+				console.error(t, e);
 			}
 		}
 		load() {}
@@ -343,38 +343,38 @@ let qPact = new function() {
 			}));
 		}
 	};
-	e.defineElement = function(t, i) {
-		if (!/-/.test(t)) throw SyntaxError("Custom element name must contain '-'");
+	t.defineElement = function(e, i) {
+		if (!/-/.test(e)) throw SyntaxError("Custom element name must contain '-'");
 		let r = {
 			...i.state
 		}, o = new Set(), l = i.prototype;
-		for (let t of Reflect.ownKeys(l)) {
-			let i = Object.getOwnPropertyDescriptor(l, t);
+		for (let e of Reflect.ownKeys(l)) {
+			let i = Object.getOwnPropertyDescriptor(l, e);
 			if (i.set) {
-				i.get || Object.defineProperty(l, t, {
+				i.get || Object.defineProperty(l, e, {
 					...i,
 					get: function() {
-						return this.state[t];
+						return this.state[e];
 					}
 				});
-				r[t] === n && (r[t] = n);
-			} else e.isString(t) && t.startsWith('on') && o.add(t);
+				r[e] === n && (r[e] = n);
+			} else t.isString(e) && e.startsWith('on') && o.add(e);
 		}
 		i.state = r;
 		i.events = o;
-		i.elementName = t;
-		return customElements.define(t, i);
+		i.elementName = e;
+		return customElements.define(e, i);
 	};
-	class Blink extends e.Component {}
+	class Blink extends t.Component {}
 	Blink.style = {};
-	e.defineElement('q-blink', Blink);
-	class Clock extends e.Component {
+	t.defineElement('q-blink', Blink);
+	class Clock extends t.Component {
 		load() {
-			let e = this;
-			e.interval = setInterval(() => {
-				e.render();
+			let t = this;
+			t.interval = setInterval(() => {
+				t.render();
 			}, 1e3);
-			e.render();
+			t.render();
 		}
 		unload() {
 			clearInterval(this.interval);
@@ -383,27 +383,27 @@ let qPact = new function() {
 			this.Q(new Date());
 		}
 	}
-	e.defineElement('q-clock', Clock);
-	class Copy extends e.Component {
+	t.defineElement('q-clock', Clock);
+	class Copy extends t.Component {
 		onclick() {
-			let e = this;
-			e.focus();
-			let t = e.contentEditable;
-			e.contentEditable = r;
+			let t = this;
+			t.focus();
+			let e = t.contentEditable;
+			t.contentEditable = r;
 			document.execCommand('selectAll');
-			e.contentEditable = t;
+			t.contentEditable = e;
 			try {
 				document.execCommand('copy');
-			} catch (t) {
-				navigator.clipboard.writeText(e.innerText);
+			} catch (e) {
+				navigator.clipboard.writeText(t.innerText);
 			}
 		}
 	}
-	e.defineElement('q-copy', Copy);
-	class Katex extends e.Component {
+	t.defineElement('q-copy', Copy);
+	class Katex extends t.Component {
 		init() {
-			if (t.katex === n) return new Promise(function(t, n) {
-				let i = e.q(/head/);
+			if (e.katex === n) return new Promise(function(e, n) {
+				let i = t.q(/head/);
 				i.q("<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css\" integrity=\"sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq\" crossorigin=\"anonymous\">");
 				let r = document.createElement('script');
 				Object.assign(r, {
@@ -411,20 +411,20 @@ let qPact = new function() {
 					integrity: 'sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz',
 					crossOrigin: 'anonymous'
 				});
-				r.onload = t;
+				r.onload = e;
 				r.onerror = n;
 				i.q(r);
 			});
 		}
-		set value(t) {
+		set value(e) {
 			let n = this;
-			t = e.str(t);
-			n.setAttribute('value', t);
-			katex.render(n.state.value = t, n, {
+			e = t.str(e);
+			n.setAttribute('value', e);
+			katex.render(n.state.value = e, n, {
 				displayMode: r
 			});
 		}
 	}
-	e.defineElement('q-katex', Katex);
-	for (let n in e) n in t ? e.isNative(t[n]) || console.warn(`qPact: ${n} is already defined`) : t[n] = e[n];
+	t.defineElement('q-katex', Katex);
+	for (let n in t) n in e ? t.isNative(e[n]) || console.warn(`qPact: ${n} is already defined`) : e[n] = t[n];
 }();

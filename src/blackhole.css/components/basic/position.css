@@ -1,0 +1,9 @@
+fixed,
+[fixed] {
+	position: fixed;
+}
+
+sticky,
+[sticky] {
+	position: sticky;
+}

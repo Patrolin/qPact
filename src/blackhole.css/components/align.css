@@ -5,8 +5,15 @@ align {
 	align-items: center;
 	text-align: center;
 }
+align > * {
+	flex-grow: 0;
+	flex-shrink: 0;
+}
 
 /* see flex.css */
+
+/* TODO: add align spacing
+*/
 
 [upward][up] {
 	justify-content: flex-end;

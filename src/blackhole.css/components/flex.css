@@ -3,11 +3,8 @@ flex {
 	flex-direction: row;
 }
 flex > * {
-	flex-grow: 60;
-	flex-shrink: 60;
-}
-[equal] > * {
-	flex-basis: 0;
+	flex-grow: 1;
+	flex-shrink: 1;
 }
 
 [upward] {
