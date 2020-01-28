@@ -1,25 +1,15 @@
 {
-	"name": "qpact",
-	"version": "1.0.0",
-	"description": "a collection of things",
-	"directories": {
-		"test": "tests"
-	},
-	"dependencies": {
-		"uglify-es": "^3.3.9"
-	},
-	"devDependencies": {},
-	"scripts": {
-		"build": "node --experimental-modules build.mjs"
-	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/Patrolin/qPact.git"
 	},
-	"author": "Patrolin",
-	"license": "unlicense",
-	"bugs": {
-		"url": "https://github.com/Patrolin/qPact/issues"
+	"license": "Unlicense",
+	"homepage": "https://github.com/Patrolin/qPact#readme",
+	"scripts": {
+		"build": "node --experimental-modules build.mjs"
 	},
-	"homepage": "https://github.com/Patrolin/qPact#readme"
+	"devDependencies": {
+		"cssnano": "^4.1.10",
+		"uglify-es": "^3.3.9"
+	}
 }

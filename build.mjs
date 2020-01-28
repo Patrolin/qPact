@@ -1,4 +1,5 @@
 import uglify from 'uglify-es';
+import cssnano from 'cssnano';
 import fs from 'fs';
 
 function dirs(path) {
