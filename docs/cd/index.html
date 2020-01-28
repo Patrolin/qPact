@@ -7,7 +7,7 @@
 		/>
 		<link href="./zdroje/paper.css" rel="stylesheet" />
 		<link href="./zdroje/index.css" rel="stylesheet" />
-		<script src="../../dist/qPact.js"></script>
+		<script src="../qPact.min.js"></script>
 	</head>
 	<body class="A4 landscape" onload="q(/c-textarea/).oninput();">
 		<align wide>
@@ -17,14 +17,12 @@
 						<align right id="first">
 							<output class="same"></output>
 						</align>
-						<flex down class="square-2">
-							<align full>
-								<output class="same" id="second"></output>
-								<textarea wide rows="10">
+						<align class="square-2">
+							<output class="same" id="second"></output>
+							<textarea wide rows="10">
 Quia&#10;dolor&#10;sit&#10;amet</textarea
-								>
-							</align>
-						</flex>
+							>
+						</align>
 						<align right id="third">
 							<output class="same"></output>
 						</align>
@@ -49,7 +47,7 @@ Quia&#10;dolor&#10;sit&#10;amet</textarea
 			</stack>
 			<align rightward class="sheet">
 				<div class="square-1"></div>
-				<flex down class="square-1">
+				<flex downward class="square-1">
 					<img wide no-grow src="./zdroje/logo.png" />
 					<align>
 						<c-textarea wide></c-textarea>

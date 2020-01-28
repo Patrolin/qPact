@@ -8,10 +8,6 @@ body {
 	padding: 10mm;
 }
 .square-1,
-.square-2 {
-	height: 120mm;
-}
-.square-1,
 .square-2,
 #boop {
 	border: 3px dashed black;
@@ -29,6 +25,7 @@ body {
 .square-2 {
 	border-width: 0 3px;
 	border-style: solid;
+	justify-content: space-around;
 }
 input,
 textarea {
@@ -53,9 +50,6 @@ output {
 #third {
 	text-align: right;
 	writing-mode: vertical-lr;
-}
-.square-2 align {
-	justify-content: space-around;
 }
 c-textarea textarea {
 	font-size: 44px;

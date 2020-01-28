@@ -163,6 +163,7 @@ for (let path of dirs('src')) {
 		fs.writeFileSync(`dist/${dir_min}`, TARGETS[ext](path, name, true));
 	}
 }
+fs.writeFileSync('docs/qPact.min.js', fs.readFileSync('dist/qPact.min.js'));
 
 for (let path of files('dist')) {
 	if (fs.statSync(path).mtime < START - 100)
