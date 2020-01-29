@@ -16,14 +16,21 @@ body {
 .square-2,
 #first,
 #third {
-	width: 12cm;
-	height: 120mm;
+	width: calc(120mm + 6px);
+	height: calc(120mm + 6px);
 }
 .square-1 {
 	padding: 8mm 8mm 0;
 }
+div.square-1 {
+	border-right: 1px solid;
+}
+flex.square-1 {
+	border-left: 1px solid;
+}
 .square-2 {
-	border-width: 0 3px;
+	width: 138mm;
+	border-width: 0 2px;
 	border-style: solid;
 	justify-content: space-around;
 }

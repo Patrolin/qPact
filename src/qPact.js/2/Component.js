@@ -1,6 +1,6 @@
 module.styles = (
 	module.q(/#qPact/) || module.q(/head/).q('<div id="qPact">')
-).q(`<style>@import 'dist/blackhole.min.css';`);
+).q(`<style>@import 'dist/blackhole.css';`);
 module.Component = class Component extends HTMLElement {
 	// get style
 	static set style(styles) {
@@ -60,9 +60,14 @@ module.Component = class Component extends HTMLElement {
 	}
 };
 module.defineElement = function(name, Class) {
-	if (!/-/.test(name)) {
-		throw SyntaxError("Custom element name must contain '-'");
+	try {
+		document.createElement(name);
+	} catch (e) {
+		throw SyntaxError(`${name} is not a valid html element name`);
 	}
+	if (!/-/.test(name))
+		throw SyntaxError("Custom element name must contain '-'");
+
 	let ClassState = { ...Class.state };
 	let ClassEvents = new Set();
 	let Prototype = Class.prototype;

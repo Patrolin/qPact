@@ -7,14 +7,14 @@
 		/>
 		<link href="./zdroje/paper.css" rel="stylesheet" />
 		<link href="./zdroje/index.css" rel="stylesheet" />
-		<script src="../qPact.min.js"></script>
+		<script src="../qPact.js"></script>
 	</head>
 	<body class="A4 landscape" onload="q(/c-textarea/).oninput();">
 		<align wide>
 			<stack full>
 				<align class="sheet">
-					<align rightward id="boop">
-						<align right id="first">
+					<align rightwards id="boop">
+						<align id="first">
 							<output class="same"></output>
 						</align>
 						<align class="square-2">
@@ -23,7 +23,7 @@
 Quia&#10;dolor&#10;sit&#10;amet</textarea
 							>
 						</align>
-						<align right id="third">
+						<align id="third">
 							<output class="same"></output>
 						</align>
 					</align>
@@ -45,9 +45,9 @@ Quia&#10;dolor&#10;sit&#10;amet</textarea
 					/>
 				</align>
 			</stack>
-			<align rightward class="sheet">
+			<align rightwards class="sheet">
 				<div class="square-1"></div>
-				<flex downward class="square-1">
+				<flex downwards class="square-1">
 					<img wide no-grow src="./zdroje/logo.png" />
 					<align>
 						<c-textarea wide></c-textarea>

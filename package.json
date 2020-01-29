@@ -6,10 +6,17 @@
 	"license": "Unlicense",
 	"homepage": "https://github.com/Patrolin/qPact#readme",
 	"scripts": {
-		"build": "node --experimental-modules build.mjs"
+		"build": "node build.js",
+		"reset": "rm -rf node_modules && rm -f package-lock.json && npm install"
 	},
 	"devDependencies": {
 		"cssnano": "^4.1.10",
+		"postcss": "^7.0.26",
+		"postcss-advanced-variables": "^3.0.0",
+		"postcss-merge-rules": "^4.0.3",
+		"postcss-nested": "^4.2.1",
+		"postcss-short": "^5.0.0",
+		"sugarss": "^2.0.0",
 		"uglify-es": "^3.3.9"
 	}
 }

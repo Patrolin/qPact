@@ -1,0 +1,27 @@
+flex
+	display: inline-flex
+	flex-direction: row
+	& > *
+		flex-grow: 1
+		flex-shrink: 1
+[upwards]
+	flex-direction: column-reverse
+[downwards]
+	flex-direction: column
+[leftwards]
+	flex-direction: row-reverse
+[rightwards]
+	flex-direction: row
+
+[no-grow]
+	flex-grow: 0
+[no-shrink]
+	flex-shrink: 0
+[no-flex]
+	flex-grow: 0
+	flex-shrink: 0
+
+@for $b from 1 to 20
+	@for $a from 1 to $b
+		[flex='$a/$b']
+			flex: calc($a / $b)

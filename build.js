@@ -1,6 +1,6 @@
-import uglify from 'uglify-es';
-import cssnano from 'cssnano';
-import fs from 'fs';
+var uglify = require('uglify-es');
+var cp = require('child_process');
+var fs = require('fs');
 
 function dirs(path) {
 	let result = [path];
@@ -16,7 +16,7 @@ function files(path) {
 			if (dirent.isFile()) result.push(`${dir}/${dirent.name}`);
 	return result;
 }
-function textFromFile(path) {
+function textFile(path) {
 	return fs.readFileSync(path, {
 		encoding: 'UTF-8',
 	});
@@ -48,16 +48,14 @@ function items(input) {
 }
 
 let TARGETS = {
-	js(path, name, minified) {
+	async js(path, name) {
 		let concat = `let ${name} = new function(){
 			'use strict';
 			let module = this, global = window, UNDEFINED = undefined, NULL = null, TRUE = true;
 			${files(path)
-				.map(textFromFile)
+				.map(textFile)
 				.join(';')
-				.replace(/@import '(.+?)';/g, (match, name) =>
-					textFromFile(name)
-				)}
+				.replace(/@import '(.+?)';/g, (match, name) => textFile(name))}
 			for(let key in module){
 				key in global ? module.isNative(global[key]) || console.warn(\`${name}: \${key} is already defined\`) : global[key] = module[key];
 			}
@@ -84,8 +82,8 @@ let TARGETS = {
 				quote_style: 3,
 				width: 80,
 				indent_level: 1,
-				beautify: !minified,
-				semicolons: !minified,
+				beautify: false,
+				semicolons: false,
 			},
 		});
 		if (!js.error) {
@@ -98,7 +96,7 @@ let TARGETS = {
 						JSON.stringify(match).replace(/"/g, "'")
 					);
 					return '$1';
-				}) // uglify-es is complete and utter garbage
+				}) // uglify-es is retarded
 				.replace(/^ +/gm, function(match) {
 					return '\t'.repeat(match.length);
 				})
@@ -108,65 +106,43 @@ let TARGETS = {
 			return `${line}:${col} ${message}\n\n${concat}`;
 		}
 	},
-	css(path, name, minified) {
-		let css = {};
-		for (let [match, selectors, properties] of matchAll(
-			files(path)
-				.map(textFromFile)
-				.join('')
-				.replace(/\/\*(?:.|\s)*?\*\//g, ''),
-			/([^{]*){([^}]*)}/g
-		)) {
-			selectors = selectors
-				.split(',')
-				.map((selector) => selector.trim().replace(/ +/g, ' '))
-				.sort()
-				.join(',');
-			properties = matchAll(properties, /([^:]+):([^;]+);/g).map(
-				([match, property, values]) => [
-					property.trim(),
-					values
-						.trim()
-						.replace(/ +/g, ' ')
-						.replace(/, /g, ','),
-				]
-			);
-			for (let [p, v] of properties) {
-				css[selectors] = css[selectors] || {};
-				if (css[selectors][p])
-					console.warn(`${selectors} ${p} is already defined`);
-				css[selectors][p] = v;
+	async css(path, name) {
+		function random_string(n) {
+			let r = [];
+			for (let i = 0; i < n; ++i) {
+				r.push(Math.floor(10 + Math.random() * 26).toString(36));
 			}
+			return r.join('');
 		}
-		let SPACE = minified ? '' : ' ';
-		let TAB = minified ? '' : '\n\t';
-		let NEW_LINE = minified ? '' : '\n';
-		css = Object.entries(css)
-			.map(
-				([selectors, properties]) =>
-					`${selectors}{${items(properties)
-						.map(([p, v]) => `${TAB}${p}:${SPACE}${v}`)
-						.join(';')}${NEW_LINE}}`
-			)
-			.join(NEW_LINE);
-		return minified ? css.slice(0, css.length - 1) : css;
+
+		let concat = files(path)
+			.map(textFile)
+			.join('');
+		let sssName = `dist/${name}.sss`;
+		fs.writeFileSync(sssName, concat);
+		let cssName = `dist/${name}.css`;
+		cp.execSync(`postcss ${sssName} > ${cssName}`);
+		fs.unlinkSync(sssName);
+		let minified = textFile(cssName);
+		return minified;
 	},
 };
 
-let START = new Date();
-for (let path of dirs('src')) {
-	let [_, dir] = rpartition(path, '/');
-	let [name, ext] = rpartition(dir, '.');
-	let dir_min = `${name}.min.${ext}`;
-	if (ext) {
-		fs.writeFileSync(`dist/${dir}`, TARGETS[ext](path, name, false));
-		fs.writeFileSync(`dist/${dir_min}`, TARGETS[ext](path, name, true));
+async function main() {
+	let START = new Date();
+	for (let path of dirs('src')) {
+		let [_, dir] = rpartition(path, '/');
+		let [name, ext] = rpartition(dir, '.');
+		if (ext) {
+			fs.writeFileSync(`dist/${dir}`, await TARGETS[ext](path, name));
+		}
+	}
+	fs.writeFileSync('docs/qPact.js', fs.readFileSync('dist/qPact.js'));
+
+	for (let path of files('dist')) {
+		if (fs.statSync(path).mtime < START - 100)
+			// file times are fucking weird
+			fs.unlinkSync(path);
 	}
 }
-fs.writeFileSync('docs/qPact.min.js', fs.readFileSync('dist/qPact.min.js'));
-
-for (let path of files('dist')) {
-	if (fs.statSync(path).mtime < START - 100)
-		// file times are fucking weird
-		fs.unlinkSync(path);
-}
+main();

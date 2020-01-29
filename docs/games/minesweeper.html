@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
 		<title>Minesweeper</title>
-		<script src="../qPact.min.js"></script>
+		<script src="../qPact.js"></script>
 		<script>
 			class Minesweeper extends Component{
 				set cols(v){
@@ -71,7 +71,7 @@
 					this.state.mine = bool(v);
 				}
 				set value(v){
-					this.Q(`<center full>${this.state.value = int(v)}`);
+					this.Q(`<align full>${this.state.value = int(v)}`);
 				}
 				onclick(){
 					this.clicked = true;

@@ -1,0 +1,24 @@
+tooltip
+	display: none
+*:hover > tooltip
+	display: inline-block
+
+tooltip
+	position: absolute
+	left: 50%
+	top: 50%
+	&[right]
+		left: 100%
+	&[up]
+		top: 0
+	&[left]
+		left: 0
+	&[down]
+		top: 100%
+
+tooltip
+	font-weight: bold
+	font-size: 0.35em
+	padding: 0.2em 0.3em
+	border-radius: 0.5em
+	transform: translate(-50%, -50%)
