@@ -2,8 +2,7 @@ flex
 	display: inline-flex
 	flex-direction: row
 	& > *
-		flex-grow: 1
-		flex-shrink: 1
+		flex: 1 1
 
 [upwards]
 	flex-direction: column-reverse
@@ -19,9 +18,8 @@ flex
 [no-shrink]
 	flex-shrink: 0
 [no-flex]
-	flex-grow: 0
-	flex-shrink: 0
+	flex: 0 0
 
-@for $b from 1 to 20
+@for $b from 1 to $DEPTH
 	@for $a from 1 to $b
 		@include percentage(flex)
