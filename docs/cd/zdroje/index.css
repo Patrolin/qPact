@@ -17,9 +17,10 @@ body {
 #first,
 #third {
 	width: calc(120mm + 6px);
-	height: calc(120mm + 6px);
+	height: calc(120mm - 12px);
 }
 .square-1 {
+	height: calc(120mm + 6px);
 	padding: 8mm 8mm 0;
 }
 div.square-1 {
