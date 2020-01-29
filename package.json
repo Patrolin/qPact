@@ -14,9 +14,9 @@
 		"postcss": "^7.0.26",
 		"postcss-advanced-variables": "^3.0.0",
 		"postcss-math": "0.0.10",
-		"postcss-merge-rules": "^4.0.3",
 		"postcss-nested": "^4.2.1",
 		"postcss-short": "^5.0.0",
+		"postcss-sorting": "^5.0.1",
 		"sugarss": "^2.0.0",
 		"uglify-es": "^3.3.9"
 	}

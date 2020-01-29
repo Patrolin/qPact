@@ -1,5 +1,7 @@
 var uglify = require('uglify-es');
 var cp = require('child_process');
+var postcss = require('postcss')(require('./postcss.config').plugins);
+var sugarss = require('sugarss');
 var fs = require('fs');
 
 function dirs(path) {
@@ -107,24 +109,16 @@ let TARGETS = {
 		}
 	},
 	async css(path, name) {
-		function random_string(n) {
-			let r = [];
-			for (let i = 0; i < n; ++i) {
-				r.push(Math.floor(10 + Math.random() * 26).toString(36));
-			}
-			return r.join('');
-		}
-
 		let concat = files(path)
 			.map(textFile)
-			.join('');
-		let sssName = `dist/${name}.sss`;
-		fs.writeFileSync(sssName, concat);
-		let cssName = `dist/${name}.css`;
-		cp.execSync(`postcss ${sssName} > ${cssName}`);
-		fs.unlinkSync(sssName);
-		let minified = textFile(cssName);
-		return minified;
+			.join('\n');
+		fs.writeFileSync('dist/tmp.sss', concat);
+		return (
+			await postcss.process(concat, {
+				parser: sugarss.parse,
+				from: undefined,
+			})
+		).css;
 	},
 };
 
