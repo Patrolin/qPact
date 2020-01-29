@@ -4,6 +4,7 @@ flex
 	& > *
 		flex-grow: 1
 		flex-shrink: 1
+
 [upwards]
 	flex-direction: column-reverse
 [downwards]
@@ -23,5 +24,4 @@ flex
 
 @for $b from 1 to 20
 	@for $a from 1 to $b
-		[flex='$a/$b']
-			flex: calc($a / $b)
+		@include percentage(flex)

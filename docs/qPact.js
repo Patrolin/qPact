@@ -1,25 +1,25 @@
 let qPact=new function(){'use strict'
-let t=this,h=window,e=void 0,i=null,d=!0
-t.q=function(t,h=e){return t instanceof RegExp?f(document,t,h):l(t,h)}
-function l(h,e){if(h instanceof Node)return g(h,e)
-if(h instanceof Array)return g(h.map(h=>t.q(h)),e)
+let t=this,e=window,n=void 0,i=null,r=!0
+t.q=function(t,e=n){return t instanceof RegExp?a(document,t,e):o(t,e)}
+function o(e,n){if(e instanceof Node)return s(e,n)
+if(e instanceof Array)return s(e.map(e=>t.q(e)),n)
 let i=document.createElement('template')
-i.innerHTML=h
-let d=i.content.childNodes
-return g(1===d.length?d[0]:[...d],e)}function g(t,h){return h===e?t:Array(h).fill().map(()=>w(t))}function w(t){return t instanceof Node?t.cloneNode(d):t.map(w)}Node.prototype.Q=function(t,h=e){let d,l=this,g={}
-for(;(d=l.firstChild)!==i;){l.removeChild(d)
-d.id&&(g[d.id]=d)}if(t===i)return[]
-let w=l.q(t,h)
-for(let t of l.querySelectorAll('[id]'))t.id in g&&!t.childNodes.length&&t.parentNode.replaceChild(g[t.id],t)
-return w instanceof Node?w:w.map(t=>t.id?g[t.id]:t)}
-Node.prototype.q=function(t,h=e){if(t instanceof RegExp)return f(this,t,h)
-let i=l(t,h)
+i.innerHTML=e
+let r=i.content.childNodes
+return s(1===r.length?r[0]:[...r],n)}function s(t,e){return e===n?t:Array(e).fill().map(()=>l(t))}function l(t){return t instanceof Node?t.cloneNode(r):t.map(l)}Node.prototype.Q=function(t,e=n){let r,o=this,s={}
+for(;(r=o.firstChild)!==i;){o.removeChild(r)
+r.id&&(s[r.id]=r)}if(t===i)return[]
+let l=o.q(t,e)
+for(let t of o.querySelectorAll('[id]'))t.id in s&&!t.childNodes.length&&t.parentNode.replaceChild(s[t.id],t)
+return l instanceof Node?l:l.map(t=>t.id?s[t.id]:t)}
+Node.prototype.q=function(t,e=n){if(t instanceof RegExp)return a(this,t,e)
+let i=o(t,e)
 return i instanceof Node?this.appendChild(i):i.map(t=>this.appendChild(t))}
-function f(t,h,e){if(h.global)return g([...t.querySelectorAll(h.source)],e)
-let d=t.querySelector(h.source)
-return d?g(d,e):i}Array.prototype.Q=function(t,h=e){return this.map(e=>e.Q(t,h))}
-Array.prototype.q=function(t,h=e){return t instanceof RegExp?g(t.global?s(this,t.source):n(this,t.source),h):this.map(e=>e.q(t,h))}
-function s(t,h){return t.map(t=>t instanceof Node?t.matches(h)?t:i:s(t,h)).filter(t=>t!==i)}function n(t,h){return t.flat(1/0).find(t=>t.matches(h))}t.isPrimitive=function(t){return t!==Object(t)}
+function a(t,e,n){if(e.global)return s([...t.querySelectorAll(e.source)],n)
+let r=t.querySelector(e.source)
+return r?s(r,n):i}Array.prototype.Q=function(t,e=n){return this.map(n=>n.Q(t,e))}
+Array.prototype.q=function(t,e=n){return t instanceof RegExp?s(t.global?c(this,t.source):d(this,t.source),e):this.map(n=>n.q(t,e))}
+function c(t,e){return t.map(t=>t instanceof Node?t.matches(e)?t:i:c(t,e)).filter(t=>t!==i)}function d(t,e){return t.flat(1/0).find(t=>t.matches(e))}t.isPrimitive=function(t){return t!==Object(t)}
 t.isNative=function(t){return/\[native code\]/.test(t.name)}
 t.isBoolean=function(t){return'boolean'==typeof t}
 t.isString=function(t){return'string'==typeof t}
@@ -32,104 +32,104 @@ t.MAX_INT=-(t.MIN_INT=Number.MIN_SAFE_INTEGER-1)
 t.WEEK=7*(t.DAY=24*(t.HOUR=60*(t.MINUTE=60*(t.SECOND=1e3))))
 t.MONTH=(t.YEAR=365.2425*t.DAY)/12
 t.DateTime=class DateTime extends Date{get y(){this.getFullYear()}set y(t){this.setFullYear(t)}get o(){this.getMonth()}set o(t){this.setMonth(t)}get d(){this.getDate()}set d(t){this.setDate(t)}get h(){this.getHours()}set h(t){this.setHours(t)}get m(){this.getMinutes()}set m(t){this.setMinutes(t)}get s(){this.getSeconds()}set s(t){this.setSeconds(t)}get ms(){this.getMilliseconds()}set ms(t){this.setMilliseconds(t)}constructor(t=""){super()
-this.modify(t)}modify(t=""){r(this,t)}format(t){return new Intl.DateTimeFormat(e,{weekday:'long',day:'numeric',month:'long',year:'numeric',hour:'numeric',minute:'numeric',second:'numeric',timeZoneName:'long',...t}).format(this)}}
-t.TimeInterval=class{constructor(t){let h=this
-h.y=h.o=h.d=h.h=h.m=h.s=h.ms=0
-t&&h.modify(t)}valueOf(){let{y:h,o:e,d:i,h:d,m:l,s:g,ms:w}=this
-return h*t.YEAR+e*t.MONTH+i*t.DAY+d*t.HOUR+l*t.MINUTE+g*t.SECOND+w}modify(h=""){let e=this
-r(e,h)
-let i=+e
-i*=e.sign=Math.sign(i)
-i-=e.ms=i%t.SECOND
-i-=e.s=i%t.MINUTE
-i-=e.m=i%t.HOUR
-i-=e.h=i%t.DAY
-i-=e.d=i%t.MONTH
-i-=e.o=i%t.YEAR
-e.y=i
-e.s/=t.SECOND
-e.m/=t.MINUTE
-e.h/=t.HOUR
-e.d/=t.DAY
-e.o/=t.MONTH
-e.y/=t.YEAR}toString(){let{y:h,o:e,d:i,h:d,m:l,s:g,ms:w,sign:f}=this,s={}
-h&&(s.years=h)
-e&&(s.months=e)
-i&&(s.days=i)
-d&&(s.hours=d)
-l&&(s.minutes=l)
-g&&(s.seconds=g)
-w&&(s.milliseconds=w)
-return`${['','-','+'][f+1]}${t.items(s).map(([t,h])=>`${h}${h>1?t:t.slice(0,-1)}`).join(' ')}`}}
-let x=['sunday','monday','tuesday','wednesday','thursday','friday','saturday']
-function r(t,h){let e=1
-for(let[i,d,l,g,w,f]of h.matchAll(/(\d+)([a-z]+)|([a-z]+)(\d+)|([+-])/g))if(d){let h=x.indexOf(l)
-if(0>h&&l in t)t[l]+=e*d
-else{let i=t.getDate(),l=t.getDay()
-if(h!=l){i+=e>0?h-l+7:h+l-15
-d--}t.setDate(i+7*e*d)}}else w&&g in t?t[g]=+w:f&&(e='+'==f?1:-1)}t.assoc_keys=function(t){let h=t[Symbol.iterator]
-if(h){let e='entries'===h.name,i=Array.from(h.call(t))
-return[e,$1e?i.map(([t])=>t):i.map((t,h)=>h)]}{let h=[]
-for(let e in t)h.push(e)
-return[d,h]}}
-t.assoc_values=function(t){let h=t[Symbol.iterator]
-if(h){let e='entries'===h.name,i=Array.from(h.call(t))
-e&&(i=i.map(([t,h])=>h))
-return[e,i]}{let h=[]
-for(let e in t)h.push(t[e])
-return[d,h]}}
-t.assoc_items=function(t){let h=t[Symbol.iterator]
-if(h){let e='entries'===h.name,i=Array.from(h.call(t))
-e||(i=i.map((t,h)=>[h,t]))
-return[e,i]}{let h=[]
-for(let e in t)h.push([e,t[e]])
-return[d,h]}}
-t.keys=function(h){return t.assoc_keys(h)[1]}
-t.values=function(h){return t.assoc_values(h)[1]}
-t.items=function(h){return t.assoc_items(h)[1]}
-t.bool=function(h=d){return h&&(t.isPrimitive(h)||h.length)}
-t.int=function(h=0){let e=Math.floor(+h)
-if(Object.is(e,NaN))throw TypeError(`Cannot convert ${describe(h)} to int`)
-if(e<t.MIN_INT||e>t.MAX_INT)throw RangeError(`${describe(h)} must be in range <${t.MIN_INT}, ${t.MAX_INT}>`)
-return e}
+this.modify(t)}modify(t=""){u(this,t)}format(t){return new Intl.DateTimeFormat(n,{weekday:'long',day:'numeric',month:'long',year:'numeric',hour:'numeric',minute:'numeric',second:'numeric',timeZoneName:'long',...t}).format(this)}}
+t.TimeInterval=class{constructor(t){let e=this
+e.y=e.o=e.d=e.h=e.m=e.s=e.ms=0
+t&&e.modify(t)}valueOf(){let{y:e,o:n,d:i,h:r,m:o,s,ms:l}=this
+return e*t.YEAR+n*t.MONTH+i*t.DAY+r*t.HOUR+o*t.MINUTE+s*t.SECOND+l}modify(e=""){let n=this
+u(n,e)
+let i=+n
+i*=n.sign=Math.sign(i)
+i-=n.ms=i%t.SECOND
+i-=n.s=i%t.MINUTE
+i-=n.m=i%t.HOUR
+i-=n.h=i%t.DAY
+i-=n.d=i%t.MONTH
+i-=n.o=i%t.YEAR
+n.y=i
+n.s/=t.SECOND
+n.m/=t.MINUTE
+n.h/=t.HOUR
+n.d/=t.DAY
+n.o/=t.MONTH
+n.y/=t.YEAR}toString(){let{y:e,o:n,d:i,h:r,m:o,s,ms:l,sign:a}=this,c={}
+e&&(c.years=e)
+n&&(c.months=n)
+i&&(c.days=i)
+r&&(c.hours=r)
+o&&(c.minutes=o)
+s&&(c.seconds=s)
+l&&(c.milliseconds=l)
+return`${['','-','+'][a+1]}${t.items(c).map(([t,e])=>`${e}${e>1?t:t.slice(0,-1)}`).join(' ')}`}}
+let f=['sunday','monday','tuesday','wednesday','thursday','friday','saturday']
+function u(t,e){let n=1
+for(let[i,r,o,s,l,a]of e.matchAll(/(\d+)([a-z]+)|([a-z]+)(\d+)|([+-])/g))if(r){let e=f.indexOf(o)
+if(0>e&&o in t)t[o]+=n*r
+else{let i=t.getDate(),o=t.getDay()
+if(e!=o){i+=n>0?e-o+7:e+o-15
+r--}t.setDate(i+7*n*r)}}else l&&s in t?t[s]=+l:a&&(n='+'==a?1:-1)}t.assoc_keys=function(t){let e=t[Symbol.iterator]
+if(e){let n='entries'===e.name,i=Array.from(e.call(t))
+return[n,$1n?i.map(([t])=>t):i.map((t,e)=>e)]}{let e=[]
+for(let n in t)e.push(n)
+return[r,e]}}
+t.assoc_values=function(t){let e=t[Symbol.iterator]
+if(e){let n='entries'===e.name,i=Array.from(e.call(t))
+n&&(i=i.map(([t,e])=>e))
+return[n,i]}{let e=[]
+for(let n in t)e.push(t[n])
+return[r,e]}}
+t.assoc_items=function(t){let e=t[Symbol.iterator]
+if(e){let n='entries'===e.name,i=Array.from(e.call(t))
+n||(i=i.map((t,e)=>[e,t]))
+return[n,i]}{let e=[]
+for(let n in t)e.push([n,t[n]])
+return[r,e]}}
+t.keys=function(e){return t.assoc_keys(e)[1]}
+t.values=function(e){return t.assoc_values(e)[1]}
+t.items=function(e){return t.assoc_items(e)[1]}
+t.bool=function(e=r){return e&&(t.isPrimitive(e)||e.length)}
+t.int=function(e=0){let n=Math.floor(+e)
+if(Object.is(n,NaN))throw TypeError(`Cannot convert ${describe(e)} to int`)
+if(n<t.MIN_INT||n>t.MAX_INT)throw RangeError(`${describe(e)} must be in range <${t.MIN_INT}, ${t.MAX_INT}>`)
+return n}
 t.float=function(t=0){if(isNaN(+t))throw TypeError(`Cannot convert ${describe(t)} to float`)
 return+t}
-t.str=function(h=""){if(t.isPrimitive(h))return h+""
-{let[e,i]=assoc_items(h)
-return e?`{${i.map(([h,e])=>`${t.isString(h)?`"${h}"`:`${h}`}: ${str(e)}`).join(', ')}}`:`[${i.map(([t,h])=>str(h)).join(', ')}]`}}
-t.list=function(h=[]){if(t.isPrimitive(h)&&!t.isString(h))throw TypeError(`Cannot convert ${describe(h)} to list`)
-return Array.from(h)}
+t.str=function(e=""){if(t.isPrimitive(e))return e+""
+{let[n,i]=assoc_items(e)
+return n?`{${i.map(([e,n])=>`${t.isString(e)?`"${e}"`:`${e}`}: ${str(n)}`).join(', ')}}`:`[${i.map(([t,e])=>str(e)).join(', ')}]`}}
+t.list=function(e=[]){if(t.isPrimitive(e)&&!t.isString(e))throw TypeError(`Cannot convert ${describe(e)} to list`)
+return Array.from(e)}
 t.set=function(t=new Set){if(t[Symbol.iterator])return new Set(t)
 throw TypeError(`Cannot convert ${describe(t)} to set`)}
-t.dict=function(t=new Map){try{return new Map(t instanceof Object?Object.entries(t):'string'==typeof t?value=JSON.parse(t):t)}catch(h){throw TypeError(`Cannot convert ${describe(t)} to map`)}}
+t.dict=function(t=new Map){try{return new Map(t instanceof Object?Object.entries(t):'string'==typeof t?value=JSON.parse(t):t)}catch(e){throw TypeError(`Cannot convert ${describe(t)} to map`)}}
 t.obj=function(t={}){if(t&&t.letructor===Object)return t
-{let h='string'==typeof t?JSON.parse(t):t
-if(h[Symbol.iterator]){let t={}
-for(let[e,i]of h)t[e]=i
-return t}if(h instanceof Object)return h
+{let e='string'==typeof t?JSON.parse(t):t
+if(e[Symbol.iterator]){let t={}
+for(let[n,i]of e)t[n]=i
+return t}if(e instanceof Object)return e
 throw TypeError(`Cannot convert ${describe(t)} to dict`)}}
 t.describe=function(t){return`${t!=i?`${t.constructor.name}: `:''}${t}`}
-t.matchAll=function(t,h){let e,d=[]
-for(;(e=h.exec(t))!==i;)d.push(e)
-return d}
-t.divmod=function(t,h){let e=t/h
-return[0>e?Math.ceil(e):Math.floor(e),t%h]}
-t.styles=(t.q(/#qPact/)||t.q(/head/).q('<div id="qPact">')).q("<style>body,html{width:100%;height:100%}*{box-sizing:border-box;display:inline-block;position:relative;padding:0;pointer-events:auto}body{display:block;margin:0}area,datalist,head,link,param,script,style,title{display:none}li{display:list-item}[table],table{display:inline-table;border-collapse:collapse;border-spacing:0}tbody{display:table-row-group}[caption],caption{display:table-caption}col{display:table-column}colgroup{display:table-column-group}tfoot{display:table-footer-group}thead{display:table-header-group}[table]>*,tbody>*{display:table-row}[table]>*>*,tbody>*>*{display:table-cell}align{display:inline-flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}align>*{flex-grow:0;flex-shrink:0}align[up]{justify-content:flex-start}align[down]{justify-content:flex-end}align[left]{align-items:flex-start}align[right]{align-items:flex-end}[upwards][up]{justify-content:flex-end}[upwards][down]{justify-content:flex-start}[upwards][left]{align-items:flex-end}[upwards][right]{align-items:flex-start}[downwards][up]{justify-content:flex-start}[downwards][down]{justify-content:flex-end}[downwards][left]{align-items:flex-start}[downwards][right]{align-items:flex-end}[leftwards][up]{align-items:flex-end}[leftwards][down]{align-items:flex-start}[leftwards][left]{justify-content:flex-end}[leftwards][right]{justify-content:flex-start}[rightwards][up]{align-items:flex-end}[rightwards][down]{align-items:flex-start}[rightwards][left]{justify-content:flex-end}[rightwards][right]{justify-content:flex-start}[text-align=left]{text-align:left}[text-align=center]{text-align:center}[text-align=right]{text-align:right}[text-align=justify]{text-align:justify}flex{display:inline-flex;flex-direction:row}flex>*{flex-grow:1;flex-shrink:1}[upwards]{flex-direction:column-reverse}[downwards]{flex-direction:column}[leftwards]{flex-direction:row-reverse}[rightwards]{flex-direction:row}[no-grow]{flex-grow:0}[no-shrink]{flex-shrink:0}[no-flex]{flex-grow:0;flex-shrink:0}[flex=\"1/1\"]{flex:1}[flex=\"1/2\"]{flex:0.5}[flex=\"2/2\"]{flex:1}[flex=\"1/3\"]{flex:0.33333}[flex=\"2/3\"]{flex:0.66667}[flex=\"3/3\"]{flex:1}[flex=\"1/4\"]{flex:0.25}[flex=\"2/4\"]{flex:0.5}[flex=\"3/4\"]{flex:0.75}[flex=\"4/4\"]{flex:1}[flex=\"1/5\"]{flex:0.2}[flex=\"2/5\"]{flex:0.4}[flex=\"3/5\"]{flex:0.6}[flex=\"4/5\"]{flex:0.8}[flex=\"5/5\"]{flex:1}[flex=\"1/6\"]{flex:0.16667}[flex=\"2/6\"]{flex:0.33333}[flex=\"3/6\"]{flex:0.5}[flex=\"4/6\"]{flex:0.66667}[flex=\"5/6\"]{flex:0.83333}[flex=\"6/6\"]{flex:1}[flex=\"1/7\"]{flex:0.14286}[flex=\"2/7\"]{flex:0.28571}[flex=\"3/7\"]{flex:0.42857}[flex=\"4/7\"]{flex:0.57143}[flex=\"5/7\"]{flex:0.71429}[flex=\"6/7\"]{flex:0.85714}[flex=\"7/7\"]{flex:1}[flex=\"1/8\"]{flex:0.125}[flex=\"2/8\"]{flex:0.25}[flex=\"3/8\"]{flex:0.375}[flex=\"4/8\"]{flex:0.5}[flex=\"5/8\"]{flex:0.625}[flex=\"6/8\"]{flex:0.75}[flex=\"7/8\"]{flex:0.875}[flex=\"8/8\"]{flex:1}[flex=\"1/9\"]{flex:0.11111}[flex=\"2/9\"]{flex:0.22222}[flex=\"3/9\"]{flex:0.33333}[flex=\"4/9\"]{flex:0.44444}[flex=\"5/9\"]{flex:0.55556}[flex=\"6/9\"]{flex:0.66667}[flex=\"7/9\"]{flex:0.77778}[flex=\"8/9\"]{flex:0.88889}[flex=\"9/9\"]{flex:1}[flex=\"1/10\"]{flex:0.1}[flex=\"2/10\"]{flex:0.2}[flex=\"3/10\"]{flex:0.3}[flex=\"4/10\"]{flex:0.4}[flex=\"5/10\"]{flex:0.5}[flex=\"6/10\"]{flex:0.6}[flex=\"7/10\"]{flex:0.7}[flex=\"8/10\"]{flex:0.8}[flex=\"9/10\"]{flex:0.9}[flex=\"10/10\"]{flex:1}[flex=\"1/11\"]{flex:0.09091}[flex=\"2/11\"]{flex:0.18182}[flex=\"3/11\"]{flex:0.27273}[flex=\"4/11\"]{flex:0.36364}[flex=\"5/11\"]{flex:0.45455}[flex=\"6/11\"]{flex:0.54545}[flex=\"7/11\"]{flex:0.63636}[flex=\"8/11\"]{flex:0.72727}[flex=\"9/11\"]{flex:0.81818}[flex=\"10/11\"]{flex:0.90909}[flex=\"11/11\"]{flex:1}[flex=\"1/12\"]{flex:0.08333}[flex=\"2/12\"]{flex:0.16667}[flex=\"3/12\"]{flex:0.25}[flex=\"4/12\"]{flex:0.33333}[flex=\"5/12\"]{flex:0.41667}[flex=\"6/12\"]{flex:0.5}[flex=\"7/12\"]{flex:0.58333}[flex=\"8/12\"]{flex:0.66667}[flex=\"9/12\"]{flex:0.75}[flex=\"10/12\"]{flex:0.83333}[flex=\"11/12\"]{flex:0.91667}[flex=\"12/12\"]{flex:1}[flex=\"1/13\"]{flex:0.07692}[flex=\"2/13\"]{flex:0.15385}[flex=\"3/13\"]{flex:0.23077}[flex=\"4/13\"]{flex:0.30769}[flex=\"5/13\"]{flex:0.38462}[flex=\"6/13\"]{flex:0.46154}[flex=\"7/13\"]{flex:0.53846}[flex=\"8/13\"]{flex:0.61538}[flex=\"9/13\"]{flex:0.69231}[flex=\"10/13\"]{flex:0.76923}[flex=\"11/13\"]{flex:0.84615}[flex=\"12/13\"]{flex:0.92308}[flex=\"13/13\"]{flex:1}[flex=\"1/14\"]{flex:0.07143}[flex=\"2/14\"]{flex:0.14286}[flex=\"3/14\"]{flex:0.21429}[flex=\"4/14\"]{flex:0.28571}[flex=\"5/14\"]{flex:0.35714}[flex=\"6/14\"]{flex:0.42857}[flex=\"7/14\"]{flex:0.5}[flex=\"8/14\"]{flex:0.57143}[flex=\"9/14\"]{flex:0.64286}[flex=\"10/14\"]{flex:0.71429}[flex=\"11/14\"]{flex:0.78571}[flex=\"12/14\"]{flex:0.85714}[flex=\"13/14\"]{flex:0.92857}[flex=\"14/14\"]{flex:1}[flex=\"1/15\"]{flex:0.06667}[flex=\"2/15\"]{flex:0.13333}[flex=\"3/15\"]{flex:0.2}[flex=\"4/15\"]{flex:0.26667}[flex=\"5/15\"]{flex:0.33333}[flex=\"6/15\"]{flex:0.4}[flex=\"7/15\"]{flex:0.46667}[flex=\"8/15\"]{flex:0.53333}[flex=\"9/15\"]{flex:0.6}[flex=\"10/15\"]{flex:0.66667}[flex=\"11/15\"]{flex:0.73333}[flex=\"12/15\"]{flex:0.8}[flex=\"13/15\"]{flex:0.86667}[flex=\"14/15\"]{flex:0.93333}[flex=\"15/15\"]{flex:1}[flex=\"1/16\"]{flex:0.0625}[flex=\"2/16\"]{flex:0.125}[flex=\"3/16\"]{flex:0.1875}[flex=\"4/16\"]{flex:0.25}[flex=\"5/16\"]{flex:0.3125}[flex=\"6/16\"]{flex:0.375}[flex=\"7/16\"]{flex:0.4375}[flex=\"8/16\"]{flex:0.5}[flex=\"9/16\"]{flex:0.5625}[flex=\"10/16\"]{flex:0.625}[flex=\"11/16\"]{flex:0.6875}[flex=\"12/16\"]{flex:0.75}[flex=\"13/16\"]{flex:0.8125}[flex=\"14/16\"]{flex:0.875}[flex=\"15/16\"]{flex:0.9375}[flex=\"16/16\"]{flex:1}[flex=\"1/17\"]{flex:0.05882}[flex=\"2/17\"]{flex:0.11765}[flex=\"3/17\"]{flex:0.17647}[flex=\"4/17\"]{flex:0.23529}[flex=\"5/17\"]{flex:0.29412}[flex=\"6/17\"]{flex:0.35294}[flex=\"7/17\"]{flex:0.41176}[flex=\"8/17\"]{flex:0.47059}[flex=\"9/17\"]{flex:0.52941}[flex=\"10/17\"]{flex:0.58824}[flex=\"11/17\"]{flex:0.64706}[flex=\"12/17\"]{flex:0.70588}[flex=\"13/17\"]{flex:0.76471}[flex=\"14/17\"]{flex:0.82353}[flex=\"15/17\"]{flex:0.88235}[flex=\"16/17\"]{flex:0.94118}[flex=\"17/17\"]{flex:1}[flex=\"1/18\"]{flex:0.05556}[flex=\"2/18\"]{flex:0.11111}[flex=\"3/18\"]{flex:0.16667}[flex=\"4/18\"]{flex:0.22222}[flex=\"5/18\"]{flex:0.27778}[flex=\"6/18\"]{flex:0.33333}[flex=\"7/18\"]{flex:0.38889}[flex=\"8/18\"]{flex:0.44444}[flex=\"9/18\"]{flex:0.5}[flex=\"10/18\"]{flex:0.55556}[flex=\"11/18\"]{flex:0.61111}[flex=\"12/18\"]{flex:0.66667}[flex=\"13/18\"]{flex:0.72222}[flex=\"14/18\"]{flex:0.77778}[flex=\"15/18\"]{flex:0.83333}[flex=\"16/18\"]{flex:0.88889}[flex=\"17/18\"]{flex:0.94444}[flex=\"18/18\"]{flex:1}[flex=\"1/19\"]{flex:0.05263}[flex=\"2/19\"]{flex:0.10526}[flex=\"3/19\"]{flex:0.15789}[flex=\"4/19\"]{flex:0.21053}[flex=\"5/19\"]{flex:0.26316}[flex=\"6/19\"]{flex:0.31579}[flex=\"7/19\"]{flex:0.36842}[flex=\"8/19\"]{flex:0.42105}[flex=\"9/19\"]{flex:0.47368}[flex=\"10/19\"]{flex:0.52632}[flex=\"11/19\"]{flex:0.57895}[flex=\"12/19\"]{flex:0.63158}[flex=\"13/19\"]{flex:0.68421}[flex=\"14/19\"]{flex:0.73684}[flex=\"15/19\"]{flex:0.78947}[flex=\"16/19\"]{flex:0.84211}[flex=\"17/19\"]{flex:0.89474}[flex=\"18/19\"]{flex:0.94737}[flex=\"19/19\"]{flex:1}[flex=\"1/20\"]{flex:0.05}[flex=\"2/20\"]{flex:0.1}[flex=\"3/20\"]{flex:0.15}[flex=\"4/20\"]{flex:0.2}[flex=\"5/20\"]{flex:0.25}[flex=\"6/20\"]{flex:0.3}[flex=\"7/20\"]{flex:0.35}[flex=\"8/20\"]{flex:0.4}[flex=\"9/20\"]{flex:0.45}[flex=\"10/20\"]{flex:0.5}[flex=\"11/20\"]{flex:0.55}[flex=\"12/20\"]{flex:0.6}[flex=\"13/20\"]{flex:0.65}[flex=\"14/20\"]{flex:0.7}[flex=\"15/20\"]{flex:0.75}[flex=\"16/20\"]{flex:0.8}[flex=\"17/20\"]{flex:0.85}[flex=\"18/20\"]{flex:0.9}[flex=\"19/20\"]{flex:0.95}[flex=\"20/20\"]{flex:1}stack{position:relative}stack>*{position:absolute;left:0;top:0;pointer-events:none}tooltip{display:none}:hover>tooltip{display:inline-block}tooltip{position:absolute;left:50%;top:50%}tooltip[right]{left:100%}tooltip[up]{top:0}tooltip[left]{left:0}tooltip[down]{top:100%}tooltip{font-weight:700;font-size:.35em;padding:.2em .3em;border-radius:.5em;transform:translate(-50%,-50%)}[fixed],fixed{position:fixed}[sticky],sticky{position:sticky}[wide],wide{width:100%}[tall],tall{height:100%}[full],full{width:100%;height:100%}[width=\"1/1\"]{width:1}[height=\"1/1\"]{height:1}[size=\"1/1\"]{width:1;height:1}[width=\"1/2\"]{width:.5}[height=\"1/2\"]{height:.5}[size=\"1/2\"]{width:.5;height:.5}[width=\"2/2\"]{width:1}[height=\"2/2\"]{height:1}[size=\"2/2\"]{width:1;height:1}[width=\"1/3\"]{width:.33333}[height=\"1/3\"]{height:.33333}[size=\"1/3\"]{width:.33333;height:.33333}[width=\"2/3\"]{width:.66667}[height=\"2/3\"]{height:.66667}[size=\"2/3\"]{width:.66667;height:.66667}[width=\"3/3\"]{width:1}[height=\"3/3\"]{height:1}[size=\"3/3\"]{width:1;height:1}[width=\"1/4\"]{width:.25}[height=\"1/4\"]{height:.25}[size=\"1/4\"]{width:.25;height:.25}[width=\"2/4\"]{width:.5}[height=\"2/4\"]{height:.5}[size=\"2/4\"]{width:.5;height:.5}[width=\"3/4\"]{width:.75}[height=\"3/4\"]{height:.75}[size=\"3/4\"]{width:.75;height:.75}[width=\"4/4\"]{width:1}[height=\"4/4\"]{height:1}[size=\"4/4\"]{width:1;height:1}[width=\"1/5\"]{width:.2}[height=\"1/5\"]{height:.2}[size=\"1/5\"]{width:.2;height:.2}[width=\"2/5\"]{width:.4}[height=\"2/5\"]{height:.4}[size=\"2/5\"]{width:.4;height:.4}[width=\"3/5\"]{width:.6}[height=\"3/5\"]{height:.6}[size=\"3/5\"]{width:.6;height:.6}[width=\"4/5\"]{width:.8}[height=\"4/5\"]{height:.8}[size=\"4/5\"]{width:.8;height:.8}[width=\"5/5\"]{width:1}[height=\"5/5\"]{height:1}[size=\"5/5\"]{width:1;height:1}[width=\"1/6\"]{width:.16667}[height=\"1/6\"]{height:.16667}[size=\"1/6\"]{width:.16667;height:.16667}[width=\"2/6\"]{width:.33333}[height=\"2/6\"]{height:.33333}[size=\"2/6\"]{width:.33333;height:.33333}[width=\"3/6\"]{width:.5}[height=\"3/6\"]{height:.5}[size=\"3/6\"]{width:.5;height:.5}[width=\"4/6\"]{width:.66667}[height=\"4/6\"]{height:.66667}[size=\"4/6\"]{width:.66667;height:.66667}[width=\"5/6\"]{width:.83333}[height=\"5/6\"]{height:.83333}[size=\"5/6\"]{width:.83333;height:.83333}[width=\"6/6\"]{width:1}[height=\"6/6\"]{height:1}[size=\"6/6\"]{width:1;height:1}[width=\"1/7\"]{width:.14286}[height=\"1/7\"]{height:.14286}[size=\"1/7\"]{width:.14286;height:.14286}[width=\"2/7\"]{width:.28571}[height=\"2/7\"]{height:.28571}[size=\"2/7\"]{width:.28571;height:.28571}[width=\"3/7\"]{width:.42857}[height=\"3/7\"]{height:.42857}[size=\"3/7\"]{width:.42857;height:.42857}[width=\"4/7\"]{width:.57143}[height=\"4/7\"]{height:.57143}[size=\"4/7\"]{width:.57143;height:.57143}[width=\"5/7\"]{width:.71429}[height=\"5/7\"]{height:.71429}[size=\"5/7\"]{width:.71429;height:.71429}[width=\"6/7\"]{width:.85714}[height=\"6/7\"]{height:.85714}[size=\"6/7\"]{width:.85714;height:.85714}[width=\"7/7\"]{width:1}[height=\"7/7\"]{height:1}[size=\"7/7\"]{width:1;height:1}[width=\"1/8\"]{width:.125}[height=\"1/8\"]{height:.125}[size=\"1/8\"]{width:.125;height:.125}[width=\"2/8\"]{width:.25}[height=\"2/8\"]{height:.25}[size=\"2/8\"]{width:.25;height:.25}[width=\"3/8\"]{width:.375}[height=\"3/8\"]{height:.375}[size=\"3/8\"]{width:.375;height:.375}[width=\"4/8\"]{width:.5}[height=\"4/8\"]{height:.5}[size=\"4/8\"]{width:.5;height:.5}[width=\"5/8\"]{width:.625}[height=\"5/8\"]{height:.625}[size=\"5/8\"]{width:.625;height:.625}[width=\"6/8\"]{width:.75}[height=\"6/8\"]{height:.75}[size=\"6/8\"]{width:.75;height:.75}[width=\"7/8\"]{width:.875}[height=\"7/8\"]{height:.875}[size=\"7/8\"]{width:.875;height:.875}[width=\"8/8\"]{width:1}[height=\"8/8\"]{height:1}[size=\"8/8\"]{width:1;height:1}[width=\"1/9\"]{width:.11111}[height=\"1/9\"]{height:.11111}[size=\"1/9\"]{width:.11111;height:.11111}[width=\"2/9\"]{width:.22222}[height=\"2/9\"]{height:.22222}[size=\"2/9\"]{width:.22222;height:.22222}[width=\"3/9\"]{width:.33333}[height=\"3/9\"]{height:.33333}[size=\"3/9\"]{width:.33333;height:.33333}[width=\"4/9\"]{width:.44444}[height=\"4/9\"]{height:.44444}[size=\"4/9\"]{width:.44444;height:.44444}[width=\"5/9\"]{width:.55556}[height=\"5/9\"]{height:.55556}[size=\"5/9\"]{width:.55556;height:.55556}[width=\"6/9\"]{width:.66667}[height=\"6/9\"]{height:.66667}[size=\"6/9\"]{width:.66667;height:.66667}[width=\"7/9\"]{width:.77778}[height=\"7/9\"]{height:.77778}[size=\"7/9\"]{width:.77778;height:.77778}[width=\"8/9\"]{width:.88889}[height=\"8/9\"]{height:.88889}[size=\"8/9\"]{width:.88889;height:.88889}[width=\"9/9\"]{width:1}[height=\"9/9\"]{height:1}[size=\"9/9\"]{width:1;height:1}[width=\"1/10\"]{width:.1}[height=\"1/10\"]{height:.1}[size=\"1/10\"]{width:.1;height:.1}[width=\"2/10\"]{width:.2}[height=\"2/10\"]{height:.2}[size=\"2/10\"]{width:.2;height:.2}[width=\"3/10\"]{width:.3}[height=\"3/10\"]{height:.3}[size=\"3/10\"]{width:.3;height:.3}[width=\"4/10\"]{width:.4}[height=\"4/10\"]{height:.4}[size=\"4/10\"]{width:.4;height:.4}[width=\"5/10\"]{width:.5}[height=\"5/10\"]{height:.5}[size=\"5/10\"]{width:.5;height:.5}[width=\"6/10\"]{width:.6}[height=\"6/10\"]{height:.6}[size=\"6/10\"]{width:.6;height:.6}[width=\"7/10\"]{width:.7}[height=\"7/10\"]{height:.7}[size=\"7/10\"]{width:.7;height:.7}[width=\"8/10\"]{width:.8}[height=\"8/10\"]{height:.8}[size=\"8/10\"]{width:.8;height:.8}[width=\"9/10\"]{width:.9}[height=\"9/10\"]{height:.9}[size=\"9/10\"]{width:.9;height:.9}[width=\"10/10\"]{width:1}[height=\"10/10\"]{height:1}[size=\"10/10\"]{width:1;height:1}[width=\"1/11\"]{width:.09091}[height=\"1/11\"]{height:.09091}[size=\"1/11\"]{width:.09091;height:.09091}[width=\"2/11\"]{width:.18182}[height=\"2/11\"]{height:.18182}[size=\"2/11\"]{width:.18182;height:.18182}[width=\"3/11\"]{width:.27273}[height=\"3/11\"]{height:.27273}[size=\"3/11\"]{width:.27273;height:.27273}[width=\"4/11\"]{width:.36364}[height=\"4/11\"]{height:.36364}[size=\"4/11\"]{width:.36364;height:.36364}[width=\"5/11\"]{width:.45455}[height=\"5/11\"]{height:.45455}[size=\"5/11\"]{width:.45455;height:.45455}[width=\"6/11\"]{width:.54545}[height=\"6/11\"]{height:.54545}[size=\"6/11\"]{width:.54545;height:.54545}[width=\"7/11\"]{width:.63636}[height=\"7/11\"]{height:.63636}[size=\"7/11\"]{width:.63636;height:.63636}[width=\"8/11\"]{width:.72727}[height=\"8/11\"]{height:.72727}[size=\"8/11\"]{width:.72727;height:.72727}[width=\"9/11\"]{width:.81818}[height=\"9/11\"]{height:.81818}[size=\"9/11\"]{width:.81818;height:.81818}[width=\"10/11\"]{width:.90909}[height=\"10/11\"]{height:.90909}[size=\"10/11\"]{width:.90909;height:.90909}[width=\"11/11\"]{width:1}[height=\"11/11\"]{height:1}[size=\"11/11\"]{width:1;height:1}[width=\"1/12\"]{width:.08333}[height=\"1/12\"]{height:.08333}[size=\"1/12\"]{width:.08333;height:.08333}[width=\"2/12\"]{width:.16667}[height=\"2/12\"]{height:.16667}[size=\"2/12\"]{width:.16667;height:.16667}[width=\"3/12\"]{width:.25}[height=\"3/12\"]{height:.25}[size=\"3/12\"]{width:.25;height:.25}[width=\"4/12\"]{width:.33333}[height=\"4/12\"]{height:.33333}[size=\"4/12\"]{width:.33333;height:.33333}[width=\"5/12\"]{width:.41667}[height=\"5/12\"]{height:.41667}[size=\"5/12\"]{width:.41667;height:.41667}[width=\"6/12\"]{width:.5}[height=\"6/12\"]{height:.5}[size=\"6/12\"]{width:.5;height:.5}[width=\"7/12\"]{width:.58333}[height=\"7/12\"]{height:.58333}[size=\"7/12\"]{width:.58333;height:.58333}[width=\"8/12\"]{width:.66667}[height=\"8/12\"]{height:.66667}[size=\"8/12\"]{width:.66667;height:.66667}[width=\"9/12\"]{width:.75}[height=\"9/12\"]{height:.75}[size=\"9/12\"]{width:.75;height:.75}[width=\"10/12\"]{width:.83333}[height=\"10/12\"]{height:.83333}[size=\"10/12\"]{width:.83333;height:.83333}[width=\"11/12\"]{width:.91667}[height=\"11/12\"]{height:.91667}[size=\"11/12\"]{width:.91667;height:.91667}[width=\"12/12\"]{width:1}[height=\"12/12\"]{height:1}[size=\"12/12\"]{width:1;height:1}[width=\"1/13\"]{width:.07692}[height=\"1/13\"]{height:.07692}[size=\"1/13\"]{width:.07692;height:.07692}[width=\"2/13\"]{width:.15385}[height=\"2/13\"]{height:.15385}[size=\"2/13\"]{width:.15385;height:.15385}[width=\"3/13\"]{width:.23077}[height=\"3/13\"]{height:.23077}[size=\"3/13\"]{width:.23077;height:.23077}[width=\"4/13\"]{width:.30769}[height=\"4/13\"]{height:.30769}[size=\"4/13\"]{width:.30769;height:.30769}[width=\"5/13\"]{width:.38462}[height=\"5/13\"]{height:.38462}[size=\"5/13\"]{width:.38462;height:.38462}[width=\"6/13\"]{width:.46154}[height=\"6/13\"]{height:.46154}[size=\"6/13\"]{width:.46154;height:.46154}[width=\"7/13\"]{width:.53846}[height=\"7/13\"]{height:.53846}[size=\"7/13\"]{width:.53846;height:.53846}[width=\"8/13\"]{width:.61538}[height=\"8/13\"]{height:.61538}[size=\"8/13\"]{width:.61538;height:.61538}[width=\"9/13\"]{width:.69231}[height=\"9/13\"]{height:.69231}[size=\"9/13\"]{width:.69231;height:.69231}[width=\"10/13\"]{width:.76923}[height=\"10/13\"]{height:.76923}[size=\"10/13\"]{width:.76923;height:.76923}[width=\"11/13\"]{width:.84615}[height=\"11/13\"]{height:.84615}[size=\"11/13\"]{width:.84615;height:.84615}[width=\"12/13\"]{width:.92308}[height=\"12/13\"]{height:.92308}[size=\"12/13\"]{width:.92308;height:.92308}[width=\"13/13\"]{width:1}[height=\"13/13\"]{height:1}[size=\"13/13\"]{width:1;height:1}[width=\"1/14\"]{width:.07143}[height=\"1/14\"]{height:.07143}[size=\"1/14\"]{width:.07143;height:.07143}[width=\"2/14\"]{width:.14286}[height=\"2/14\"]{height:.14286}[size=\"2/14\"]{width:.14286;height:.14286}[width=\"3/14\"]{width:.21429}[height=\"3/14\"]{height:.21429}[size=\"3/14\"]{width:.21429;height:.21429}[width=\"4/14\"]{width:.28571}[height=\"4/14\"]{height:.28571}[size=\"4/14\"]{width:.28571;height:.28571}[width=\"5/14\"]{width:.35714}[height=\"5/14\"]{height:.35714}[size=\"5/14\"]{width:.35714;height:.35714}[width=\"6/14\"]{width:.42857}[height=\"6/14\"]{height:.42857}[size=\"6/14\"]{width:.42857;height:.42857}[width=\"7/14\"]{width:.5}[height=\"7/14\"]{height:.5}[size=\"7/14\"]{width:.5;height:.5}[width=\"8/14\"]{width:.57143}[height=\"8/14\"]{height:.57143}[size=\"8/14\"]{width:.57143;height:.57143}[width=\"9/14\"]{width:.64286}[height=\"9/14\"]{height:.64286}[size=\"9/14\"]{width:.64286;height:.64286}[width=\"10/14\"]{width:.71429}[height=\"10/14\"]{height:.71429}[size=\"10/14\"]{width:.71429;height:.71429}[width=\"11/14\"]{width:.78571}[height=\"11/14\"]{height:.78571}[size=\"11/14\"]{width:.78571;height:.78571}[width=\"12/14\"]{width:.85714}[height=\"12/14\"]{height:.85714}[size=\"12/14\"]{width:.85714;height:.85714}[width=\"13/14\"]{width:.92857}[height=\"13/14\"]{height:.92857}[size=\"13/14\"]{width:.92857;height:.92857}[width=\"14/14\"]{width:1}[height=\"14/14\"]{height:1}[size=\"14/14\"]{width:1;height:1}[width=\"1/15\"]{width:.06667}[height=\"1/15\"]{height:.06667}[size=\"1/15\"]{width:.06667;height:.06667}[width=\"2/15\"]{width:.13333}[height=\"2/15\"]{height:.13333}[size=\"2/15\"]{width:.13333;height:.13333}[width=\"3/15\"]{width:.2}[height=\"3/15\"]{height:.2}[size=\"3/15\"]{width:.2;height:.2}[width=\"4/15\"]{width:.26667}[height=\"4/15\"]{height:.26667}[size=\"4/15\"]{width:.26667;height:.26667}[width=\"5/15\"]{width:.33333}[height=\"5/15\"]{height:.33333}[size=\"5/15\"]{width:.33333;height:.33333}[width=\"6/15\"]{width:.4}[height=\"6/15\"]{height:.4}[size=\"6/15\"]{width:.4;height:.4}[width=\"7/15\"]{width:.46667}[height=\"7/15\"]{height:.46667}[size=\"7/15\"]{width:.46667;height:.46667}[width=\"8/15\"]{width:.53333}[height=\"8/15\"]{height:.53333}[size=\"8/15\"]{width:.53333;height:.53333}[width=\"9/15\"]{width:.6}[height=\"9/15\"]{height:.6}[size=\"9/15\"]{width:.6;height:.6}[width=\"10/15\"]{width:.66667}[height=\"10/15\"]{height:.66667}[size=\"10/15\"]{width:.66667;height:.66667}[width=\"11/15\"]{width:.73333}[height=\"11/15\"]{height:.73333}[size=\"11/15\"]{width:.73333;height:.73333}[width=\"12/15\"]{width:.8}[height=\"12/15\"]{height:.8}[size=\"12/15\"]{width:.8;height:.8}[width=\"13/15\"]{width:.86667}[height=\"13/15\"]{height:.86667}[size=\"13/15\"]{width:.86667;height:.86667}[width=\"14/15\"]{width:.93333}[height=\"14/15\"]{height:.93333}[size=\"14/15\"]{width:.93333;height:.93333}[width=\"15/15\"]{width:1}[height=\"15/15\"]{height:1}[size=\"15/15\"]{width:1;height:1}[width=\"1/16\"]{width:.0625}[height=\"1/16\"]{height:.0625}[size=\"1/16\"]{width:.0625;height:.0625}[width=\"2/16\"]{width:.125}[height=\"2/16\"]{height:.125}[size=\"2/16\"]{width:.125;height:.125}[width=\"3/16\"]{width:.1875}[height=\"3/16\"]{height:.1875}[size=\"3/16\"]{width:.1875;height:.1875}[width=\"4/16\"]{width:.25}[height=\"4/16\"]{height:.25}[size=\"4/16\"]{width:.25;height:.25}[width=\"5/16\"]{width:.3125}[height=\"5/16\"]{height:.3125}[size=\"5/16\"]{width:.3125;height:.3125}[width=\"6/16\"]{width:.375}[height=\"6/16\"]{height:.375}[size=\"6/16\"]{width:.375;height:.375}[width=\"7/16\"]{width:.4375}[height=\"7/16\"]{height:.4375}[size=\"7/16\"]{width:.4375;height:.4375}[width=\"8/16\"]{width:.5}[height=\"8/16\"]{height:.5}[size=\"8/16\"]{width:.5;height:.5}[width=\"9/16\"]{width:.5625}[height=\"9/16\"]{height:.5625}[size=\"9/16\"]{width:.5625;height:.5625}[width=\"10/16\"]{width:.625}[height=\"10/16\"]{height:.625}[size=\"10/16\"]{width:.625;height:.625}[width=\"11/16\"]{width:.6875}[height=\"11/16\"]{height:.6875}[size=\"11/16\"]{width:.6875;height:.6875}[width=\"12/16\"]{width:.75}[height=\"12/16\"]{height:.75}[size=\"12/16\"]{width:.75;height:.75}[width=\"13/16\"]{width:.8125}[height=\"13/16\"]{height:.8125}[size=\"13/16\"]{width:.8125;height:.8125}[width=\"14/16\"]{width:.875}[height=\"14/16\"]{height:.875}[size=\"14/16\"]{width:.875;height:.875}[width=\"15/16\"]{width:.9375}[height=\"15/16\"]{height:.9375}[size=\"15/16\"]{width:.9375;height:.9375}[width=\"16/16\"]{width:1}[height=\"16/16\"]{height:1}[size=\"16/16\"]{width:1;height:1}[width=\"1/17\"]{width:.05882}[height=\"1/17\"]{height:.05882}[size=\"1/17\"]{width:.05882;height:.05882}[width=\"2/17\"]{width:.11765}[height=\"2/17\"]{height:.11765}[size=\"2/17\"]{width:.11765;height:.11765}[width=\"3/17\"]{width:.17647}[height=\"3/17\"]{height:.17647}[size=\"3/17\"]{width:.17647;height:.17647}[width=\"4/17\"]{width:.23529}[height=\"4/17\"]{height:.23529}[size=\"4/17\"]{width:.23529;height:.23529}[width=\"5/17\"]{width:.29412}[height=\"5/17\"]{height:.29412}[size=\"5/17\"]{width:.29412;height:.29412}[width=\"6/17\"]{width:.35294}[height=\"6/17\"]{height:.35294}[size=\"6/17\"]{width:.35294;height:.35294}[width=\"7/17\"]{width:.41176}[height=\"7/17\"]{height:.41176}[size=\"7/17\"]{width:.41176;height:.41176}[width=\"8/17\"]{width:.47059}[height=\"8/17\"]{height:.47059}[size=\"8/17\"]{width:.47059;height:.47059}[width=\"9/17\"]{width:.52941}[height=\"9/17\"]{height:.52941}[size=\"9/17\"]{width:.52941;height:.52941}[width=\"10/17\"]{width:.58824}[height=\"10/17\"]{height:.58824}[size=\"10/17\"]{width:.58824;height:.58824}[width=\"11/17\"]{width:.64706}[height=\"11/17\"]{height:.64706}[size=\"11/17\"]{width:.64706;height:.64706}[width=\"12/17\"]{width:.70588}[height=\"12/17\"]{height:.70588}[size=\"12/17\"]{width:.70588;height:.70588}[width=\"13/17\"]{width:.76471}[height=\"13/17\"]{height:.76471}[size=\"13/17\"]{width:.76471;height:.76471}[width=\"14/17\"]{width:.82353}[height=\"14/17\"]{height:.82353}[size=\"14/17\"]{width:.82353;height:.82353}[width=\"15/17\"]{width:.88235}[height=\"15/17\"]{height:.88235}[size=\"15/17\"]{width:.88235;height:.88235}[width=\"16/17\"]{width:.94118}[height=\"16/17\"]{height:.94118}[size=\"16/17\"]{width:.94118;height:.94118}[width=\"17/17\"]{width:1}[height=\"17/17\"]{height:1}[size=\"17/17\"]{width:1;height:1}[width=\"1/18\"]{width:.05556}[height=\"1/18\"]{height:.05556}[size=\"1/18\"]{width:.05556;height:.05556}[width=\"2/18\"]{width:.11111}[height=\"2/18\"]{height:.11111}[size=\"2/18\"]{width:.11111;height:.11111}[width=\"3/18\"]{width:.16667}[height=\"3/18\"]{height:.16667}[size=\"3/18\"]{width:.16667;height:.16667}[width=\"4/18\"]{width:.22222}[height=\"4/18\"]{height:.22222}[size=\"4/18\"]{width:.22222;height:.22222}[width=\"5/18\"]{width:.27778}[height=\"5/18\"]{height:.27778}[size=\"5/18\"]{width:.27778;height:.27778}[width=\"6/18\"]{width:.33333}[height=\"6/18\"]{height:.33333}[size=\"6/18\"]{width:.33333;height:.33333}[width=\"7/18\"]{width:.38889}[height=\"7/18\"]{height:.38889}[size=\"7/18\"]{width:.38889;height:.38889}[width=\"8/18\"]{width:.44444}[height=\"8/18\"]{height:.44444}[size=\"8/18\"]{width:.44444;height:.44444}[width=\"9/18\"]{width:.5}[height=\"9/18\"]{height:.5}[size=\"9/18\"]{width:.5;height:.5}[width=\"10/18\"]{width:.55556}[height=\"10/18\"]{height:.55556}[size=\"10/18\"]{width:.55556;height:.55556}[width=\"11/18\"]{width:.61111}[height=\"11/18\"]{height:.61111}[size=\"11/18\"]{width:.61111;height:.61111}[width=\"12/18\"]{width:.66667}[height=\"12/18\"]{height:.66667}[size=\"12/18\"]{width:.66667;height:.66667}[width=\"13/18\"]{width:.72222}[height=\"13/18\"]{height:.72222}[size=\"13/18\"]{width:.72222;height:.72222}[width=\"14/18\"]{width:.77778}[height=\"14/18\"]{height:.77778}[size=\"14/18\"]{width:.77778;height:.77778}[width=\"15/18\"]{width:.83333}[height=\"15/18\"]{height:.83333}[size=\"15/18\"]{width:.83333;height:.83333}[width=\"16/18\"]{width:.88889}[height=\"16/18\"]{height:.88889}[size=\"16/18\"]{width:.88889;height:.88889}[width=\"17/18\"]{width:.94444}[height=\"17/18\"]{height:.94444}[size=\"17/18\"]{width:.94444;height:.94444}[width=\"18/18\"]{width:1}[height=\"18/18\"]{height:1}[size=\"18/18\"]{width:1;height:1}[width=\"1/19\"]{width:.05263}[height=\"1/19\"]{height:.05263}[size=\"1/19\"]{width:.05263;height:.05263}[width=\"2/19\"]{width:.10526}[height=\"2/19\"]{height:.10526}[size=\"2/19\"]{width:.10526;height:.10526}[width=\"3/19\"]{width:.15789}[height=\"3/19\"]{height:.15789}[size=\"3/19\"]{width:.15789;height:.15789}[width=\"4/19\"]{width:.21053}[height=\"4/19\"]{height:.21053}[size=\"4/19\"]{width:.21053;height:.21053}[width=\"5/19\"]{width:.26316}[height=\"5/19\"]{height:.26316}[size=\"5/19\"]{width:.26316;height:.26316}[width=\"6/19\"]{width:.31579}[height=\"6/19\"]{height:.31579}[size=\"6/19\"]{width:.31579;height:.31579}[width=\"7/19\"]{width:.36842}[height=\"7/19\"]{height:.36842}[size=\"7/19\"]{width:.36842;height:.36842}[width=\"8/19\"]{width:.42105}[height=\"8/19\"]{height:.42105}[size=\"8/19\"]{width:.42105;height:.42105}[width=\"9/19\"]{width:.47368}[height=\"9/19\"]{height:.47368}[size=\"9/19\"]{width:.47368;height:.47368}[width=\"10/19\"]{width:.52632}[height=\"10/19\"]{height:.52632}[size=\"10/19\"]{width:.52632;height:.52632}[width=\"11/19\"]{width:.57895}[height=\"11/19\"]{height:.57895}[size=\"11/19\"]{width:.57895;height:.57895}[width=\"12/19\"]{width:.63158}[height=\"12/19\"]{height:.63158}[size=\"12/19\"]{width:.63158;height:.63158}[width=\"13/19\"]{width:.68421}[height=\"13/19\"]{height:.68421}[size=\"13/19\"]{width:.68421;height:.68421}[width=\"14/19\"]{width:.73684}[height=\"14/19\"]{height:.73684}[size=\"14/19\"]{width:.73684;height:.73684}[width=\"15/19\"]{width:.78947}[height=\"15/19\"]{height:.78947}[size=\"15/19\"]{width:.78947;height:.78947}[width=\"16/19\"]{width:.84211}[height=\"16/19\"]{height:.84211}[size=\"16/19\"]{width:.84211;height:.84211}[width=\"17/19\"]{width:.89474}[height=\"17/19\"]{height:.89474}[size=\"17/19\"]{width:.89474;height:.89474}[width=\"18/19\"]{width:.94737}[height=\"18/19\"]{height:.94737}[size=\"18/19\"]{width:.94737;height:.94737}[width=\"19/19\"]{width:1}[height=\"19/19\"]{height:1}[size=\"19/19\"]{width:1;height:1}[width=\"1/20\"]{width:.05}[height=\"1/20\"]{height:.05}[size=\"1/20\"]{width:.05;height:.05}[width=\"2/20\"]{width:.1}[height=\"2/20\"]{height:.1}[size=\"2/20\"]{width:.1;height:.1}[width=\"3/20\"]{width:.15}[height=\"3/20\"]{height:.15}[size=\"3/20\"]{width:.15;height:.15}[width=\"4/20\"]{width:.2}[height=\"4/20\"]{height:.2}[size=\"4/20\"]{width:.2;height:.2}[width=\"5/20\"]{width:.25}[height=\"5/20\"]{height:.25}[size=\"5/20\"]{width:.25;height:.25}[width=\"6/20\"]{width:.3}[height=\"6/20\"]{height:.3}[size=\"6/20\"]{width:.3;height:.3}[width=\"7/20\"]{width:.35}[height=\"7/20\"]{height:.35}[size=\"7/20\"]{width:.35;height:.35}[width=\"8/20\"]{width:.4}[height=\"8/20\"]{height:.4}[size=\"8/20\"]{width:.4;height:.4}[width=\"9/20\"]{width:.45}[height=\"9/20\"]{height:.45}[size=\"9/20\"]{width:.45;height:.45}[width=\"10/20\"]{width:.5}[height=\"10/20\"]{height:.5}[size=\"10/20\"]{width:.5;height:.5}[width=\"11/20\"]{width:.55}[height=\"11/20\"]{height:.55}[size=\"11/20\"]{width:.55;height:.55}[width=\"12/20\"]{width:.6}[height=\"12/20\"]{height:.6}[size=\"12/20\"]{width:.6;height:.6}[width=\"13/20\"]{width:.65}[height=\"13/20\"]{height:.65}[size=\"13/20\"]{width:.65;height:.65}[width=\"14/20\"]{width:.7}[height=\"14/20\"]{height:.7}[size=\"14/20\"]{width:.7;height:.7}[width=\"15/20\"]{width:.75}[height=\"15/20\"]{height:.75}[size=\"15/20\"]{width:.75;height:.75}[width=\"16/20\"]{width:.8}[height=\"16/20\"]{height:.8}[size=\"16/20\"]{width:.8;height:.8}[width=\"17/20\"]{width:.85}[height=\"17/20\"]{height:.85}[size=\"17/20\"]{width:.85;height:.85}[width=\"18/20\"]{width:.9}[height=\"18/20\"]{height:.9}[size=\"18/20\"]{width:.9;height:.9}[width=\"19/20\"]{width:.95}[height=\"19/20\"]{height:.95}[size=\"19/20\"]{width:.95;height:.95}[width=\"20/20\"]{width:1}[height=\"20/20\"]{height:1}[size=\"20/20\"]{width:1;height:1}[blank],blank{visibility:hidden}[hidden],hidden{display:none}")
-t.Component=class Component extends HTMLElement{static set style(h){let e=this.elementName;(t.styles.q(RegExp(`#${e}`))||t.styles.q(`<style id="${e}">`)).innerHTML=`${e}{${t.items(h).map(([t,h])=>`${t}:${h}`).join(';')}`}constructor(){super()
-let t=this,h=t.constructor
-t.state={...h.state}
-for(let e of h.events)t.addEventListener(e.slice(2),h=>t[e].call(t,h))}async connectedCallback(){let h=this
-try{let e=h.constructor
-for(let[i,d]of t.items(e.state))if(h.hasAttribute(i))try{h[i]=h.getAttribute(i)||d}finally{}await h.load()}catch(t){console.error(h,t)}}async disconnectedCallback(){let t=this
-try{await t.unload()}catch(h){console.error(t,h)}}load(){}unload(){}alter(){this.dispatchEvent(new CustomEvent('alter',{bubbles:d,cancelable:d}))}}
-t.defineElement=function(h,i){try{document.createElement(h)}catch(t){throw SyntaxError(`${h} is not a valid html element name`)}if(!/-/.test(h))throw SyntaxError("Custom element name must contain '-'")
-let d={...i.state},l=new Set,g=i.prototype
-for(let h of Reflect.ownKeys(g)){let i=Object.getOwnPropertyDescriptor(g,h)
-if(i.set){i.get||Object.defineProperty(g,h,{...i,get:function(){return this.state[h]}})
-d[h]===e&&(d[h]=e)}else t.isString(h)&&h.startsWith('on')&&l.add(h)}i.state=d
-i.events=l
-i.elementName=h
-return customElements.define(h,i)}
+t.matchAll=function(t,e){let n,r=[]
+for(;(n=e.exec(t))!==i;)r.push(n)
+return r}
+t.divmod=function(t,e){let n=t/e
+return[0>n?Math.ceil(n):Math.floor(n),t%e]}
+t.styles=(t.q(/#qPact/)||t.q(/head/).q('<div id="qPact">')).q("<style>body,html{width:100%;height:100%}*{box-sizing:border-box;display:inline-block;position:relative;padding:0;pointer-events:auto}body{display:block;margin:0}area,datalist,head,link,param,script,style,title{display:none}li{display:list-item}[table],table{display:inline-table;border-collapse:collapse;border-spacing:0}tbody{display:table-row-group}[caption],caption{display:table-caption}col{display:table-column}colgroup{display:table-column-group}tfoot{display:table-footer-group}thead{display:table-header-group}[table]>*,tbody>*{display:table-row}[table]>*>*,tbody>*>*{display:table-cell}align{display:inline-flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;}align>*{flex-grow:0;flex-shrink:0}align[up]{justify-content:flex-start}align[down]{justify-content:flex-end}align[left]{align-items:flex-start}align[right]{align-items:flex-end}[upwards][up]{justify-content:flex-end}[upwards][down]{justify-content:flex-start}[upwards][left]{align-items:flex-end}[upwards][right]{align-items:flex-start}[downwards][up]{justify-content:flex-start}[downwards][down]{justify-content:flex-end}[downwards][left]{align-items:flex-start}[downwards][right]{align-items:flex-end}[leftwards][up]{align-items:flex-end}[leftwards][down]{align-items:flex-start}[leftwards][left]{justify-content:flex-end}[leftwards][right]{justify-content:flex-start}[rightwards][up]{align-items:flex-end}[rightwards][down]{align-items:flex-start}[rightwards][left]{justify-content:flex-end}[rightwards][right]{justify-content:flex-start}[text-align=left]{text-align:left}[text-align=center]{text-align:center}[text-align=right]{text-align:right}[text-align=justify]{text-align:justify}flex{display:inline-flex;flex-direction:row;}flex>*{flex-grow:1;flex-shrink:1}[upwards]{flex-direction:column-reverse}[downwards]{flex-direction:column}[leftwards]{flex-direction:row-reverse}[rightwards]{flex-direction:row}[no-grow]{flex-grow:0}[no-shrink]{flex-shrink:0}[no-flex]{flex-grow:0;flex-shrink:0}stack{position:relative;}stack>*{position:absolute;left:0;top:0;pointer-events:none}tooltip{display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);}:hover>tooltip{display:inline-block}tooltip[right]{left:100%}tooltip[up]{top:0}tooltip[left]{left:0}tooltip[down]{top:100%}tooltip{font-weight:700;font-size:.35em;padding:.2em .3em;border-radius:.5em}[fixed],fixed{position:fixed}[sticky],sticky{position:sticky}[wide],wide{width:100%}[tall],tall{height:100%}[full],full{width:100%;height:100%}[blank],blank{visibility:hidden}[hidden],hidden{display:none}")
+t.Component=class Component extends HTMLElement{static set style(e){let n=this.elementName;(t.styles.q(RegExp(`#${n}`))||t.styles.q(`<style id="${n}">`)).innerHTML=`${n}{${t.items(e).map(([t,e])=>`${t}:${e}`).join(';')}`}constructor(){super()
+let t=this,e=t.constructor
+t.state={...e.state}
+for(let n of e.events)t.addEventListener(n.slice(2),e=>t[n].call(t,e))}async connectedCallback(){let e=this
+try{let n=e.constructor
+for(let[i,r]of t.items(n.state))if(e.hasAttribute(i))try{e[i]=e.getAttribute(i)||r}finally{}await e.load()}catch(t){console.error(e,t)}}async disconnectedCallback(){let t=this
+try{await t.unload()}catch(e){console.error(t,e)}}load(){}unload(){}alter(){this.dispatchEvent(new CustomEvent('alter',{bubbles:r,cancelable:r}))}}
+t.defineElement=function(e,i){try{document.createElement(e)}catch(t){throw SyntaxError(`${e} is not a valid html element name`)}if(!/-/.test(e))throw SyntaxError("Custom element name must contain '-'")
+let r={...i.state},o=new Set,s=i.prototype
+for(let e of Reflect.ownKeys(s)){let i=Object.getOwnPropertyDescriptor(s,e)
+if(i.set){i.get||Object.defineProperty(s,e,{...i,get:function(){return this.state[e]}})
+r[e]===n&&(r[e]=n)}else t.isString(e)&&e.startsWith('on')&&o.add(e)}i.state=r
+i.events=o
+i.elementName=e
+return customElements.define(e,i)}
 class Blink extends t.Component{}Blink.style={}
 t.defineElement('q-blink',Blink)
 class Clock extends t.Component{load(){let t=this
@@ -137,19 +137,19 @@ t.interval=setInterval(()=>{t.render()},1e3)
 t.render()}unload(){clearInterval(this.interval)}render(){this.Q(new Date)}}t.defineElement('q-clock',Clock)
 class Copy extends t.Component{onclick(){let t=this
 t.focus()
-let h=t.contentEditable
-t.contentEditable=d
+let e=t.contentEditable
+t.contentEditable=r
 document.execCommand('selectAll')
-t.contentEditable=h
-try{document.execCommand('copy')}catch(h){navigator.clipboard.writeText(t.innerText)}}}t.defineElement('q-copy',Copy)
-class Katex extends t.Component{init(){if(h.katex===e)return new Promise(function(h,e){let i=t.q(/head/)
+t.contentEditable=e
+try{document.execCommand('copy')}catch(e){navigator.clipboard.writeText(t.innerText)}}}t.defineElement('q-copy',Copy)
+class Katex extends t.Component{init(){if(e.katex===n)return new Promise(function(e,n){let i=t.q(/head/)
 i.q("<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css\" integrity=\"sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq\" crossorigin=\"anonymous\">")
-let d=document.createElement('script')
-Object.assign(d,{src:'https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js',integrity:'sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz',crossOrigin:'anonymous'})
-d.onload=h
-d.onerror=e
-i.q(d)})}set value(h){let e=this
-h=t.str(h)
-e.setAttribute('value',h)
-katex.render(e.state.value=h,e,{displayMode:d})}}t.defineElement('q-katex',Katex)
-for(let e in t)e in h?t.isNative(h[e])||console.warn(`qPact: ${e} is already defined`):h[e]=t[e]}
+let r=document.createElement('script')
+Object.assign(r,{src:'https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js',integrity:'sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz',crossOrigin:'anonymous'})
+r.onload=e
+r.onerror=n
+i.q(r)})}set value(e){let n=this
+e=t.str(e)
+n.setAttribute('value',e)
+katex.render(n.state.value=e,n,{displayMode:r})}}t.defineElement('q-katex',Katex)
+for(let n in t)n in e?t.isNative(e[n])||console.warn(`qPact: ${n} is already defined`):e[n]=t[n]}

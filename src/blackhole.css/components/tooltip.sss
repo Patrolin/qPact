@@ -1,12 +1,11 @@
 tooltip
 	display: none
-*:hover > tooltip
-	display: inline-block
-
-tooltip
+	:hover > &
+		display: inline-block
 	position: absolute
 	left: 50%
 	top: 50%
+	transform: translate(-50%, -50%)
 	&[right]
 		left: 100%
 	&[up]
@@ -21,4 +20,3 @@ tooltip
 	font-size: 0.35em
 	padding: 0.2em 0.3em
 	border-radius: 0.5em
-	transform: translate(-50%, -50%)

@@ -11,10 +11,6 @@ full,
 
 @for $b from 1 to 20
 	@for $a from 1 to $b
-		[width="$a/$b"]
-			width: calc($a/$b)
-		[height="$a/$b"]
-			height: calc($a/$b)
-		[size="$a/$b"]
-			width: calc($a/$b)
-			height: calc($a/$b)
+		@include percentage(width)
+		@include percentage(height)
+		@include percentage(size)
