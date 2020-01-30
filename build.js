@@ -112,7 +112,7 @@ let TARGETS = {
 		let concat = files(path)
 			.map(textFile)
 			.join('\n');
-		fs.writeFileSync('dist/tmp.sss', concat);
+		//fs.writeFileSync('dist/tmp.sss', concat);
 		return (
 			await postcss.process(concat, {
 				parser: sugarss.parse,

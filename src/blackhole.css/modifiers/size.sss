@@ -13,10 +13,9 @@ full,
 
 @for $b from 1 to $DEPTH
 	@for $a from 1 to $b
-		/*
-		[width="$a.$b"]
-			width: resolve($a/$b)
-		*/
-		@include percentage(width)
-		@include percentage(height)
-		@include percentage(size)
+		[width="$a/$b"]
+			width: percentage($a/$b)
+		[height="$a/$b"]
+			height: percentage($a/$b)
+		[size="$a/$b"]
+			size: percentage($a/$b)

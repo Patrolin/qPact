@@ -22,4 +22,5 @@ flex
 
 @for $b from 1 to $DEPTH
 	@for $a from 1 to $b
-		@include percentage(flex)
+		[flex="$a/$b"]
+			flex: resolve($a/$b)
