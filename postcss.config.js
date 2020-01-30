@@ -4,36 +4,25 @@ module.exports = {
 	plugins: [
 		// Props
 		// order
-		/*require('postcss-sorting')({
-			order: [
-				'custom-properties',
-				'dollar-variables',
-				'at-variables',
-				{
-					type: 'at-rule',
-					hasBlock: false,
-				},
-				'declarations',
-				'rules',
-				{
-					type: 'at-rule',
-					hasBlock: true,
-				},
-			],
-		}),*/
+		require('postcss-sorting')(require('./config/postcss-sorting')),
 		// compute
-		require('postcss-advanced-variables')({
-			variables: {
-				DEPTH: 20,
-			},
+		require('postcss-alias-atrules')({
+			rules: { foreach: 'each' },
 		}),
+		require('postcss-advanced-variables')({
+			variables: { DEPTH: 20 },
+		}),
+		require('postcss-insert'),
 		// rename
-		require('postcss-alias'),
+		require('postcss-crip')({
+			s: ['size'],
+		}),
 		require('postcss-axis'),
 		require('postcss-short'),
 		// unwrap
 		require('postcss-nested-props'),
 		require('postcss-nested'),
+		require('postcss-sorting')(require('./config/postcss-sorting')),
 
 		// Values
 		// compute
@@ -45,8 +34,8 @@ module.exports = {
 				},
 			},
 		}),
-		require('postcss-vertical-rhythm'),
 		require('postcss-math'),
+		require('postcss-colorstring'),
 		// compress
 		require('cssnano')({
 			preset: [

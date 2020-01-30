@@ -1,61 +1,15 @@
 align
 	display: inline-flex
-	flex-direction: column
 	justify-content: center
 	align-items: center
 	text-align: center
 	& > *
-		flex-grow: 0
-		flex-shrink: 0
-	&[up]
-		justify-content: flex-start
-	&[down]
-		justify-content: flex-end
-	&[left]
-		align-items: flex-start
-	&[right]
-		align-items: flex-end
+		flex: 0 0
+	&:not([upwards], [leftwards], [rightwards])
+		@include flex-downwards
 
 /* TODO: add align spacing
 */
-
-/* see flex.css */
-[upwards]
-	&[up]
-		justify-content: flex-end
-	&[down]
-		justify-content: flex-start
-	&[left]
-		align-items: flex-end
-	&[right]
-		align-items: flex-start
-[downwards]
-	&[up]
-		justify-content: flex-start
-	&[down]
-		justify-content: flex-end
-	&[left]
-		align-items: flex-start
-	&[right]
-		align-items: flex-end
-[leftwards]
-	&[up]
-		align-items: flex-end
-	&[down]
-		align-items: flex-start
-	&[left]
-		justify-content: flex-end
-	&[right]
-		justify-content: flex-start
-[rightwards]
-	&[up]
-		align-items: flex-end
-	&[down]
-		align-items: flex-start
-	&[left]
-		justify-content: flex-end
-	&[right]
-		justify-content: flex-start
 
 [text-align='left']
 	text-align: left

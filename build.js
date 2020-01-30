@@ -112,13 +112,21 @@ let TARGETS = {
 		let concat = files(path)
 			.map(textFile)
 			.join('\n');
-		//fs.writeFileSync('dist/tmp.sss', concat);
-		return (
-			await postcss.process(concat, {
-				parser: sugarss.parse,
-				from: undefined,
-			})
+		let indented = concat
+			.split('\n')
+			.map((line) => `\t${line}`)
+			.join('\n');
+		let processed = (
+			await postcss
+				.process(concat, {
+					parser: sugarss.parse,
+					from: undefined,
+				})
+				.catch((e) => {
+					fs.writeFileSync(`dist/${name}.sss`, concat);
+				})
 		).css;
+		return processed;
 	},
 };
 

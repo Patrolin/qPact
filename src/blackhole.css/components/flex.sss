@@ -5,13 +5,13 @@ flex
 		flex: 1 1
 
 [upwards]
-	flex-direction: column-reverse
+	@include flex-upwards
 [downwards]
-	flex-direction: column
+	@include flex-downwards
 [leftwards]
-	flex-direction: row-reverse
+	@include flex-leftwards
 [rightwards]
-	flex-direction: row
+	@include flex-rightwards
 
 [no-grow]
 	flex-grow: 0
@@ -21,6 +21,8 @@ flex
 	flex: 0 0
 
 @for $b from 1 to $DEPTH
+	[flex="$b"]
+		flex: $b
 	@for $a from 1 to $b
 		[flex="$a/$b"]
 			flex: resolve($a/$b)
