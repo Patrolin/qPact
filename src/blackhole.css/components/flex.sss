@@ -2,7 +2,7 @@ flex
 	display: inline-flex
 	flex-direction: row
 	& > *
-		flex: 1 1
+		flex: 1 1 auto
 
 [upwards]
 	@include flex-upwards
@@ -18,7 +18,8 @@ flex
 [no-shrink]
 	flex-shrink: 0
 [no-flex]
-	flex: 0 0
+	flex-grow: 0
+	flex-shrink: 0
 
 @for $b from 1 to $DEPTH
 	[flex="$b"]

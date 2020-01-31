@@ -1,12 +1,10 @@
 align
-	display: inline-flex
+	@include flex-downwards
 	justify-content: center
 	align-items: center
 	text-align: center
 	& > *
-		flex: 0 0
-	&:not([upwards], [leftwards], [rightwards])
-		@include flex-downwards
+		flex: 0 0 auto
 
 /* TODO: add align spacing
 */

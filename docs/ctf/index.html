@@ -1,0 +1,109 @@
+<head>
+	<script src="../qPact.js"></script>
+	<style>
+		body {
+			font-size: 24px;
+		}
+		flex[rightwards] {
+			margin-bottom: 0.5em;
+		}
+		[text-align='right'] {
+			width: 120px;
+		}
+		[text-align='right'],
+		[margin-right] {
+			margin-right: 0.5em;
+		}
+		button {
+			padding: 0.5em;
+		}
+		input {
+			outline-offset: 0;
+			outline: 1px solid gray;
+		}
+		input[empty],
+		input:invalid {
+			outline: 1px solid red;
+		}
+		body {
+			font-family: 'Courier New', Courier, monospace;
+		}
+	</style>
+</head>
+<align full>
+	<c-app></c-app>
+	<script>
+		const API = './api';
+		class App extends Component {
+			load() {
+				this.q("<h1>Groowy's CTF");
+				this.q('<flex rightwards wide>').q([
+					'<div no-flex text-align="right">flag:</div>',
+					'<input id="flag" pattern="^\\{LBRY-.+\\}$" autofocus>',
+				]);
+				this.q('<flex rightwards wide>').q([
+					'<div no-flex text-align="right">address:</div>',
+					'<input id="address" pattern="^(b|r)(?=[^0OIl]{32,33})[\\da-zA-Z]{32,33}$">',
+				]);
+				this.q('<flex rightwards wide>').q([
+					'<div no-flex text-align="right">comment:</div>',
+					'<textarea id="comment" maxlength="200">',
+				]);
+				this.q('<div>').q([
+					'<button margin-right id="submit">Submit',
+					'<c-timer">(1 days left)',
+				]);
+				this.q('<output id="message">');
+				let above = [...this.children];
+				this.q('<align full>').q(above);
+
+				this.flag = this.q(/#flag/);
+				this.address = this.q(/#address/);
+				this.comment = this.q(/#comment/);
+				this.submit = this.q(/#submit/);
+				this.message = this.q(/#message/);
+				this.q(/input/g).forEach(
+					(e) =>
+						(e.onblur = e.oninput = function() {
+							this.value
+								? this.removeAttribute('empty')
+								: this.setAttribute('empty', '');
+						})
+				);
+				this.submit.onclick = async () => {
+					if (
+						this.flag.value &&
+						this.address.value &&
+						!this.q(/:invalid/)
+					) {
+						let end = new Date();
+						end.setMilliseconds(end.getMilliseconds() + 500);
+						this.submit.Q('Sending...');
+						fetch(`${API}/submit_flag.php`, {
+							method: 'POST',
+							headers: {
+								'Content-Type':
+									'application/x-www-form-urlencoded',
+								'Accept': 'application/json',
+							},
+							body: new URLSearchParams({
+								flag: this.flag.value,
+								wallet_address: this.address.value,
+								comment: this.comment.value,
+							}),
+						})
+							.then((r) => {
+								setTimeout(async () => {
+									this.submit.Q('Sent!');
+									let data = await r.json();
+									this.message.Q(data.message);
+								}, end - new Date());
+							})
+							.catch(() => this.submit.Q('Failed!'));
+					}
+				};
+			}
+		}
+		defineElement('c-app', App);
+	</script>
+</align>
