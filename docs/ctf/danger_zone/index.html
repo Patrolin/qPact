@@ -1,0 +1,32 @@
+<head>
+	<script src="../../qPact.js"></script>
+	<style>
+		body {
+			font-size: 24px;
+			font-family: 'Courier New', Courier, monospace;
+		}
+		flex[rightwards] {
+			margin-bottom: 0.5em;
+		}
+		[text-align='right'] {
+			width: 140px;
+		}
+		[text-align='right'],
+		[margin-right] {
+			margin-right: 0.5em;
+		}
+		input[type='submit'] {
+			padding: 0.5em;
+		}
+	</style>
+</head>
+<form full action="./create_flag.php" method="POST">
+	<align full>
+		<h1>Groowy's flag</h1>
+		<flex rightwards>
+			<div no-flex text-align="right">flag:</div>
+			<input name="flag" />
+		</flex>
+		<input type="Submit" value="Submit" />
+	</align>
+</form>
