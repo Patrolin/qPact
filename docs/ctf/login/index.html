@@ -1,24 +1,6 @@
 <head>
 	<script src="../../qPact.js"></script>
-	<style>
-		body {
-			font-size: 24px;
-			font-family: 'Courier New', Courier, monospace;
-		}
-		flex[rightwards] {
-			margin-bottom: 0.5em;
-		}
-		[text-align='right'] {
-			width: 140px;
-		}
-		[text-align='right'],
-		[margin-right] {
-			margin-right: 0.5em;
-		}
-		input[type='submit'] {
-			padding: 0.5em;
-		}
-	</style>
+	<link href="../shared.css" rel="stylesheet" />
 </head>
 <form full action="./login.php" method="POST">
 	<align full>
@@ -31,6 +13,6 @@
 			<div no-flex text-align="right">password:</div>
 			<input name="password" />
 		</flex>
-		<input type="Submit" value="Submit" />
+		<input type="submit" value="Submit" />
 	</align>
 </form>

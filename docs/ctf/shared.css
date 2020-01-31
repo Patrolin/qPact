@@ -1,0 +1,27 @@
+body {
+	font-size: 24px;
+	font-family: 'Courier New', Courier, monospace;
+}
+flex[rightwards] {
+	margin-bottom: 0.5em;
+}
+[text-align='right'] {
+	width: 140px;
+}
+[text-align='right'],
+[margin-right] {
+	margin-right: 0.5em;
+}
+button,
+input[type='submit'] {
+	padding: 0.5em;
+}
+input,
+textarea {
+	outline-offset: 0;
+	outline: 1px solid gray;
+}
+input[empty],
+input:invalid {
+	outline: 1px solid red;
+}

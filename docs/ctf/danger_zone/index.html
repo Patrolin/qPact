@@ -1,32 +1,106 @@
 <head>
 	<script src="../../qPact.js"></script>
+	<link href="../shared.css" rel="stylesheet" />
 	<style>
-		body {
-			font-size: 24px;
-			font-family: 'Courier New', Courier, monospace;
-		}
-		flex[rightwards] {
-			margin-bottom: 0.5em;
-		}
 		[text-align='right'] {
-			width: 140px;
-		}
-		[text-align='right'],
-		[margin-right] {
-			margin-right: 0.5em;
-		}
-		input[type='submit'] {
-			padding: 0.5em;
+			width: 100px;
 		}
 	</style>
 </head>
-<form full action="./create_flag.php" method="POST">
-	<align full>
-		<h1>Groowy's flag</h1>
-		<flex rightwards>
-			<div no-flex text-align="right">flag:</div>
-			<input name="flag" />
-		</flex>
-		<input type="Submit" value="Submit" />
-	</align>
-</form>
+<align full>
+	<c-app></c-app>
+</align>
+<script>
+	const MIN_FAKE_SUBMIT_TIME = 500;
+
+	class App extends Component {
+		load() {
+			this.q("<h1>Groowy's flag");
+			this.q('<flex rightwards wide>').q([
+				'<div no-flex text-align="right">flag:</div>',
+				'<input id="flag" pattern="^\\{LBRY-.+\\}$" autofocus>',
+			]);
+			this.q('<flex rightwards wide>').q([
+				'<div no-flex text-align="right">start:</div>',
+				'<input id="startDate" margin-right pattern="^\\d{1,2}/\\d{1,2}/\\d+$" placeholder="dd/mm/yyyy">',
+				'<input id="startTime" pattern="^\\d{1,2}:\\d{1,2}$" placeholder="hh:mm">',
+			]);
+			this.q('<flex rightwards wide>').q([
+				'<div no-flex text-align="right">end:</div>',
+				'<input id="endDate" margin-right pattern="^\\d{1,2}/\\d{1,2}/\\d+$" placeholder="dd/mm/yyyy">',
+				'<input id="endTime" pattern="^\\d{1,2}:\\d{1,2}$" placeholder="hh:mm">',
+			]);
+			this.q('<flex rightwards>').q([
+				'<button margin-right id="submit" disabled>Submit',
+			]);
+			this.q('<output id="message">');
+			let above = [...this.children];
+			this.q('<align full>').q(above);
+
+			this.flag = this.q(/#flag/);
+			this.startDate = this.q(/#startDate/);
+			this.startTime = this.q(/#startTime/);
+			this.endDate = this.q(/#endDate/);
+			this.endTime = this.q(/#endTime/);
+			this.submit = this.q(/#submit/);
+			this.message = this.q(/#message/);
+			this.q(/input/g).forEach(
+				(e) =>
+					(e.onblur = e.oninput = () => {
+						e.value
+							? e.removeAttribute('empty')
+							: e.setAttribute('empty', '');
+						this.validate()
+							? this.submit.removeAttribute('disabled')
+							: this.submit.setAttribute('disabled', '');
+					})
+			);
+			this.submit.onclick = async () => {
+				if (this.validate()) {
+					let end = new Date();
+					end.setMilliseconds(
+						end.getMilliseconds() + MIN_FAKE_SUBMIT_TIME
+					);
+					this.submit.Q('Sending...');
+					this.submit.setAttribute('disabled', '');
+					fetch(`./create_flag.php`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded',
+							'Accept': 'application/json',
+						},
+						body: new URLSearchParams({
+							flag: this.flag.value,
+							time_start: new Date(
+								`${this.startDate.value} ${this.startTime.value}`
+							).getTime(),
+							time_end: new Date(
+								`${this.endDate.value} ${this.endTime.value}`
+							).getTime(),
+						}),
+					})
+						.then((r) => {
+							setTimeout(async () => {
+								this.submit.Q('Sent!');
+								this.submit.removeAttribute('disabled');
+								let data = await r.json();
+								this.message.Q(data.message);
+							}, end - new Date());
+						})
+						.catch(() => this.submit.Q('Failed!'));
+				}
+			};
+		}
+		validate() {
+			return (
+				this.flag.value &&
+				this.startDate.value &&
+				this.startTime.value &&
+				this.endDate.value &&
+				this.endTime.value &&
+				!this.q(/:invalid/)
+			);
+		}
+	}
+	defineElement('c-app', App);
+</script>

@@ -1,33 +1,6 @@
 <head>
 	<script src="../qPact.js"></script>
-	<style>
-		body {
-			font-size: 24px;
-			font-family: 'Courier New', Courier, monospace;
-		}
-		flex[rightwards] {
-			margin-bottom: 0.5em;
-		}
-		[text-align='right'] {
-			width: 140px;
-		}
-		[text-align='right'],
-		[margin-right] {
-			margin-right: 0.5em;
-		}
-		button {
-			padding: 0.5em;
-		}
-		input,
-		textarea {
-			outline-offset: 0;
-			outline: 1px solid gray;
-		}
-		input[empty],
-		input:invalid {
-			outline: 1px solid red;
-		}
-	</style>
+	<link href="./shared.css" rel="stylesheet" />
 </head>
 <align full>
 	<c-app></c-app>
@@ -52,7 +25,7 @@
 					'<textarea id="comment" maxlength="200">',
 				]);
 				this.q('<flex rightwards>').q([
-					'<button margin-right id="submit">Submit',
+					'<button margin-right id="submit" disabled>Submit',
 					'<c-timer id="timer">',
 				]);
 				this.q('<output id="message">');
@@ -67,24 +40,23 @@
 				this.timer = this.q(/#timer/);
 				this.q(/input/g).forEach(
 					(e) =>
-						(e.onblur = e.oninput = function() {
-							this.value
-								? this.removeAttribute('empty')
-								: this.setAttribute('empty', '');
+						(e.onblur = e.oninput = () => {
+							e.value
+								? e.removeAttribute('empty')
+								: e.setAttribute('empty', '');
+							this.validate()
+								? this.submit.removeAttribute('disabled')
+								: this.submit.setAttribute('disabled', '');
 						})
 				);
 				this.submit.onclick = async () => {
-					if (
-						this.timer.running &&
-						this.flag.value &&
-						this.address.value &&
-						!this.q(/:invalid/)
-					) {
+					if (this.validate()) {
 						let end = new Date();
 						end.setMilliseconds(
 							end.getMilliseconds() + MIN_FAKE_SUBMIT_TIME
 						);
 						this.submit.Q('Sending...');
+						this.submit.setAttribute('disabled', '');
 						fetch(`${API}/submit_flag.php`, {
 							method: 'POST',
 							headers: {
@@ -101,6 +73,7 @@
 							.then((r) => {
 								setTimeout(async () => {
 									this.submit.Q('Sent!');
+									this.submit.removeAttribute('disabled');
 									let data = await r.json();
 									this.message.Q(data.message);
 								}, end - new Date());
@@ -108,6 +81,14 @@
 							.catch(() => this.submit.Q('Failed!'));
 					}
 				};
+			}
+			validate() {
+				return (
+					this.timer.running &&
+					this.flag.value &&
+					this.address.value &&
+					!this.q(/:invalid/)
+				);
 			}
 		}
 		defineElement('c-app', App);
