@@ -3,12 +3,13 @@
 	<style>
 		body {
 			font-size: 24px;
+			font-family: 'Courier New', Courier, monospace;
 		}
 		flex[rightwards] {
 			margin-bottom: 0.5em;
 		}
 		[text-align='right'] {
-			width: 120px;
+			width: 140px;
 		}
 		[text-align='right'],
 		[margin-right] {
@@ -25,9 +26,6 @@
 		input[empty],
 		input:invalid {
 			outline: 1px solid red;
-		}
-		body {
-			font-family: 'Courier New', Courier, monospace;
 		}
 	</style>
 </head>
@@ -121,6 +119,9 @@
 			load() {
 				fetch(`${API}/ctf_status.php`, {
 					method: 'POST',
+					headers: {
+						Accept: 'application/json',
+					},
 				}).then(async (r) => {
 					let data = await r.json();
 					if ((this.running = data.running)) {

@@ -1,0 +1,36 @@
+<head>
+	<script src="../../qPact.js"></script>
+	<style>
+		body {
+			font-size: 24px;
+			font-family: 'Courier New', Courier, monospace;
+		}
+		flex[rightwards] {
+			margin-bottom: 0.5em;
+		}
+		[text-align='right'] {
+			width: 140px;
+		}
+		[text-align='right'],
+		[margin-right] {
+			margin-right: 0.5em;
+		}
+		input[type='submit'] {
+			padding: 0.5em;
+		}
+	</style>
+</head>
+<form full action="./login.php" method="POST">
+	<align full>
+		<h1>Groowy's login</h1>
+		<flex rightwards>
+			<div no-flex text-align="right">name:</div>
+			<input name="username" />
+		</flex>
+		<flex rightwards>
+			<div no-flex text-align="right">password:</div>
+			<input name="password" />
+		</flex>
+		<input type="Submit" value="Submit" />
+	</align>
+</form>
