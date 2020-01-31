@@ -23,13 +23,15 @@ if (!validate_flag($flag)) {
 	$message = "Unvalid flag format.<br>Check for typos.";
 } elseif (!validate_wallet($wallet_id)) {
 	$message = "Unvalid wallet address.<br>Check for typos.";
-} elseif (strcmp($flag, "{LBRY-abc}")) {
-	$message = "Unvalid flag";
 }
-$success = !$message;
-if ($success) {
+
+if (!strcmp($flag, "{LBRY-abc}")) {
+	$success = true;
+	$message = "Success";
 	header("HTTP/1.1 200 OK");
 } else {
+	$success = false;
+	$message = "Unvalid flag";
 	header("HTTP/1.1 400 Bad Request");
 }
 echo json_encode(["success" => $success, "message" => $message]);

@@ -17,7 +17,8 @@
 		button {
 			padding: 0.5em;
 		}
-		input {
+		input,
+		textarea {
 			outline-offset: 0;
 			outline: 1px solid gray;
 		}
@@ -34,6 +35,9 @@
 	<c-app></c-app>
 	<script>
 		const API = './api';
+		const MIN_FAKE_SUBMIT_TIME = 500;
+		const STATUS_RETRY_INTERVAL = 5000;
+
 		class App extends Component {
 			load() {
 				this.q("<h1>Groowy's CTF");
@@ -49,9 +53,9 @@
 					'<div no-flex text-align="right">comment:</div>',
 					'<textarea id="comment" maxlength="200">',
 				]);
-				this.q('<div>').q([
+				this.q('<flex rightwards>').q([
 					'<button margin-right id="submit">Submit',
-					'<c-timer">(1 days left)',
+					'<c-timer id="timer">',
 				]);
 				this.q('<output id="message">');
 				let above = [...this.children];
@@ -62,6 +66,7 @@
 				this.comment = this.q(/#comment/);
 				this.submit = this.q(/#submit/);
 				this.message = this.q(/#message/);
+				this.timer = this.q(/#timer/);
 				this.q(/input/g).forEach(
 					(e) =>
 						(e.onblur = e.oninput = function() {
@@ -72,12 +77,15 @@
 				);
 				this.submit.onclick = async () => {
 					if (
+						this.timer.running &&
 						this.flag.value &&
 						this.address.value &&
 						!this.q(/:invalid/)
 					) {
 						let end = new Date();
-						end.setMilliseconds(end.getMilliseconds() + 500);
+						end.setMilliseconds(
+							end.getMilliseconds() + MIN_FAKE_SUBMIT_TIME
+						);
 						this.submit.Q('Sending...');
 						fetch(`${API}/submit_flag.php`, {
 							method: 'POST',
@@ -105,5 +113,46 @@
 			}
 		}
 		defineElement('c-app', App);
+
+		class Timer extends Component {
+			set value(v) {
+				this.Q((this.state.value = v));
+			}
+			load() {
+				fetch(`${API}/ctf_status.php`, {
+					method: 'POST',
+				}).then(async (r) => {
+					let data = await r.json();
+					if ((this.running = data.running)) {
+						this.start = new Date(data.start_time * 1000);
+						this.end = new Date(data.end_time * 1000);
+						this.update();
+						this.interval = setInterval(() => this.update(), 1000);
+					} else {
+						this.value = "CTF isn't currently running";
+						setTimeout(() => this.load(), STATUS_RETRY_INTERVAL);
+					}
+				});
+			}
+			update() {
+				let time = this.end - new Date();
+				if (time >= 0) this.value = this.format(time);
+				else {
+					clearInterval(this.interval);
+					this.load();
+				}
+			}
+			format(time) {
+				function extract(unit) {
+					let r = Math.floor(time / unit);
+					time -= r * unit;
+					return (r + '').padStart(2, '0');
+				}
+				return `${extract(DAY)}:${extract(HOUR)}:${extract(
+					MINUTE
+				)}:${extract(SECOND)}`;
+			}
+		}
+		defineElement('c-timer', Timer);
 	</script>
 </align>
