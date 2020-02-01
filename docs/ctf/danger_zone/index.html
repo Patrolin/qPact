@@ -63,6 +63,8 @@
 					);
 					this.submit.Q('Sending...');
 					this.submit.setAttribute('disabled', '');
+					let [sd, sm, sy] = this.startDate.value.split('/');
+					let [ed, em, ey] = this.endDate.value.split('/');
 					fetch(`./create_flag.php`, {
 						method: 'POST',
 						headers: {
@@ -71,12 +73,16 @@
 						},
 						body: new URLSearchParams({
 							flag: this.flag.value,
-							time_start: new Date(
-								`${this.startDate.value} ${this.startTime.value}`
-							).getTime(),
-							time_end: new Date(
-								`${this.endDate.value} ${this.endTime.value}`
-							).getTime(),
+							time_start: Math.round(
+								new Date(
+									`${sm}/${sd}/${sy} ${this.startTime.value}`
+								).getTime() / 1000
+							),
+							time_end: Math.round(
+								new Date(
+									`${em}/${ed}/${ey} ${this.endTime.value}`
+								).getTime() / 1000
+							),
 						}),
 					})
 						.then((r) => {
