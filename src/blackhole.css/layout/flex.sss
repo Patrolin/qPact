@@ -1,0 +1,89 @@
+@mixin flex
+	display: inline-flex
+	flex-wrap: wrap
+	&[items-stretch]
+		align-content: stretch
+	& > [self-stretch]
+		align-self: stretch
+
+
+@mixin flex-vertical
+	&[middle]
+		justify-content: center
+	&[center]
+		align-content: center
+	& > [self-center]
+		align-self: center
+
+@mixin flex-horizontal
+	&[middle]
+		align-content: center
+	&[center]
+		justify-content: center
+	& > [self-middle]
+		align-self: center
+
+
+@mixin flex-upwards
+	@include flex-vertical
+	flex-direction: column-reverse
+	&[up]
+		justify-content: flex-end
+	&[down]
+		justify-content: flex-start
+	&[left]
+		align-content: flex-end
+	&[right]
+		align-content: flex-start
+	& > [self-left]
+		align-self: flex-end
+	& > [self-right]
+		align-self: flex-start
+
+@mixin flex-downwards
+	@include flex-vertical
+	flex-direction: column
+	&[up]
+		justify-content: flex-start
+	&[down]
+		justify-content: flex-end
+	&[left]
+		align-content: flex-start
+	&[right]
+		align-content: flex-end
+	& > [self-left]
+		align-self: flex-start
+	& > [self-right]
+		align-self: flex-end
+
+@mixin flex-leftwards
+	@include flex-horizontal
+	flex-direction: row-reverse
+	&[up]
+		align-content: flex-start
+	&[down]
+		align-content: flex-end
+	&[left]
+		justify-content: flex-end
+	&[right]
+		justify-content: flex-start
+	& > [self-up]
+		align-self: flex-end
+	& > [self-down]
+		align-self: flex-start
+
+@mixin flex-rightwards
+	@include flex-horizontal
+	flex-direction: row
+	&[up]
+		align-content: flex-start
+	&[down]
+		align-content: flex-end
+	&[left]
+		justify-content: flex-start
+	&[right]
+		justify-content: flex-end
+	& > [self-up]
+		align-self: flex-start
+	& > [self-down]
+		align-self: flex-end

@@ -1,0 +1,7 @@
+flex
+	@include flex
+	align-items: stretch
+	& > *
+		flex: 1 1 0
+	&:not([upwards]):not([downwards]):not([leftwards])
+		@include flex-rightwards

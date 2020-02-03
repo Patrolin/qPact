@@ -1,10 +1,10 @@
-table,
-[table]
-	display: inline-table
+table, tbody
+	@include table
 	border-collapse: collapse
 	border-spacing: 0
 tbody
 	display: table-row-group
+
 caption,
 [caption]
 	display: table-caption
@@ -16,9 +16,3 @@ tfoot
 	display: table-footer-group
 thead
 	display: table-header-group
-tbody > *,
-[table] > *
-	display: table-row
-tbody > * > *,
-[table] > * > *
-	display: table-cell

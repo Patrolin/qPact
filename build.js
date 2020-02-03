@@ -112,10 +112,6 @@ let TARGETS = {
 		let concat = files(path)
 			.map(textFile)
 			.join('\n');
-		let indented = concat
-			.split('\n')
-			.map((line) => `\t${line}`)
-			.join('\n');
 		let processed = (
 			await postcss
 				.process(concat, {
@@ -123,7 +119,14 @@ let TARGETS = {
 					from: undefined,
 				})
 				.catch((e) => {
+					console.log(
+						'\x1b[1m\x1b[36m',
+						path,
+						'\x1b[1m\x1b[31m',
+						`${e.reason} at ${e.line}:${e.column}`
+					);
 					fs.writeFileSync(`dist/${name}.sss`, concat);
+					return ''; // this value is ignored, except when it is == undefined...
 				})
 		).css;
 		return processed;

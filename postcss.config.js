@@ -12,11 +12,7 @@ module.exports = {
 		require('postcss-advanced-variables')({
 			variables: { DEPTH: 20 },
 		}),
-		require('postcss-insert'),
 		// rename
-		require('postcss-crip')({
-			s: ['size'],
-		}),
 		require('postcss-axis'),
 		require('postcss-short'),
 		// unwrap

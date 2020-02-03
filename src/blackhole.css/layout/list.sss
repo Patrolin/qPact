@@ -1,0 +1,6 @@
+@mixin list
+	list-style-position: outside
+	counter-reset: list
+	& > *
+		display: list-item
+		counter-increment: list

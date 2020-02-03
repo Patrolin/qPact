@@ -1,0 +1,13 @@
+align
+	@include flex
+	justify-content: center
+	align-content: center
+	align-items: center
+	text-align: center
+	& > *
+		flex: 0 1 auto
+	&:not([upwards]):not([leftwards]):not([rightwards])
+		@include flex-downwards
+
+/* TODO: add align spacing
+*/
