@@ -12,7 +12,7 @@ t.MAX_UINT64=Math.pow(2,64)-1
 t.MAX_INT=-(t.MIN_INT=Number.MIN_SAFE_INTEGER-1)
 t.WEEK=7*(t.DAY=24*(t.HOUR=60*(t.MINUTE=60*(t.SECOND=1e3))))
 t.MONTH=(t.YEAR=365.2425*t.DAY)/12
-t.DateTime=class DateTime extends Date{get y(){this.getFullYear()}set y(t){this.setFullYear(t)}get o(){this.getMonth()}set o(t){this.setMonth(t)}get d(){this.getDate()}set d(t){this.setDate(t)}get h(){this.getHours()}set h(t){this.setHours(t)}get m(){this.getMinutes()}set m(t){this.setMinutes(t)}get s(){this.getSeconds()}set s(t){this.setSeconds(t)}get ms(){this.getMilliseconds()}set ms(t){this.setMilliseconds(t)}constructor(t=""){super()
+t.Datetime=class DateTime extends Date{get y(){return this.getFullYear()}set y(t){this.setFullYear(t)}get o(){return this.getMonth()}set o(t){this.setMonth(t)}get d(){return this.getDate()}set d(t){this.setDate(t)}get h(){return this.getHours()}set h(t){this.setHours(t)}get m(){return this.getMinutes()}set m(t){this.setMinutes(t)}get s(){return this.getSeconds()}set s(t){this.setSeconds(t)}get ms(){return this.getMilliseconds()}set ms(t){this.setMilliseconds(t)}constructor(t=""){super()
 this.modify(t)}modify(t=""){o(this,t)}format(t){return new Intl.DateTimeFormat(r,{weekday:'long',day:'numeric',month:'long',year:'numeric',hour:'numeric',minute:'numeric',second:'numeric',timeZoneName:'long',...t}).format(this)}}
 t.TimeInterval=class{constructor(t){let e=this
 e.y=e.o=e.d=e.h=e.m=e.s=e.ms=0
@@ -47,7 +47,7 @@ function o(t,e){let r=1
 for(let[n,i,o,a,u,l]of e.matchAll(/(\d+)([a-z]+)|([a-z]+)(\d+)|([+-])/g))if(i){let e=s.indexOf(o)
 if(0>e&&o in t)t[o]+=r*i
 else{let n=t.getDate(),s=t.getDay()
-if(e!=s){n+=r>0?e-s+7:e+s-15
+if(e!=s){n+=r>0?e-s+7:e+s-8
 i--}t.setDate(n+7*r*i)}}else u&&a in t?t[a]=+u:l&&(r='+'==l?1:-1)}t.assoc_keys=function(t){let e=t[Symbol.iterator]
 if(e){let r='entries'===e.name,n=Array.from(e.call(t))
 return[r,$1r?n.map(([t])=>t):n.map((t,e)=>e)]}{let e=[]

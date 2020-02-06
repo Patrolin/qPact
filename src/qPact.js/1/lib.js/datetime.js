@@ -1,43 +1,43 @@
 //@todo: datetime
-module.DateTime = class DateTime extends Date {
+module.Datetime = class DateTime extends Date {
 	get y() {
-		this.getFullYear();
+		return this.getFullYear();
 	}
 	set y(n) {
 		this.setFullYear(n);
 	}
 	get o() {
-		this.getMonth();
+		return this.getMonth();
 	}
 	set o(n) {
 		this.setMonth(n);
 	}
 	get d() {
-		this.getDate();
+		return this.getDate();
 	}
 	set d(n) {
 		this.setDate(n);
 	}
 	get h() {
-		this.getHours();
+		return this.getHours();
 	}
 	set h(n) {
 		this.setHours(n);
 	}
 	get m() {
-		this.getMinutes();
+		return this.getMinutes();
 	}
 	set m(n) {
 		this.setMinutes(n);
 	}
 	get s() {
-		this.getSeconds();
+		return this.getSeconds();
 	}
 	set s(n) {
 		this.setSeconds(n);
 	}
 	get ms() {
-		this.getMilliseconds();
+		return this.getMilliseconds();
 	}
 	set ms(n) {
 		this.setMilliseconds(n);
@@ -139,7 +139,7 @@ function datetime_modify(self, string) {
 				let date = self.getDate();
 				let day = self.getDay();
 				if (i != day) {
-					date += sign > 0 ? i - day + 7 : i + day - 15;
+					date += sign > 0 ? i - day + 7 : i + day - 8;
 					r--;
 				}
 				self.setDate(date + sign * 7 * r);
