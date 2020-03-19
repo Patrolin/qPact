@@ -44,18 +44,18 @@ Node.prototype.Q = function Q_Node(input, n = UNDEFINED) {
 };
 Node.prototype.q = function q_Node(input, n = UNDEFINED) {
 	if (input instanceof RegExp) return q_Node_RegExp(this, input, n);
-	let x = q_create(input, n);
-	if (x instanceof Node) {
-		return this.appendChild(x);
-	} else {
-		return x.map((e) => this.appendChild(e));
-	}
+	return q_Node_append(this, q_create(input, n));
 };
 function q_Node_RegExp(self, regexp, n) {
 	if (regexp.global)
 		return q_multiply([...self.querySelectorAll(regexp.source)], n);
 	let search = self.querySelector(regexp.source);
 	return search ? q_multiply(search, n) : NULL;
+}
+function q_Node_append(self, input) {
+	return input instanceof Node
+		? self.appendChild(input)
+		: input.map((x) => q_Node_append(self, x));
 }
 
 Array.prototype.Q = function Q_Array(input, n = UNDEFINED) {
