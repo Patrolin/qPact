@@ -79,7 +79,7 @@ which would be the same as
 ```js
 var body = document.body;
 body.q('foo');
-body.q('<p>').q('Loremipsum');
+body.q('<p>').q(['Lorem', 'ipsum']);
 ```
 
 ## Searching for elements
