@@ -1,5 +1,5 @@
-//@todo: datetime
-module.Datetime = class Datetime extends Date {
+// @todo: datetime
+export class Datetime extends Date {
 	get y() {
 		return this.getFullYear();
 	}
@@ -44,7 +44,7 @@ module.Datetime = class Datetime extends Date {
 	}
 
 	constructor(input) {
-		if (module.isNumber(input)) super(input);
+		if (isInstance(input, Number)) super(input);
 		else {
 			super();
 			this.modify(input);
@@ -58,8 +58,8 @@ module.Datetime = class Datetime extends Date {
 		return this.getTime();
 	}
 	toString() {
-		// TODO: format Datetime
-		return new Intl.DateTimeFormat(UNDEFINED, {
+		// @todo: format Datetime
+		return new Intl.DateTimeFormat(LOCALE, {
 			weekday: 'long',
 			day: 'numeric',
 			month: 'long',
@@ -73,47 +73,23 @@ module.Datetime = class Datetime extends Date {
 	}
 
 	modify(input) {
-		if (module.isNumber(input)) input = `${input}ms`;
+		if (isInstance(input, Number)) input = `${input}ms`;
 		if (!input) return;
 		datetime_modify(this, input);
 		return this;
 	}
-};
-
-let stuffs = [
-	1,
-	'ms',
-	module.SECOND,
-	's',
-	module.MINUTE,
-	'm',
-	module.HOUR,
-	'h',
-	module.DAY,
-	'd',
-	module.MONTH,
-	'o',
-	module.YEAR,
-];
-module.TimeInterval = class {
+}
+var stuffs = [1, 'ms', SECOND, 's', MINUTE, 'm', HOUR, 'h', DAY, 'd', MONTH, 'o', YEAR];
+export class TimeInterval {
 	constructor(a) {
-		let self = this;
+		var self = this;
 		self.sign = 1;
 		self.ms = self.s = self.m = self.h = self.d = self.o = self.y = 0;
 		self.modify(a);
 	}
 	valueOf() {
-		let { y, o, d, h, m, s, ms, sign } = this;
-		return (
-			sign *
-			(y * module.YEAR +
-				o * module.MONTH +
-				d * module.DAY +
-				h * module.HOUR +
-				m * module.MINUTE +
-				s * module.SECOND +
-				ms)
-		);
+		var { y, o, d, h, m, s, ms, sign } = this;
+		return sign * (y * YEAR + o * MONTH + d * DAY + h * HOUR + m * MINUTE + s * SECOND + ms);
 	}
 	toString() {
 		// format TimeInterval
@@ -121,43 +97,34 @@ module.TimeInterval = class {
 	}
 
 	modify(input) {
-		if (module.isNumber(input)) input = `${input}ms`;
+		if (isInstance(input, Number)) input = `${input}ms`;
 		if (!input) return;
-		let self = this;
+		var self = this;
 		datetime_modify(self, input);
-		let time = +self;
+		var time = +self;
 		time *= self.sign = Math.sign(time);
-		for (let i = 0; i < 11; i += 2) {
-			let t = time % stuffs[i + 2];
+		for (var i = 0; i < 11; i += 2) {
+			var t = time % stuffs[i + 2];
 			time -= t;
 			self[stuffs[i + 1]] = t / stuffs[i];
 		}
 		self.y = time;
 		return self;
 	}
-};
-
-let WEEKDAYS = [
-	'sunday',
-	'monday',
-	'tuesday',
-	'wednesday',
-	'thursday',
-	'friday',
-	'saturday',
-];
+}
+var WEEKDAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 function datetime_modify(self, string) {
-	let sign = 1;
-	for (let [match, r, runit, aunit, a, s] of string.matchAll(
+	var sign = 1;
+	for (var [match, r, runit, aunit, a, s] of string.matchAll(
 		/([\d.]+)([a-z]+)|([a-z]+)([\d.]+)|([+-])/g
 	)) {
 		if (r) {
-			let i = WEEKDAYS.indexOf(runit);
+			var i = WEEKDAYS.indexOf(runit);
 			if (i < 0 && runit in self) {
 				self[runit] += sign * r;
 			} else {
-				let date = self.getDate();
-				let day = self.getDay();
+				var date = self.getDate();
+				var day = self.getDay();
 				if (i != day) {
 					date += sign > 0 ? i - day + 7 : i + day - 8;
 					r--;

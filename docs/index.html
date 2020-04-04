@@ -10,15 +10,12 @@
 <script>
 	class App extends Component {
 		load() {
-			[this.textarea, this.render] = this.q('<flex full>').q([
-				'<textarea>',
-				'<div>',
-			]);
+			[this.textarea, this.render] = this.q('<flex full>').q(['<textarea>', '<div>']);
 			this.render.Q((this.textarea.value = '<h2>qPact playground</h2>'));
 			this.textarea.oninput = () => this.render.Q(this.textarea.value);
 		}
 	}
-	defineElement('c-app', App);
+	//qPact.Pact.defineElement('c-app', App);
 </script>
 <!-- TODO: add docs compilation
 -->

@@ -1,0 +1,14 @@
+TYPES
+	+Null
+	+Undefined
+	Object
+		+Iterable
+			Array
+			Set
+			Map
+			String
+			+Iterator
+				GeneratorFunction
+				ArrayIterator
+				SetIterator
+				MapIterator

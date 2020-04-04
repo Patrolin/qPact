@@ -1,0 +1,55 @@
+<head>
+	<script src="./qPact.js"></script>
+	<style>
+		body {
+			font-size: 24px;
+		}
+	</style>
+</head>
+<canvas full id="myCanvas"></canvas>
+<script>
+	async function rect(x1, y1, x2, y2) {
+		ctx.fillRect(x1, y1, x2, y2);
+	}
+	async function line(x1, y1, x2, y2) {
+		ctx.moveTo(x1, y1);
+		ctx.lineTo(x2, y2);
+		ctx.stroke();
+	}
+	async function ellipse(x1, y1, r1, r2) {
+		ctx.beginPath();
+		ctx.arc(x1, y1, r, 0, 2 * Math.PI);
+		tx.stroke();
+	}
+	async function fill(r1, g1, b1) {
+		async function componentToHex(c) {
+			var hex = c.toString(16);
+			return hex.length == 1 ? '0' + hex : hex;
+		}
+		async function rgbToHex(r, g, b) {
+			return (
+				'#' +
+				(await componentToHex(r)) +
+				(await componentToHex(g)) +
+				(await componentToHex(b))
+			);
+		}
+		var color = await rgbToHex(r1, g1, b1);
+		ctx.fillStyle = color;
+		console.log(color);
+	}
+
+	var canvas = document.getElementById('myCanvas');
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+
+	var ctx = canvas.getContext('2d');
+
+	draw();
+
+	async function draw() {
+		await fill(255, 0, 0);
+
+		await rect(0, 0, 150, 75);
+	}
+</script>

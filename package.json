@@ -5,6 +5,7 @@
 	},
 	"license": "Unlicense",
 	"homepage": "https://github.com/Patrolin/qPact#readme",
+	"type": "module",
 	"scripts": {
 		"build": "node build.js",
 		"reset": "rm -rf node_modules && rm -f package-lock.json && npm install"
@@ -24,5 +25,6 @@
 		"postcss-sorting": "^5.0.1",
 		"sugarss": "^2.0.0",
 		"uglify-es": "^3.3.9"
-	}
+	},
+	"dependencies": {}
 }

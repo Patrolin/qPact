@@ -1,0 +1,21 @@
+qPact
+	.lib
+		.define(Base: any, properties: any)
+		.describe(input: any)
+		.type(input: any)
+		.isInstance(input: any, whitelist: Iterable<Constructor> = [], blacklist: Iterable<Constructor> = [])
+		.assertInstance(input: any, whitelist: Iterable<Constructor> = [], blacklist: Iterable<Constructor> = [])
+		.constants
+			...
+		.itertools
+			...
+		.types
+			...
+			.datetime
+				.Datetime()
+				.TimeInterval()
+	.q
+		.q
+		Node.q
+		Array.q?
+	.Pact
