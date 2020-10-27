@@ -38,8 +38,22 @@ function* zip(iterators, filler) {
 		}
 }
 define(Array.prototype, {
+	get len() {
+		return this.length;
+	},
 	Array(callback) {
 		return callback ? arrayMap.call(this, callback) : [...this];
+	},
+});
+define(Set.prototype, {
+	get len() {
+		return this.size;
+	},
+	i(index) {
+		return this.keys();
+	},
+	push(input) {
+		return this.add(input);
 	},
 });
 define(String.prototype, {
@@ -57,6 +71,40 @@ define(Iterator.prototype, {
 		var i = 0;
 		for (var v of this) yield [i++, v];
 	},
+	get len() {
+		return 1 / 0;
+	},
+	slice(start, stop, step) {
+		if (step < 1) {
+			start -= stop;
+			stop += start;
+			start = stop - start;
+			step = -step;
+		}
+		// ...
+	},
+	i(index) {
+		var v;
+		if (index < 0) {
+			var queue = [];
+			for (; index++; ) {
+				v = this.next();
+				if (v.done) break;
+				queue.push(v);
+			}
+			for (var v = this.next(); !v.done; v = this.next()) {
+				queue.shift();
+				queue.push(v);
+			}
+			v = queue[0];
+		} else {
+			for (var v = this.next(); !v.done && index--; ) {
+				v = this.next();
+			}
+		}
+		if (v.done) throw new RangeError(`Index ${index} out of range`);
+		return v.value;
+	},
 });
 define(Iterable.prototype, {
 	keys() {
@@ -67,6 +115,14 @@ define(Iterable.prototype, {
 	},
 	entries() {
 		return entries(this);
+	},
+	get len() {
+		var i = 0;
+		for (var k of this.keys()) i += 1;
+		return i;
+	},
+	i(index) {
+		return this[i(index, this.len)];
 	},
 	*map(callback) {
 		assertInstance(callback, Function);

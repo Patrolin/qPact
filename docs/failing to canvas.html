@@ -1,0 +1,59 @@
+<head>
+	<script>
+		var q = r => document[r.global ? 'querySelectorAll' : 'querySelector'](r.source);
+	</script>
+	<style>
+		html,
+		body {
+			width: fit-content;
+			min-width: 100%;
+			height: 100%;
+			font-size: 24px;
+			margin: 0;
+		}
+		canvas {
+			width: 100%;
+			height: 100%;
+		}
+	</style>
+</head>
+<canvas full></canvas>
+<script>
+	function rect(x1, y1, x2, y2) {
+		ctx.fillRect(x1, y1, x2, y2);
+	}
+	function line(x1, y1, x2, y2) {
+		ctx.moveTo(x1, y1);
+		ctx.lineTo(x2, y2);
+		ctx.stroke();
+	}
+	function ellipse(x1, y1, r1, r2) {
+		ctx.beginPath();
+		ctx.arc(x1, y1, r, 0, 2 * Math.PI);
+		tx.stroke();
+	}
+	function rgb(r, g, b) {
+		return `rgb(${r},${g},${b})`;
+	}
+
+	var canvas = q(/canvas/);
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+	var ctx = canvas.getContext('2d');
+
+	var i = 1;
+	function update() {
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.fillStyle = rgb(255, 0, 0);
+		ctx.beginPath();
+		ctx.arc(i + 50, 50, 20, 0, 2 * Math.PI);
+		ctx.fill();
+		ctx.stroke();
+		i++;
+		if (i > 100) {
+			clearInterval(z);
+		}
+	}
+	var z = setInterval(update, 33);
+	update();
+</script>

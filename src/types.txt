@@ -1,14 +1,37 @@
-TYPES
-	+Null
-	+Undefined
-	Object
-		+Iterable
-			Array
-			Set
-			Map
-			String
-			+Iterator
-				GeneratorFunction
-				ArrayIterator
-				SetIterator
-				MapIterator
+primitive
+	int -> BigInt
+	float -> Number
+	Null
+	Undefined
+object
+	RegExp
+	WeakSet
+	WeakMap
+	ArrayBuffer
+	SharedArrayBuffer
+	Promise
+	Iterable
+		Object
+		Array
+		TypedArray
+			Int8Array
+			Uint8Array
+			Uint8ClampedArray
+			Int16Array
+			Uint16Array
+			Int32Array
+			Uint32Array
+			Float32Array
+			Float64Array
+			BigInt64Array
+			BigUint64Array
+			DataView
+		Set
+		Map
+		String
+		Iterator
+			Generator
+			ArrayIterator
+			SetIterator
+			MapIterator
+			AsyncIterator

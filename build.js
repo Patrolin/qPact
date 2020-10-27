@@ -23,6 +23,10 @@ function textFile(path) {
 		encoding: 'UTF-8',
 	});
 }
+function partition(string, sep) {
+	let i = string.indexOf(sep);
+	return i >= 0 ? [string.slice(0, i), string.slice(i + sep.length)] : [string, ''];
+}
 function rpartition(string, sep) {
 	let i = string.lastIndexOf(sep);
 	return i >= 0 ? [string.slice(0, i), string.slice(i + sep.length)] : [string, ''];
@@ -36,26 +40,36 @@ function matchAll(string, pattern) {
 function sorted(arr, key) {
 	return key
 		? arr
-				.map((x) => [x, key(x)])
+				.map(x => [x, key(x)])
 				.sort((x, y) => x[1] > y[1] || -(x[1] < y[1]))
-				.map((x) => x[0])
+				.map(x => x[0])
 		: arr.sort();
 }
 
 let TARGETS = {
 	async js(path, filename) {
 		var exports = [];
-		var concat = sorted(files(path), (x) => x.toLowerCase(x))
+		var concat = sorted(files(path), x => x.toLowerCase(x))
 			.map(textFile)
 			.join(';\n')
 			// @todo: uglify for consistency
 			.replace(/@import '(.+?)';/g, (match, name) => textFile(name))
-			.replace(/^export const ([^;]+)/gm, (match, stuff) => {
-				for (var x of stuff.split(',\n\t')) {
-					var name = x.match(/^\S+/);
-					exports.push(name);
+			.replace(/^export (?:var|const) ([^;]+)/gm, (match, stuff) => {
+				function single(i) {
+					var [a, b] = partition(i, ': ');
+					if (b) a = b;
+					if (a[0] === '{') a = a.slice(1);
+					if (a.slice(-1) === '}') a = a.slice(0, -1);
+					a = a.trim();
+					if (a) exports.push(a);
 				}
-				return `const ${stuff}`;
+				for (var x of stuff.split(',\n\t')) {
+					x = partition(x, ' =')[0];
+					if (x[0] === '{' && x.slice(-1) === '}') {
+						for (var y of x.split(',')) single(y);
+					} else single(x);
+				}
+				return `var ${stuff}`;
 			})
 			.replace(/^export (\S+) ([^(; ]+)/gm, (match, keyword, name) => {
 				exports.push(name);
@@ -63,8 +77,9 @@ let TARGETS = {
 			});
 		exports = exports.length
 			? `
-			for(var [k, v] of entries({${exports.join(',')}})) {
-				if (isInstance(v, Function)) define(v, {name: k});
+			for(var [k, v] of Object.entries({${exports.join(',')}})) {
+				Object.defineProperty(v, 'name', {value: k});
+				//if (isInstance(v, Function)) define(v, {name: k});
 				if (!window.hasOwnProperty(k)) window[k] = v;
 			}`
 			: '';
@@ -129,7 +144,7 @@ let TARGETS = {
 					parser: sugarss.parse,
 					from: undefined,
 				})
-				.catch((e) => {
+				.catch(e => {
 					console.log(
 						'\x1b[1m\x1b[36m',
 						path,

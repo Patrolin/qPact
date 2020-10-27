@@ -1,34 +1,24 @@
-export function* keys(input) {
-	for (var k of Reflect.ownKeys(input)) yield k;
-}
-export function values(input) {
-	return keys(input).map((k) => input[k]);
-}
-export function entries(input) {
-	return keys(input).map((k) => [k, input[k]]);
-}
+export var i = (i, len) => (i < 0 ? len - i : i);
 export function define(obj, properties, complex) {
+	if (!complex) properties = Object.getOwnPropertyDescriptors(properties);
+	properties = Reflect.ownKeys(properties).map(k => [k, properties[k]]);
 	for (var seen = new Set(), stack = [obj]; stack.length; seen.add(next)) {
 		var next = stack.shift();
 		if (seen.has(next)) throw Error(`Cyclic subclass in ${type(obj)}`);
 		for (var n of next.__subclasses__ || []) stack.push(n);
-		for (var [key, value] of properties instanceof Array
-			? properties
-			: Reflect.ownKeys(properties).map((k) => [k, properties[k]]))
+		for (var [key, value] of properties)
 			if (!Object.prototype.hasOwnProperty.call(next, key))
-				Object.defineProperty(
-					next,
-					key,
-					complex
-						? value
-						: {
-								value,
-								configurable: 1,
-								writable: 1,
-						  }
-				);
+				Object.defineProperty(next, key, {
+					...value,
+					...(complex ? {} : { enumerable: 0 }),
+				});
 	}
+	return obj;
 }
+export var createType = (constructor, isType) =>
+	define(constructor, {
+		[Symbol.hasInstance]: isType || (x => x instanceof constructor().constructor),
+	});
 export function describe(input) {
 	return `${type(input).name}<${input instanceof Constructor ? input.name : input}>`;
 }
@@ -37,10 +27,10 @@ export function type(input) {
 }
 export function isInstance(input, whitelist = [], blacklist = []) {
 	function test(Type) {
-		return Type && input instanceof Type;
+		return input && Type && (input instanceof Type || input.constructor === Type);
 	}
 	function testMany(list) {
-		return list instanceof Array ? list.some((Type) => test(Type)) : test(list);
+		return list instanceof Array ? list.some(Type => test(Type)) : test(list);
 	}
 	return testMany(whitelist) && !testMany(blacklist);
 }
@@ -48,7 +38,7 @@ export function assertInstance(input, whitelist = [], blacklist = []) {
 	function format(list) {
 		return list instanceof Array
 			? list.length
-				? list.list((x) => x.name).join('|')
+				? list.list(x => x.name).join('|')
 				: ''
 			: '' + list.name;
 	}
