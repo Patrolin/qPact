@@ -1,6 +1,6 @@
 # qPact
 
-technically works again!
+newest version at https://github.com/Patrolin/room/tree/master/client
 
 # q
 
