@@ -217,7 +217,7 @@ tooltip {
 html,
 body {
   width: 100%;
-  min-height: 100%;
+  height: 100%;
 }
 
 /* style */
@@ -227,4 +227,14 @@ body {
 }
 body {
   margin: 0;
+}
+button {
+  margin-top: 5px;
+  filter: drop-shadow(0px 0px 1px #3f3f3f);
+}
+button:hover {
+  filter: drop-shadow(0px 0px 2px #3f3f3f);
+}
+button[clicked] {
+  filter: drop-shadow(-1px -1px 1px #3f3f3f);
 }
