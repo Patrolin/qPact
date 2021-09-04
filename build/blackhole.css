@@ -1,0 +1,230 @@
+/* blackhole.css 1.0 */
+/* layout */
+center {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+/* layout */
+flex {
+  display: inline-flex;
+  width: 100%;
+  height: 100%;
+}
+
+flex {
+  flex-direction: row;
+}
+flex[up] {
+  flex-direction: column-reverse;
+}
+flex[left] {
+  flex-direction: row-reverse;
+}
+flex[down] {
+  flex-direction: column;
+}
+
+flex > * {
+  flex: 60; /* {2, 3, 4, 5, 6, 10, 12} | 60 */
+}
+
+[f-5] {
+  flex: 5;
+}
+[f-6] {
+  flex: 6;
+}
+[f-10] {
+  flex: 10;
+}
+[f-12] {
+  flex: 12;
+}
+[f-15] {
+  flex: 15;
+}
+[f-20] {
+  flex: 20;
+}
+[f-30] {
+  flex: 30;
+}
+
+[f-120] {
+  flex: 120;
+}
+[f-180] {
+  flex: 180;
+}
+[f-240] {
+  flex: 240;
+}
+[f-300] {
+  flex: 300;
+}
+[f-360] {
+  flex: 360;
+}
+[f-600] {
+  flex: 600;
+}
+[f-720] {
+  flex: 720;
+}
+/* style */
+hidden {
+  visibility: hidden;
+}
+/* layout */
+* {
+  display: inline-block;
+}
+
+/* block */
+body,
+row,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  display: block;
+}
+
+/* spec */
+area,
+head,
+script,
+style,
+datalist,
+link,
+param,
+title {
+  display: none;
+}
+map,
+output,
+q {
+  display: inline;
+}
+li {
+  display: list-item;
+}
+table {
+  display: inline-table;
+}
+tbody {
+  display: table-row-group;
+}
+caption {
+  display: table-caption;
+}
+col {
+  display: table-column;
+}
+colgroup {
+  display: table-column-group;
+}
+tfoot {
+  display: table-footer-group;
+}
+thead {
+  display: table-header-group;
+}
+tr {
+  display: table-row;
+}
+th,
+td {
+  display: table-cell;
+}
+[wide] {
+  width: 100%;
+}
+[tall] {
+  height: 100%;
+}
+[full] {
+  width: 100%;
+  height: 100%;
+}
+/* layout */
+stack {
+  position: relative;
+}
+stack > * {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* style */
+stack > * {
+  pointer-events: none;
+}
+/*stack > *:first-child,*/
+* {
+  pointer-events: auto;
+}
+/* layout */
+tooltip {
+  display: none;
+}
+*:hover > tooltip {
+  display: inline-block;
+}
+
+* {
+  position: relative;
+}
+tooltip {
+  position: absolute;
+}
+
+tooltip {
+  left: 50%;
+  top: 50%;
+}
+tooltip[right] {
+  left: 100%;
+}
+tooltip[up] {
+  top: 0;
+}
+tooltip[left] {
+  left: 0;
+}
+tooltip[down] {
+  top: 100%;
+}
+
+/* style */
+tooltip {
+  font-weight: bold;
+  font-size: 0.35em;
+  padding: 0.2em 0.3em;
+  border-radius: 0.5em;
+  transform: translate(-50%, -50%);
+}
+/* import */
+
+/* layout */
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+}
+
+/* style */
+* {
+  box-sizing: border-box;
+  border: 0;
+}
+body {
+  margin: 0;
+}
