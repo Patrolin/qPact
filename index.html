@@ -5,8 +5,14 @@
     <link href="./build/blackhole.css" rel="stylesheet" />
   </head>
   <body>
-    <center full>
+    <center full id="main">
+      <row></row>
       <row>Cool button: <c-button value=":O"></c-button></row>
     </center>
   </body>
+  <script>
+    checkboxes = Array(12)
+      .fill()
+      .map(() => q(/row/).q('<c-checkboxinput>'));
+  </script>
 </html>
