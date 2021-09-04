@@ -180,7 +180,7 @@ class Button extends Component {
       }, 245);
       this.alter();
     };
-    this.value = this.getAttribute('value') || '';
+    this.value = this.getAttribute('value') ?? '';
   }
   set value(value) {
     this.input.textContent = value;
